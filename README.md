@@ -131,3 +131,19 @@ The value of this project lies in demonstrating how enterprise Java technologies
   * JUnit tests
 
 * IDE: IntelliJ IDEA
+
+
+---
+
+### Design
+
+- [User Stories](user-stories.md)
+- Screen Design [TBD]
+
+---
+
+### [Project Plan](project-plan.md)
+
+### [Weekly Reflection](weekly-reflection.md)
+
+---

@@ -8,8 +8,8 @@ This project plan outlines the week-by-week tasks for designing, implementing, t
 
 ### Week 3
 
-* \[ ] Clearly identify MVP vs non-MVP user stories
-* \[ ] Write detailed project plan
+* \[X] Clearly identify MVP vs non-MVP user stories
+* \[X] Write detailed project plan
 * \[ ] Design initial application architecture
 * \[ ] Research authentication provider (AWS Cognito)
 * \[ ] Research possible external web services/APIs
@@ -224,5 +224,6 @@ Individual Project Deadline: 5/13
 
 
 \*\*\*Note: This project plan is subject to change as requirements are refined and feedback is incorporated.
+
 
 

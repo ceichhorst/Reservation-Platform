@@ -138,7 +138,7 @@ The value of this project lies in demonstrating how enterprise Java technologies
 ### Design
 
 - [User Stories](user-stories.md)
-- Screen Design [TBD]
+- [Screen Design](screen%20designs/)
 
 ---
 
@@ -147,3 +147,4 @@ The value of this project lies in demonstrating how enterprise Java technologies
 ### [Weekly Reflection](weekly-reflection.md)
 
 ---
+

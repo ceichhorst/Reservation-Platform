@@ -1,11 +1,23 @@
+package com.ceichhorst.reservation.dao;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.LockMode;
+
+import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.util.HibernateUtil;
+
 public class ReservationDao {
 
     private static final Logger logger =
-            LogManager.getLogger(ReservationService.class);
+            LogManager.getLogger(Reservation.class);
 
     public void save (Reservation reservation) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction ts = session.beginTransaction();
+            Transaction tx = session.beginTransaction();
             session.persist(reservation);
             tx.commit();
         }
@@ -36,7 +48,7 @@ public class ReservationDao {
 
             int currentBooked = service.getReservations()
                     .stream()
-                    .mapToInt(Reservation::getPartySize)
+                    .mapToInt(Reservation::getPartySize())
                     .sum();
 
             if (currentBooked + partySize > service.getCapacity()) {

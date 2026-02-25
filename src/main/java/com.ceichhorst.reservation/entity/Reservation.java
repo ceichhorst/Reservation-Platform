@@ -1,4 +1,4 @@
-package edu.matc.entity;
+package com.ceichhorst.reservation.entity;
 
 import jakarta.persistence.*;
 

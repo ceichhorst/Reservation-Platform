@@ -1,5 +1,7 @@
 package com.ceichhorst.reservation.entity;
 
+import com.ceichhorst.reservation.service.ServiceTemplate;
+import com.ceichhorst.reservation.service.ServiceInstance;
 import jakarta.persistence.*;
 
 import java.util.List;

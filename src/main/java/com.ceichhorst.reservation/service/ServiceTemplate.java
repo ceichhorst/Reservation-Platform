@@ -1,5 +1,6 @@
-package com.ceichhorst.reservation.entity;
+package com.ceichhorst.reservation.service;
 
+import com.ceichhorst.reservation.entity.Restaurant;
 import jakarta.persistence.*;
 
 @Entity

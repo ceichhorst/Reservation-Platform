@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import org.hibernate.LockMode;
 
 import com.ceichhorst.reservation.entity.Reservation;
-import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
 public class ReservationDao {
@@ -44,11 +44,11 @@ public class ReservationDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
 
-            Service service = session.get(Service.class, serviceId, LockMode.PESSIMISTIC_WRITE);
+            ServiceInstance service = session.get(ServiceInstance.class, serviceId, LockMode.PESSIMISTIC_WRITE);
 
             int currentBooked = service.getReservations()
                     .stream()
-                    .mapToInt(Reservation::getPartySize())
+                    .mapToInt(Reservation::getPartySize)
                     .sum();
 
             if (currentBooked + partySize > service.getCapacity()) {
@@ -59,7 +59,7 @@ public class ReservationDao {
             Reservation reservation = new Reservation();
             reservation.setCustomerName(name);
             reservation.setPartySize(partySize);
-            reservation.setService(service);
+            reservation.setServiceInstance(service);
 
             session.persist(reservation);
             tx.commit();

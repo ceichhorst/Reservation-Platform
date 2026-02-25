@@ -1,7 +1,8 @@
 com/ceichhorst/reservation/entity/Reservation.class
-com/ceichhorst/reservation/entity/ServiceTemplate.class
+com/ceichhorst/reservation/service/ServiceInstance.class
 com/ceichhorst/reservation/entity/ReservationStatus.class
 com/ceichhorst/reservation/util/HibernateUtil.class
 com/ceichhorst/reservation/entity/SchedulingType.class
-com/ceichhorst/reservation/entity/ServiceInstance.class
+com/ceichhorst/reservation/service/ServiceTemplate.class
+com/ceichhorst/reservation/dao/ReservationDao.class
 com/ceichhorst/reservation/entity/Restaurant.class

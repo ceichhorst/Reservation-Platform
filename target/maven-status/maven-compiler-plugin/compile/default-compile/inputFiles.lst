@@ -1,0 +1,8 @@
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/util/HibernateUtil.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ServiceTemplate.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/ReservationDao.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Restaurant.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Reservation.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/SchedulingType.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ServiceInstance.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationStatus.java

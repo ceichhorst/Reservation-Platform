@@ -1,32 +1,24 @@
-package edu.matc.entity;
+package com.ceichhorst.reservation.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "service_instance")
-public class ServiceInstance {
+@Table(name = "service_template")
+public class ServiceTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private java.time.LocalDate serviceDate;
+    private int dayOfWeek;
 
     private java.time.LocalTime serviceTime;
 
     private int capacity;
 
-    @Version
-    private int version;
-
     @ManyToOne
     @JoinColumn(name = "restaruant_id")
     private Restaurant restaurant;
-
-    @OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
 
     // getters & setters
 }

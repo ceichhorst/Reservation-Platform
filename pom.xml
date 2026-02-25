@@ -1,9 +1,29 @@
-<dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ceichhorst</groupId>
+    <artifactId>reservation-platform</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Reservation Platform</name>
+
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
 
     <!-- Hibernate 6 -->
     <dependency>
         <groupId>org.hibernate.orm</groupId>
-        <artifactId>hibernate-core</artifiactId>
+        <artifactId>hibernate-core</artifactId>
         <version>6.4.3.Final</version>
     </dependency>
 
@@ -34,4 +54,24 @@
         <version>2.22.1</version>
     </dependency>
 
-</dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugins</artifactId>
+                <version>3.11.0</version>
+            </plugin>
+
+            <!-- Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugins</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

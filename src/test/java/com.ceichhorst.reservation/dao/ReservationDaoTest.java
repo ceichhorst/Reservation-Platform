@@ -1,16 +1,28 @@
-@Test
-void testSaveReservation() {
-    ReservationDao dao = new ReservationDao();
+package com.ceichhorst.reservation.dao;
 
-    Service service = new Service();
-    service.setCapacity(10);
+import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.service.ServiceInstance;
 
-    Reservation reservation = new Resrvation();
-    reservation.setCustomerName("Test User");
-    reservation.setPartySize(2);
-    reservation.setService(service);
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    dao.save(reservation);
+import org.junit.jupiter.api.Test;
 
-    assertNotNull(reservation.getId);
+public class ReservationDaoTest {
+
+    @Test
+    void testSaveReservation() {
+        ReservationDao dao = new ReservationDao();
+
+        ServiceInstance service = new ServiceInstance();
+        service.setCapacity(10);
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerName("Test User");
+        reservation.setPartySize(2);
+        reservation.setServiceInstance(service);
+
+        dao.save(reservation);
+
+        assertNotNull(reservation.getId());
+    }
 }

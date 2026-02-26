@@ -9,8 +9,8 @@
             com.mysql.cj.jdbc.Driver
         </property>
 
-        <property name="hibernate.connection-url">
-            jdbc:mysql://awseb-e-qnyt7gzmt3-stack-awsebrdsdatabase-guryppugfjyf.cwhiyomeeqiq.us-east-1.rds.amazonaws.com:3306
+        <property name="hibernate.connection.url">
+            jdbc:mysql://awseb-e-qnyt7gzmt3-stack-awsebrdsdatabase-guryppugfjyf.cwhiyomeeqiq.us-east-1.rds.amazonaws.com:3306/reservation_platform
         </property>
 
         <property name="hibernate.connection.username">root</property>
@@ -24,8 +24,10 @@
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">validate</property>
 
-        <mapping class="edu.matc.entity.Service"/>
-        <mapping class="edu.matc.entity.Reservation"/>
+        <mapping class="com.ceichhorst.reservation.service.ServiceInstance"/>
+        <mapping class="com.ceichhorst.reservation.service.ServiceTemplate"/>
+        <mapping class="com.ceichhorst.reservation.entity.Reservation"/>
+        <mapping class="com.ceichhorst.reservation.entity.Restaurant"/>
 
     </session-factory>
 </hibernate-configuration>

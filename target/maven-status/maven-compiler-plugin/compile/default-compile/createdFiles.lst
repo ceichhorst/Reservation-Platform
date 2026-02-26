@@ -1,4 +1,5 @@
 com/ceichhorst/reservation/entity/Reservation.class
+com/ceichhorst/reservation/dao/ServiceInstanceDao.class
 com/ceichhorst/reservation/service/ServiceInstance.class
 com/ceichhorst/reservation/entity/ReservationStatus.class
 com/ceichhorst/reservation/util/HibernateUtil.class

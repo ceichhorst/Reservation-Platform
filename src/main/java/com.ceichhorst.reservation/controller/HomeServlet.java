@@ -4,10 +4,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
-import java.io.StringWriter;
 
 import com.ceichhorst.reservation.dao.*;
 import com.ceichhorst.reservation.service.*;
+import com.ceichhorst.reservation.entity.*;
 
 import java.util.List;
 
@@ -19,22 +19,24 @@ public class HomeServlet extends HttpServlet {
              throws ServletException, IOException {
 
         List<ServiceInstance> services = null;
-        String message = "Servlet is working!";
+        List<Restaurant> restaurants = null;
         String stackTrace = null;
 
         try {
             ServiceInstanceDao dao = new ServiceInstanceDao();
             services = dao.getAll();
+            request.setAttribute("services", services);
+
+            RestaurantDao restaurantDao = new RestaurantDao();
+            restaurants = restaurantDao.getAll();
+            request.setAttribute("restaurants", restaurants);
+
+            String message = "Servlet is working!";
         } catch (Exception e) {
-            message = "Error fetching services: " + e.getMessage();
-            StringWriter sw = new StringWriter();
-            e.printStackTrace();
-            stackTrace = sw.toString();
+            request.setAttribute("message", "Error fetching data from database!");
+            request.setAttribute("stackTrace", e.getMessage());
         }
 
-        request.setAttribute("message", message);
-        request.setAttribute("services", services);
-        request.setAttribute("stackTrace", stackTrace);
         request.getRequestDispatcher("/WEB-INF/index.jsp")
                 .forward(request, response);
     }

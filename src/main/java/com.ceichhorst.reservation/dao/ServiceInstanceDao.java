@@ -11,7 +11,7 @@ public class ServiceInstanceDao {
     public List<ServiceInstance> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session
-                    .createQuery("FROM service_instance", ServiceInstance.class)
+                    .createQuery("FROM ServiceInstance", ServiceInstance.class)
                     .getResultList();
         }
     }

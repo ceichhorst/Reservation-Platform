@@ -13,8 +13,8 @@
             jdbc:mysql://awseb-e-qnyt7gzmt3-stack-awsebrdsdatabase-guryppugfjyf.cwhiyomeeqiq.us-east-1.rds.amazonaws.com:3306/reservation_platform
         </property>
 
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">password</property>
+        <property name="hibernate.connection.username">${DB_USERNAME}</property>
+        <property name="hibernate.connection.password">${DB_PASSWORD}=</property>
 
         <property name="hibernate.dialect">
             org.hibernate.dialect.MySQLDialect

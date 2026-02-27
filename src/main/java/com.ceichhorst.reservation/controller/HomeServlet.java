@@ -21,6 +21,7 @@ public class HomeServlet extends HttpServlet {
         List<ServiceInstance> services = dao.getAll();
 
         request.setAttribute("message", "Servlet is working!");
+        request.setAttribute("services", services);
         request.getRequestDispatcher("/WEB-INF/index.jsp")
                 .forward(request, response);
     }

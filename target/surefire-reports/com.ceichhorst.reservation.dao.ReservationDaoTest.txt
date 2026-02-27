@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.ceichhorst.reservation.dao.ReservationDaoTest
 -------------------------------------------------------------------------------
-Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 99.084 sec - in com.ceichhorst.reservation.dao.ReservationDaoTest
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 110.998 sec - in com.ceichhorst.reservation.dao.ReservationDaoTest

@@ -73,6 +73,12 @@
                 </tr>
             </c:forEach>
         </table>
+        <c:if test="${not empty message}">
+            <div style="color:red;"><strong>${message}</strong></div>
+        </c:if>
+        <c:if test="${not empty stackTrace}">
+            <pre>${stackTrace}</pre>
+        </c:if>
     </div>
 <footer>
     &copy; 2026 Reservation Platform | Enterprise Java Project

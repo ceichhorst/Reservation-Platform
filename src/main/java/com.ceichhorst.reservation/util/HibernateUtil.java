@@ -11,7 +11,7 @@ public class HibernateUtil {
     static {
         try {
             Configuration configuration = new Configuration().configure();
-
+/**
             String dbUser = System.getenv("DB_USERNAME");
             String dbPass = System.getenv("DB_PASSWORD");
 
@@ -21,7 +21,7 @@ public class HibernateUtil {
 
             if (dbPass != null) {
                 configuration.setProperty("hibernate.connection.password", dbPass);
-            }
+            }*/
 
             sessionFactory = configuration.buildSessionFactory();
         } catch (HibernateException ex) {

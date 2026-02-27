@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.ceichhorst.reservation.dao.ReservationDaoTest" time="110.998" tests="0" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.ceichhorst.reservation.dao.ReservationDaoTest" time="115.509" tests="0" errors="0" skipped="0" failures="0">
   <properties>
     <property name="jansi.mode" value="force"/>
     <property name="idea.version" value="2025.3.3"/>
@@ -36,7 +36,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="maven.repo.local" value="/home/student/.m2/repository"/>
-    <property name="os.version" value="5.15.0-170-generic"/>
+    <property name="os.version" value="5.15.0-171-generic"/>
     <property name="library.jansi.path" value="/snap/intellij-idea-ultimate/730/plugins/maven/lib/maven3/lib/jansi-native"/>
     <property name="user.home" value="/home/student"/>
     <property name="user.timezone" value="America/Chicago"/>

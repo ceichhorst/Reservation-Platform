@@ -20,12 +20,18 @@ public class ReservationDao {
             Transaction tx = session.beginTransaction();
             session.persist(reservation);
             tx.commit();
+        } catch (Exception e) {
+            logger.error("Failed to save reservation", e);
+            throw new RuntimeException(e);
         }
     }
 
     public Reservation getById(int id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(Reservation.class, id);
+        } catch (Exception e) {
+            logger.error("Failed to get reservation by ID: " + id, e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -34,6 +40,9 @@ public class ReservationDao {
             Transaction tx = session.beginTransaction();
             session.remove(reservation);
             tx.commit();
+        } catch (Exception e) {
+            logger.error("Failed to delete reservation", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -64,6 +73,9 @@ public class ReservationDao {
             session.persist(reservation);
             tx.commit();
             return true;
+        } catch (Exception e) {
+            logger.error("Failed to create reservation for serviceId=" + serviceId, e);
+            throw new RuntimeException(e);
         }
     }
 }

@@ -9,10 +9,15 @@ import com.ceichhorst.reservation.dao.*;
 import com.ceichhorst.reservation.service.*;
 import com.ceichhorst.reservation.entity.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
+
+    private static final Logger logger = LogManager.getLogger(HomeServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,9 +37,10 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("restaurants", restaurants);
 
             String message = "Servlet is working!";
+            logger.info("Successfully retrieved services and restaurants");
         } catch (Exception e) {
+            logger.error("Error fetching data from database", e);
             request.setAttribute("message", "Error fetching data from database!");
-            request.setAttribute("stackTrace", e.getMessage());
         }
 
         request.getRequestDispatcher("/WEB-INF/index.jsp")

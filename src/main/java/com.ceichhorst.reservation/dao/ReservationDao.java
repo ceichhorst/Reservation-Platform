@@ -13,13 +13,14 @@ import com.ceichhorst.reservation.util.HibernateUtil;
 public class ReservationDao {
 
     private static final Logger logger =
-            LogManager.getLogger(Reservation.class);
+            LogManager.getLogger(ReservationDao.class);
 
     public void save (Reservation reservation) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
             session.persist(reservation);
             tx.commit();
+            logger.info("Reservation saved successfully for id={}", reservation.getId());
         } catch (Exception e) {
             logger.error("Failed to save reservation", e);
             throw new RuntimeException(e);

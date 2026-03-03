@@ -19,7 +19,7 @@ public class ReservationDaoTest {
     private SessionFactory testSessionFactory;
     private ReservationDao reservationDao;
     private ServiceInstanceDao serviceDao;
-}
+
     @BeforeAll
     void setupSessionFactory() throws Exception {
         Properties properties = new Properties();
@@ -52,12 +52,12 @@ public class ReservationDaoTest {
 
     @AfterAll
     void tearDown() {
-        if (testSessionsFactory != null) {
+        if (testSessionFactory != null) {
             testSessionFactory.close();
         }
     }
 
-    private ServiceInstance createServiceInstance(int capacity) {
+    private ServiceInstance createTestService(int capacity) {
         ServiceInstance service = new ServiceInstance();
         service.setCapacity(capacity);
         serviceDao.save(service);
@@ -134,5 +134,5 @@ public class ReservationDaoTest {
             service.getId(), 1, "Should Fail");
 
         assertFalse(created);
-}
+    }
 }

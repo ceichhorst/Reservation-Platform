@@ -3,6 +3,7 @@ package com.ceichhorst.reservation.dao;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.HibernateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +24,18 @@ public class ServiceInstanceDao {
             throw new RuntimeException(e);
         } catch (Exception e) {
             logger.error("Unexpected error fetching ServiceInstance records", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void save(ServiceInstance service) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.persist(service);
+            tx.commit();
+            logger.info("ServiceInstance saved with id={}", service.getId());
+        } catch (Exception e) {
+            logger.error("Error saving ServiceInstance", e);
             throw new RuntimeException(e);
         }
     }

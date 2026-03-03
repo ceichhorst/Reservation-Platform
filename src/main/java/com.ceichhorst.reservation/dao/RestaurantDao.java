@@ -17,6 +17,7 @@ public class RestaurantDao {
             return session.createQuery("FROM Restaurant", Restaurant.class).getResultList();
         } catch (Exception e) {
             logger.error("Failted to get restaurants", e);
+            throw new RuntimeException(e);
         }
 
     }

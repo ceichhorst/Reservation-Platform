@@ -18,5 +18,6 @@ public class RestaurantDao {
         } catch (Exception e) {
             logger.error("Failted to get restaurants", e);
         }
+
     }
 }

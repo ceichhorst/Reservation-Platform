@@ -5,42 +5,134 @@ import java.util.Properties;
 
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.util.HibernateUtil;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReservationDaoTest {
 
-    private static Properties properties = new Properties();
-
+    private SessionFactory testSessionFactory;
+    private ReservationDao reservationDao;
+    private ServiceInstanceDao serviceDao;
+}
     @BeforeAll
-    static void setup() {
-        try (InputStream input = ReservationDaoTest.class.getClassLoader().getResourceAsStream("database.properties")) {
+    void setupSessionFactory() throws Exception {
+        Properties properties = new Properties();
+
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("database.properties")) {
             if (input == null) {
                 throw new RuntimeException("Unable to find database.properties");
             }
             properties.load(input);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        Configuration configuration = new Configuration();
+
+        // Load entity classes
+        configuration.addAnnotatedClass(Reservation.class);
+        configuration.addAnnotatedClass(ServiceInstance.class);
+
+        configuration.addProperties(properties);
+
+        testSessionFactory = configuration.buildSessionFactory();
+
+        HibernateUtil.setSessionFactory(testSessionFactory);
+
+    }
+
+    @BeforeEach
+    void setupDaos() {
+        reservationDao = new ReservationDao();
+        serviceDao = new ServiceInstanceDao();
+    }
+
+    @AfterAll
+    void tearDown() {
+        if (testSessionsFactory != null) {
+            testSessionFactory.close();
+        }
+    }
+
+    private ServiceInstance createServiceInstance(int capacity) {
+        ServiceInstance service = new ServiceInstance();
+        service.setCapacity(capacity);
+        serviceDao.save(service);
+        return service;
     }
 
     @Test
     void testSaveReservation() {
-        ReservationDao dao = new ReservationDao();
-
-        ServiceInstance service = new ServiceInstance();
-        service.setCapacity(10);
+        ServiceInstance service = createTestService(10);
 
         Reservation reservation = new Reservation();
         reservation.setCustomerName("Test User");
         reservation.setPartySize(2);
         reservation.setServiceInstance(service);
 
-        dao.save(reservation);
+        reservationDao.save(reservation);
 
         assertNotNull(reservation.getId());
     }
+
+    @Test
+    void testGetById() {
+        ServiceInstance service = createTestService(10);
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerName("Get Test");
+        reservation.setPartySize(3);
+        reservation.setServiceInstance(service);
+
+        reservationDao.save(reservation);
+
+        Reservation fetched = reservationDao.getById(reservation.getId());
+
+        assertNotNull(fetched);
+        assertEquals("Get Test", fetched.getCustomerName());
+    }
+
+    @Test
+    void testDeleteReservation() {
+        ServiceInstance service = createTestService(10);
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerName("Delete Test");
+        reservation.setPartySize(2);
+        reservation.setServiceInstance(service);
+
+        reservationDao.save(reservation);
+        int id = reservation.getId();
+
+        reservationDao.delete(reservation);
+
+        Reservation deleted = reservationDao.getById(id);
+
+        assertNotNull(deleted);
+    }
+
+    @Test
+    void testCreatReservationIfAvailable() {
+        ServiceInstance service = createTestService(10);
+
+        boolean created = reservationDao.createReservationIfAvailable(
+                service.getId(), 4, "Available Test");
+        assertTrue(created);
+    }
+
+    @Test
+    void testCreatReservationIfAvailable_failure() {
+        ServiceInstance service = createTestService(5);
+
+        reservationDao.createReservationIfAvailable(
+                service.getId(), 5, "Full Test");
+
+        boolean created = reservationDao.createReservationIfAvailable(
+            service.getId(), 1, "Should Fail");
+
+        assertFalse(created);
+}
 }

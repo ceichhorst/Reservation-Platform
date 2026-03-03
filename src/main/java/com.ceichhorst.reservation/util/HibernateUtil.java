@@ -8,29 +8,11 @@ public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
 
-    static {
-        try {
-            Configuration configuration = new Configuration().configure();
-/**
-            String dbUser = System.getenv("DB_USERNAME");
-            String dbPass = System.getenv("DB_PASSWORD");
-
-            if (dbUser != null) {
-                configuration.setProperty("hibernate.connection.username", dbUser);
-            }
-
-            if (dbPass != null) {
-                configuration.setProperty("hibernate.connection.password", dbPass);
-            }*/
-
-            sessionFactory = configuration.buildSessionFactory();
-        } catch (HibernateException ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
     public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            throw new IllegalStateException(
+                    "SessionFactory not set.");
+        }
         return sessionFactory;
     }
 
@@ -39,7 +21,7 @@ public class HibernateUtil {
     }
 
     public static void shutdown() {
-        if (sessionFactory != null) {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
             sessionFactory.close();
         }
     }

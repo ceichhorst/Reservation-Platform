@@ -2,6 +2,8 @@ package com.ceichhorst.reservation.dao;
 
 import java.io.InputStream;
 import java.util.Properties;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.service.ServiceInstance;
@@ -61,8 +63,17 @@ public class ReservationDaoTest {
     }
 
     private ServiceInstance createTestService(int capacity) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setName("Test Restaurant");
+
+        RestaurantDao restaurantDao = new RestaurantDao();
+        restaurantDao.save(restaurant);
+
         ServiceInstance service = new ServiceInstance();
         service.setCapacity(capacity);
+        service.setRestaurant(restaurant);
+        service.setServiceDate(LocalDate.now());
+        service.setServiceTime(LocalTime.now());
         serviceDao.save(service);
         return service;
     }
@@ -73,6 +84,7 @@ public class ReservationDaoTest {
 
         Reservation reservation = new Reservation();
         reservation.setCustomerName("Test User");
+        reservation.setEmail("test@email.com");
         reservation.setPartySize(2);
         reservation.setServiceInstance(service);
 
@@ -87,6 +99,7 @@ public class ReservationDaoTest {
 
         Reservation reservation = new Reservation();
         reservation.setCustomerName("Get Test");
+        reservation.setEmail("test@email.com");
         reservation.setPartySize(3);
         reservation.setServiceInstance(service);
 
@@ -104,6 +117,7 @@ public class ReservationDaoTest {
 
         Reservation reservation = new Reservation();
         reservation.setCustomerName("Delete Test");
+        reservation.setEmail("test@email.com");
         reservation.setPartySize(2);
         reservation.setServiceInstance(service);
 
@@ -118,23 +132,23 @@ public class ReservationDaoTest {
     }
 
     @Test
-    void testCreatReservationIfAvailable() {
+    void testCreateReservationIfAvailable() {
         ServiceInstance service = createTestService(10);
 
         boolean created = reservationDao.createReservationIfAvailable(
-                service.getId(), 4, "Available Test");
+                service.getId(), 4, "Available Test", "test@email.com");
         assertTrue(created);
     }
 
     @Test
-    void testCreatReservationIfAvailable_failure() {
+    void testCreateReservationIfAvailable_failure() {
         ServiceInstance service = createTestService(5);
 
         reservationDao.createReservationIfAvailable(
-                service.getId(), 5, "Full Test");
+                service.getId(), 5, "Full Test", "full@email.com");
 
         boolean created = reservationDao.createReservationIfAvailable(
-            service.getId(), 1, "Should Fail");
+            service.getId(), 1, "Should Fail", "fail@email.com");
 
         assertFalse(created);
     }

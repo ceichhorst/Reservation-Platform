@@ -47,7 +47,7 @@ public class ReservationDao {
         }
     }
 
-    public boolean createReservationIfAvailable(int serviceId, int partySize, String name) {
+    public boolean createReservationIfAvailable(int serviceId, int partySize, String customerName, String email) {
 
         logger.info("Creating reservation...");
 
@@ -67,7 +67,8 @@ public class ReservationDao {
             }
 
             Reservation reservation = new Reservation();
-            reservation.setCustomerName(name);
+            reservation.setCustomerName(customerName);
+            reservation.setEmail(email);
             reservation.setPartySize(partySize);
             reservation.setServiceInstance(service);
 

@@ -16,8 +16,13 @@ public class Reservation {
     @JoinColumn(name = "service_instance_id", nullable = false)
     private ServiceInstance serviceInstance;
 
+    @Column(name = "customer_name", nullable = false)
     private String customerName;
+
+    @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "partySize", nullable = false)
     private int partySize;
 
     @Column(columnDefinition = "TEXT")

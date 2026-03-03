@@ -5,6 +5,8 @@ import java.util.Properties;
 
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.Restaurant;
+import com.ceichhorst.reservation.service.ServiceTemplate;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
 import org.hibernate.SessionFactory;
@@ -35,7 +37,8 @@ public class ReservationDaoTest {
         // Load entity classes
         configuration.addAnnotatedClass(Reservation.class);
         configuration.addAnnotatedClass(ServiceInstance.class);
-
+        configuration.addAnnotatedClass(Restaurant.class);
+        configuration.addAnnotatedClass(ServiceTemplate.class);
         configuration.addProperties(properties);
 
         testSessionFactory = configuration.buildSessionFactory();

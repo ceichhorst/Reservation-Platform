@@ -128,7 +128,7 @@ public class ReservationDaoTest {
 
         Reservation deleted = reservationDao.getById(id);
 
-        assertNotNull(deleted);
+        assertNull(deleted);
     }
 
     @Test

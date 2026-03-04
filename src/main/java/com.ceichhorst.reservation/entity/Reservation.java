@@ -22,7 +22,7 @@ public class Reservation {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "partySize", nullable = false)
+    @Column(name = "party_size", nullable = false)
     private int partySize;
 
     @Column(columnDefinition = "TEXT")

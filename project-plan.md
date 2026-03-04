@@ -10,10 +10,10 @@ This project plan outlines the week-by-week tasks for designing, implementing, t
 
 * \[X] Clearly identify MVP vs non-MVP user stories
 * \[X] Write detailed project plan
-* \[ ] Design initial application architecture
-* \[ ] Research authentication provider (AWS Cognito)
-* \[ ] Research possible external web services/APIs
-* \[ ] Create initial screen designs and application flow diagrams
+* \[X] Design initial application architecture
+* \[X] Research authentication provider (AWS Cognito)
+* \[X] Research possible external web services/APIs
+* \[X] Create initial screen designs and application flow diagrams
 * \[ ] Update Weekly Reflection
 
 
@@ -28,18 +28,18 @@ This project plan outlines the week-by-week tasks for designing, implementing, t
 
 Focus User Story: Submit Reservation (Guest)
 
-* \[ ] Design initial database schema
+* \[X] Design initial database schema
 
   * Reservation
   * Service (Date/Time offering)
   * Administrator
 
-* \[ ] Identify one-to-many relationships (Service -> Reservations)
-* \[ ] Create development database
-* \[ ] Configure Hibernate/JPA settings
-* \[ ] Create DAO for Reservation with basic CRUD operations
-* \[ ] Create test database configuration
-* \[ ] Begin writing unit tests for Reservation DAO
+* \[X] Identify one-to-many relationships (Service -> Reservations)
+* \[X] Create development database
+* \[X] Configure Hibernate/JPA settings
+* \[X] Create DAO for Reservation with basic CRUD operations
+* \[X] Create test database configuration
+* \[X] Begin writing unit tests for Reservation DAO
 * \[ ] Weekly Reflection
 
 
@@ -50,12 +50,12 @@ Focus User Story: Submit Reservation (Guest)
 
 Focus User Story: View Available Services \& Prevent Overbooking
 
-* \[ ] Implement DAO methods for reading available services
-* \[ ] Add capacity and party-size validation logic
-* \[ ] Implement transactional reservation creation logic
-* \[ ] Research and prototype concurrency-handling strategies
-* \[ ] Expand unit tests to cover validation and failure scenarios
-* \[ ] Begin implementing Log4J logging framework
+* \[X] Implement DAO methods for reading available services
+* \[X] Add capacity and party-size validation logic
+* \[X] Implement transactional reservation creation logic
+* \[X] Research and prototype concurrency-handling strategies
+* \[X] Begin making unit test(s) to cover validation and failure scenarios
+* \[X] Begin implementing Log4J logging framework
 * \[ ] Weekly Reflection
 
 
@@ -66,11 +66,11 @@ Focus User Story: View Available Services \& Prevent Overbooking
 
 Focus User Story: Administrative Reservation Oversight
 
-* \[ ] Create DAO for Service entity will full CRUD
-* \[ ] Add unit tests for Service DAO
+* \[ ] Create DAO for Reservation entity will full CRUD
+* \[X] Add unit tests for Reservation DAO
 * \[ ] Implement administrator-facing reservation queries
 * \[ ] Log reservation attempts, successes, and failures
-* \[ ] Refactor code for clarity and maintainability
+* \[X] Refactor code for clarity and maintainability
 * \[ ] Weekly Reflection
 
 
@@ -79,14 +79,14 @@ Focus User Story: Administrative Reservation Oversight
 
 
 
-* \[ ] Verify Checkpoint 2 requirements are complete and visible in GitHub
-* \[ ] Clean up database schema and entity mappings
-* \[ ] Improve test coverage where needed
+* \[X] Verify Checkpoint 2 requirements are complete and visible in GitHub
+* \[X] Clean up database schema and entity mappings
+* \[X] Improve test coverage where needed
 * \[ ] Begin authentication setup for administrator
-* \[ ] Create AWS RDS database instance
-* \[ ] Update application configuration for AWS database
-* \[ ] Deploy initial version of application to AWS
-* \[ ] Add deployed link to student indie project list
+* \[X] Create AWS RDS database instance
+* \[X] Update application configuration for AWS database
+* \[X] Deploy initial version of application to AWS
+* \[X] Add deployed link to student indie project list
 * \[ ] Weekly Reflection
 
 
@@ -224,6 +224,7 @@ Individual Project Deadline: 5/13
 
 
 \*\*\*Note: This project plan is subject to change as requirements are refined and feedback is incorporated.
+
 
 
 

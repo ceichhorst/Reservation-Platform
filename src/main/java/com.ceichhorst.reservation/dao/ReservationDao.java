@@ -7,8 +7,11 @@ import org.hibernate.Transaction;
 import org.hibernate.LockMode;
 
 import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
+
+import java.util.List;
 
 public class ReservationDao {
 
@@ -94,4 +97,31 @@ public class ReservationDao {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Admin side methods - add tests to ReservationDaoTest
+     *
+     */
+
+    public List<Reservation> getAll() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Reservation", Reservation.class).getResultList();
+        } catch (Exception e) {
+            logger.error("Failed to retrieve all reservations", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Reservation> getByStatus(ReservationStatus status) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                    "FROM Reservation r WHERE r.status = :status", Reservation.class).setParameter("status", status)
+                    .getResultList();
+        } catch (Exception e) {
+            logger.error("Failed to retrieve reservations by status", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    // TODO the 'try' block in all of the methods is pretty much duplicated throughout this class. Consider finding a way to minimize duplicate code here.
 }

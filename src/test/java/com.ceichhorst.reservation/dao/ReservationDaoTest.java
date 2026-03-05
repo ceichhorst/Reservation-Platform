@@ -132,6 +132,31 @@ public class ReservationDaoTest {
     }
 
     @Test
+    void testUpdateReservation() {
+        ServiceInstance service = createTestService(10);
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerName("Original Name");
+        reservation.setEmail("original@email.com");
+        reservation.setPartySize(2);
+        reservation.setServiceInstance(service);
+
+        reservationDao.save(reservation);
+        int id = reservation.getId();
+
+        reservation.setCustomerName("Updated Name");
+        reservation.setPartySize(4);
+
+        reservationDao.update(reservation);
+
+        Reservation updated = reservationDao.getById(id);
+
+        assertNotNull(updated);
+        assertEquals("Updated Name", updated.getCustomerName());
+        assertEquals(4, updated.getPartySize());
+    }
+
+    @Test
     void testCreateReservationIfAvailable() {
         ServiceInstance service = createTestService(10);
 

@@ -36,6 +36,20 @@ public class ReservationDao {
         }
     }
 
+    public void update(Reservation reservation) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+
+            session.merge(reservation);
+
+            tx.commit();
+            logger.info("Reservation updated successfully for idk={}", reservation.getId());
+        } catch (Exception e) {
+            logger.error("Failed to updated reservation", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     public void delete(Reservation reservation) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();

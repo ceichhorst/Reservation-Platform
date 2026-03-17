@@ -4,6 +4,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.HibernateException;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+
 public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
@@ -18,6 +21,11 @@ public class HibernateUtil {
 
     public static void setSessionFactory(SessionFactory sessionFactory) {
         HibernateUtil.sessionFactory = sessionFactory;
+    }
+
+    public static EntityManager getEntityManager() {
+        EntityManagerFactory emf = sessionFactory.unwrap(EntityManagerFactory.class);
+        return sessionFactory.createEntityManager();
     }
 
     public static void shutdown() {

@@ -7,9 +7,11 @@ import org.hibernate.HibernateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
@@ -24,25 +26,31 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public T getById(Long id) {
+        EntityManager em = HibernateUtil.getEntityManager();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(type, id);
+            return em.find(type, id);
         } catch (HibernateException e) {
             logger.error("Failed to get entity by id={}", id, e);
             throw new RuntimeException(e);
+        } finally {
+            em.close();
         }
     }
 
     @Override
     public List<T> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
+        EntityManager em = HibernateUtil.getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<T> cq = cb.createQuery(type);
             Root<T> root = cq.from(type);
             cq.select(root);
-            return session.createQuery(cq).getResultList();
+            return em.createQuery(cq).getResultList();
         } catch (HibernateException e) {
             logger.error("Failed to get all entities of type {}", type.getSimpleName(), e);
             throw new RuntimeException(e);
+        } finally {
+            em.close();
         }
     }
 

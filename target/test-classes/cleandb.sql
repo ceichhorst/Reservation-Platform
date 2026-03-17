@@ -1,0 +1,11 @@
+DELETE FROM Reservation;
+DELETE FROM ServiceInstance;
+DELETE FROM Restaurant;
+DELETE FROM ServiceTemplate;
+DELETE FROM Administrator;
+
+ALTER TABLE Reservation AUTO_INCREMENT = 1;
+ALTER TABLE ServiceInstance AUTO_INCREMENT = 1;
+ALTER TABLE Restaurant AUTO_INCREMENT = 1;
+ALTER TABLE ServiceTemplate AUTO_INCREMENT = 1;
+ALTER TABLE Administrator AUTO_INCREMENT = 1;

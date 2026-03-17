@@ -11,7 +11,9 @@ import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceTemplate;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import org.junit.jupiter.api.*;
@@ -20,61 +22,54 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReservationDaoTest {
 
-    private SessionFactory testSessionFactory;
+    private SessionFactory sessionFactory;
     private ReservationDao reservationDao;
-    private ServiceInstanceDao serviceDao;
 
     @BeforeAll
     void setupSessionFactory() throws Exception {
-        Properties properties = new Properties();
+        sessionFactory = new Configuration()
+                .configure("hibernate-test.cfg.xml")
+                .buildSessionFactory();
+        HibernateUtil.setSessionFactory(sessionFactory);
 
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("database.properties")) {
-            if (input == null) {
-                throw new RuntimeException("Unable to find database.properties");
-            }
-            properties.load(input);
-        }
-        Configuration configuration = new Configuration();
-
-        // Load entity classes
-        configuration.addAnnotatedClass(Reservation.class);
-        configuration.addAnnotatedClass(ServiceInstance.class);
-        configuration.addAnnotatedClass(Restaurant.class);
-        configuration.addAnnotatedClass(ServiceTemplate.class);
-        configuration.addProperties(properties);
-
-        testSessionFactory = configuration.buildSessionFactory();
-
-        HibernateUtil.setSessionFactory(testSessionFactory);
-
+        reservationDao = new ReservationDao();
     }
 
     @BeforeEach
-    void setupDaos() {
-        reservationDao = new ReservationDao();
-        serviceDao = new ServiceInstanceDao();
+    void cleanDatabase() {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.createQuery("DELETE FROM Reservation").executeUpdate();
+            session.createQuery("DELETE FROM ServiceInstance").executeUpdate();
+            session.createQuery("DELETE FROM Restaurant").executeUpdate();
+            tx.commit();
+        }
     }
 
     @AfterAll
     void tearDown() {
-        if (testSessionFactory != null) {
-            testSessionFactory.close();
+        if (sessionFactory != null) {
+            sessionFactory.close();
         }
     }
 
     private ServiceInstance createTestService(int capacity) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+
         Restaurant restaurant = new Restaurant();
         restaurant.setName("Test Restaurant");
-
-        RestaurantDao restaurantDao = new RestaurantDao();
-        restaurantDao.save(restaurant);
+        session.persist(restaurant);
 
         ServiceInstance service = new ServiceInstance();
         service.setCapacity(capacity);
         service.setRestaurant(restaurant);
         service.setServiceDate(LocalDate.now());
         service.setServiceTime(LocalTime.now());
-        serviceDao.save(service);
+        session.persist(service);
+
+        tx.commit();
+        session.close();
         return service;
     }
 
@@ -122,7 +117,7 @@ public class ReservationDaoTest {
         reservation.setServiceInstance(service);
 
         reservationDao.save(reservation);
-        int id = reservation.getId();
+        Long id = reservation.getId();
 
         reservationDao.delete(reservation);
 
@@ -142,7 +137,7 @@ public class ReservationDaoTest {
         reservation.setServiceInstance(service);
 
         reservationDao.save(reservation);
-        int id = reservation.getId();
+        Long id = reservation.getId();
 
         reservation.setCustomerName("Updated Name");
         reservation.setPartySize(4);

@@ -10,6 +10,7 @@ import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceTemplate;
 import com.ceichhorst.reservation.util.HibernateUtil;
+import com.ceichhorst.reservation.testutils.TestDatabase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,13 +38,7 @@ public class ReservationDaoTest {
 
     @BeforeEach
     void cleanDatabase() {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
-            session.createQuery("DELETE FROM Reservation").executeUpdate();
-            session.createQuery("DELETE FROM ServiceInstance").executeUpdate();
-            session.createQuery("DELETE FROM Restaurant").executeUpdate();
-            tx.commit();
-        }
+        TestDatabase.runSQL("cleandb.sql");
     }
 
     @AfterAll

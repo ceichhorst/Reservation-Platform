@@ -1,8 +1,6 @@
 package com.ceichhorst.reservation.dao;
 
 import com.ceichhorst.reservation.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.HibernateException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +25,7 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
     @Override
     public T getById(Long id) {
         EntityManager em = HibernateUtil.getEntityManager();
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
             return em.find(type, id);
         } catch (HibernateException e) {
             logger.error("Failed to get entity by id={}", id, e);
@@ -56,10 +54,11 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public void save(T entity) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.persist(entity);
+        EntityManager em = HibernateUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.persist(entity);
             tx.commit();
             logger.info("{} saved successfully", type.getSimpleName());
         } catch (Exception e) {
@@ -71,10 +70,11 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public void update(T entity) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.merge(entity);
+        EntityManager em = HibernateUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(entity);
             tx.commit();
             logger.info("{} updated successfully", type.getSimpleName());
         } catch (Exception e) {
@@ -86,10 +86,11 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public void delete(T entity) {
-        Transaction tx = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-            session.remove(entity);
+        EntityManager em = HibernateUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(entity);
             tx.commit();
             logger.info("{} deleted successfully", type.getSimpleName());
         } catch (Exception e) {

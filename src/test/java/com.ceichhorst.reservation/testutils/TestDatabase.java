@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,11 @@ public class TestDatabase {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session. beginTransaction();
 
+
+            InputStream inputStream = TestDatabase.class.getClassLoader().getResourceAsStream(sqlFile);
+            if (inputStream == null) {
+                throw new RuntimeException("SQL File not found in classpath: " + sqlFile);
+            }
             String sql = new BufferedReader(new InputStreamReader(
                     TestDatabase.class.getClassLoader().getResourceAsStream(sqlFile)))
                     .lines()

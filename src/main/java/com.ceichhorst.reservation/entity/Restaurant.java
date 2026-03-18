@@ -5,6 +5,8 @@ import com.ceichhorst.reservation.service.ServiceInstance;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant")
@@ -26,6 +28,9 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<ServiceTemplate> serviceTemplates;
+
+    @ManyToMany(mappedBy = "restaurants")
+    private Set<Administrator> administrators = new HashSet<>();
 
     // getters & setters (toString?)
 
@@ -75,5 +80,13 @@ public class Restaurant {
 
     public void setServiceTemplates(List<ServiceTemplate> serviceTemplates) {
         this.serviceTemplates = serviceTemplates;
+    }
+
+    public Set<Administrator> getAdministrators() {
+        return administrators;
+    }
+
+    public void setAdministrators(Set<Administrator> administrators) {
+        this.administrators = administrators;
     }
 }

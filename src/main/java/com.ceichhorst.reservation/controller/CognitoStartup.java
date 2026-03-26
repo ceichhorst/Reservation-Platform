@@ -1,6 +1,6 @@
 package com.ceichhorst.reservation.controller;
 
-import com.ceichhorst.reservation.util.HibernateUtil;
+import com.ceichhorst.reservation.util.PropertiesLoader;
 
 import java.io.IOException;
 import java.util.Properties;

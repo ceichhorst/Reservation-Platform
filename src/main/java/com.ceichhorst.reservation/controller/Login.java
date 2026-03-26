@@ -1,6 +1,6 @@
 package com.ceichhorst.reservation.controller;
 
-import edu.matc.util.PropertiesLoader;
+import com.ceichhorst.reservation.util.PropertiesLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ import java.util.Properties;
 /** Begins the authentication process using AWS Cognito
  *
  */
-public class LogIn extends HttpServlet implements PropertiesLoader {
+public class Login extends HttpServlet implements PropertiesLoader {
     Properties properties;
     private final Logger logger = LogManager.getLogger(this.getClass());
     public static String CLIENT_ID;

@@ -12,6 +12,7 @@ com/ceichhorst/reservation/controller/ReservationManagementServlet.class
 com/ceichhorst/reservation/auth/CognitoTokenHeader.class
 com/ceichhorst/reservation/controller/LogoutServlet.class
 com/ceichhorst/reservation/entity/Restaurant.class
+com/ceichhorst/reservation/listener/ApplicationStartup.class
 com/ceichhorst/reservation/service/ServiceTemplate.class
 com/ceichhorst/reservation/dao/RestaurantDao.class
 com/ceichhorst/reservation/auth/Keys.class
@@ -23,6 +24,5 @@ com/ceichhorst/reservation/util/HibernateUtil.class
 com/ceichhorst/reservation/entity/SchedulingType.class
 com/ceichhorst/reservation/dao/AdministratorDao.class
 com/ceichhorst/reservation/dao/ReservationDao.class
-com/ceichhorst/reservation/controller/LoginServlet.class
 com/ceichhorst/reservation/dao/GenericDao.class
 com/ceichhorst/reservation/auth/KeysItem.class

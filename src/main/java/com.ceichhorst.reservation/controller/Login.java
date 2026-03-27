@@ -9,11 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Properties;
 
 @WebServlet(
-        urlPatterns = {"/logIn"}
+        urlPatterns = {"/login"}
 )
 
 /** Begins the authentication process using AWS Cognito
@@ -56,6 +57,12 @@ public class Login extends HttpServlet implements PropertiesLoader {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session != null && session.getAttribute("userEmail") != null) {
+            resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
+            return;
+        }
+
         if (LOGIN_URL == null || LOGIN_URL.isEmpty() ||
                 CLIENT_ID == null || CLIENT_ID.isEmpty() ||
                 REDIRECT_URL == null || REDIRECT_URL.isEmpty()) {

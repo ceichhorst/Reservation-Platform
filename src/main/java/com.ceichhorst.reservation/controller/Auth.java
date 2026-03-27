@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URI;
@@ -34,6 +35,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.ceichhorst.reservation.entity.Administrator;
 
 
 @WebServlet(
@@ -87,7 +90,13 @@ public class Auth extends HttpServlet implements PropertiesLoader {
             try {
                 TokenResponse tokenResponse = getToken(authRequest);
                 userEmail = validate(tokenResponse);
-                req.setAttribute("userEmail", userEmail);
+
+                //Administrator admin = getAdminFromDatabase(userEmail);
+
+                HttpSession session = req.getSession();
+                //session.setAttribute("adminUser", admin);
+                session.setAttribute("userEmail", userEmail);
+
             } catch (IOException e) {
                 logger.error("Error getting or validating the token: " + e.getMessage(), e);
                 req.setAttribute("errorMessage", "Login failed: error validating token");
@@ -102,8 +111,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
                 return;
             }
         }
-        RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
-        dispatcher.forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
 
     }
 
@@ -204,7 +212,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
 
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("grant_type", "authorization_code");
-        parameters.put("client-secret", CLIENT_SECRET);
+        parameters.put("client_secret", CLIENT_SECRET);
         parameters.put("client_id", CLIENT_ID);
         parameters.put("code", authCode);
         parameters.put("redirect_uri", REDIRECT_URL);

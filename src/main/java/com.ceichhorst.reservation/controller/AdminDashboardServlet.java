@@ -17,20 +17,26 @@ public class AdminDashboardServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("userEmail") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String userEmail = (String) session.getAttribute("userEmail");
+        request.setAttribute("userEmail", userEmail);
+/*
         Administrator admin = (Administrator) session.getAttribute("adminUser");
 
         if (admin == null) {
-            response.sendRedirect("../login");
-            return;
+            response.sendRedirect(request.getContextPath() + "/login");
         }
 
         Set<Restaurant> restaurants = admin.getRestaurants();
 
-        request.setAttribute("restaurants", restaurants);
+        request.setAttribute("restaurants", restaurants); */
 
         request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp")
                 .forward(request, response);
-
-        response.sendRedirect("/login");
     }
 }

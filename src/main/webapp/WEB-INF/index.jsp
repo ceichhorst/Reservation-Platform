@@ -14,9 +14,9 @@
         <p style="color:red;">DATA VERSION</p>
     </header>
     <nav>
-        <a href="#">Home</a>
+        <a href="${pageContext.request.contextPath}/home">Home</a>
         <a href="#">Make Reservation</a>
-        <a href="logIn">Admin Login</a>
+        <a href="${pageContext.request.contextPath}/login">Admin Login</a>
     </nav>
     <div class="container">
         <h2>Welcome</h2>

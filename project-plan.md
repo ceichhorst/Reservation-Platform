@@ -14,7 +14,7 @@ This project plan outlines the week-by-week tasks for designing, implementing, t
 * \[X] Research authentication provider (AWS Cognito)
 * \[X] Research possible external web services/APIs
 * \[X] Create initial screen designs and application flow diagrams
-* \[ ] Update Weekly Reflection
+* \[X] Update Weekly Reflection
 
 
 
@@ -40,7 +40,7 @@ Focus User Story: Submit Reservation (Guest)
 * \[X] Create DAO for Reservation with basic CRUD operations
 * \[X] Create test database configuration
 * \[X] Begin writing unit tests for Reservation DAO
-* \[ ] Weekly Reflection
+* \[X] Weekly Reflection
 
 
 
@@ -56,7 +56,7 @@ Focus User Story: View Available Services \& Prevent Overbooking
 * \[X] Research and prototype concurrency-handling strategies
 * \[X] Begin making unit test(s) to cover validation and failure scenarios
 * \[X] Begin implementing Log4J logging framework
-* \[ ] Weekly Reflection
+* \[X] Weekly Reflection
 
 
 
@@ -66,12 +66,12 @@ Focus User Story: View Available Services \& Prevent Overbooking
 
 Focus User Story: Administrative Reservation Oversight
 
-* \[ ] Create DAO for Reservation entity will full CRUD
+* \[X] Create DAO for Reservation entity will full CRUD
 * \[X] Add unit tests for Reservation DAO
 * \[ ] Implement administrator-facing reservation queries
-* \[ ] Log reservation attempts, successes, and failures
+* \[ ] Log reservation attempts, successes, and failures [Not yet]
 * \[X] Refactor code for clarity and maintainability
-* \[ ] Weekly Reflection
+* \[X] Weekly Reflection
 
 
 
@@ -82,7 +82,7 @@ Focus User Story: Administrative Reservation Oversight
 * \[X] Verify Checkpoint 2 requirements are complete and visible in GitHub
 * \[X] Clean up database schema and entity mappings
 * \[X] Improve test coverage where needed
-* \[ ] Begin authentication setup for administrator
+* \[X] Begin authentication setup for administrator
 * \[X] Create AWS RDS database instance
 * \[X] Update application configuration for AWS database
 * \[X] Deploy initial version of application to AWS
@@ -101,10 +101,10 @@ Focus User Story: Administrative Reservation Oversight
 
 Focus User Story: Admin Sign In \& Reservation Management
 
-* \[ ] Complete authentication and authorization for administrators
-* \[ ] Restrict administrative features to authenticated users
+* \[X] Complete authentication and authorization for administrators
+* \[X] Restrict administrative features to authenticated users [Only through the admin dashboard at the moment]
 * \[ ] Implement admin JSPs for viewing reservations by service
-* \[ ] Implement controller logic for admin workflows
+* \[X] Implement controller logic for admin workflows
 * \[ ] Validate authentication and authorization flows
 * \[ ] Weekly Reflection
 
@@ -114,10 +114,10 @@ Focus User Story: Admin Sign In \& Reservation Management
 
 
 
-* \[ ] Double-check all Checkpoint 3 requirements
-* \[ ] Verify AWS deployment stability
-* \[ ] Confirm JSPs render live database data
-* \[ ] Add deployed application link to GitHub and student repo
+* \[X] Double-check all Checkpoint 3 requirements
+* \[X] Verify AWS deployment stability
+* \[X] Confirm JSPs render live database data
+* \[X] Add deployed application link to GitHub and student repo
 * \[ ] Address any feedback from checkpoint review
 * \[ ] Weekly Reflection
 

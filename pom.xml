@@ -26,6 +26,7 @@
         <lombok-version>1.18.10</lombok-version>
         <auth0-java-jwt-version>3.4.1</auth0-java-jwt-version>
         <json-version>20170516</json-version>
+        <jersey-version>3.1.0</jersey-version>
     </properties>
 
     <dependencies>
@@ -121,6 +122,22 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-binding</artifactId>
+            <version>${jersey-version}</version>
         </dependency>
 
     </dependencies>

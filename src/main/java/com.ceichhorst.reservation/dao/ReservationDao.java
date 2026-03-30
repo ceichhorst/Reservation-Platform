@@ -9,6 +9,11 @@ import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
 import java.util.List;
 
 public class ReservationDao extends GenericDaoImpl<Reservation> {
@@ -56,6 +61,38 @@ public class ReservationDao extends GenericDaoImpl<Reservation> {
             return session.createQuery(
                     "FROM Reservation r WHERE r.status = :status", Reservation.class).setParameter("status", status)
                     .getResultList();
+        }
+    }
+
+    public List<Reservation> findByCustomerName(String name) {
+        EntityManager em = HibernateUtil.getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+            Root<Reservation> root = cq.from(Reservation.class);
+
+            cq.select(root)
+                    .where(cb.equal(root.get("customerName"), name));
+
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Reservation> findByEmail(String email) {
+        EntityManager em = HibernateUtil.getEntityManager();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+            Root<Reservation> root = cq.from(Reservation.class);
+
+            cq.select(root)
+                    .where(cb.equal(root.get("email"), email));
+
+            return em.createQuery(cq).getResultList();
+        } finally {
+            em.close();
         }
     }
 

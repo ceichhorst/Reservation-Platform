@@ -4,8 +4,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.HibernateException;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 public class HibernateUtil {
 

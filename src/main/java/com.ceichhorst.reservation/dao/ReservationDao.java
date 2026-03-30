@@ -9,10 +9,10 @@ import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import java.util.List;
 

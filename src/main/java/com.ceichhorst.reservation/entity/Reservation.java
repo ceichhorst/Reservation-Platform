@@ -1,7 +1,9 @@
 package com.ceichhorst.reservation.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.List;
 
 @Entity
@@ -14,6 +16,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "service_instance_id", nullable = false)
+    @JsonBackReference
     private ServiceInstance serviceInstance;
 
     @Column(name = "customer_name", nullable = false)
@@ -32,6 +35,7 @@ public class Reservation {
     private String additionalComments;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private ReservationStatus status;
 
     // getters & setters

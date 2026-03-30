@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.ceichhorst.reservation.dao.ReservationDaoTest" time="34.339" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.ceichhorst.reservation.dao.ReservationDaoTest" time="15.754" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="jansi.mode" value="force"/>
-    <property name="idea.version" value="2025.3.4"/>
+    <property name="idea.version" value="2026.1"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.30+7-post-Ubuntu-1ubuntu122.04"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
@@ -25,29 +25,29 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="os.name" value="Linux"/>
-    <property name="maven.ext.class.path" value="/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven-event-listener.jar"/>
-    <property name="classworlds.conf" value="/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven3/bin/m2.conf"/>
+    <property name="maven.ext.class.path" value="/snap/intellij-idea-ultimate/742/plugins/maven/lib/intellij.maven.rt/maven-event-listener.jar"/>
+    <property name="classworlds.conf" value="/snap/intellij-idea-ultimate/742/plugins/maven/lib/maven3/bin/m2.conf"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
     <property name="jansi.passthrough" value="true"/>
-    <property name="maven.conf" value="/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven3/conf"/>
+    <property name="maven.conf" value="/snap/intellij-idea-ultimate/742/plugins/maven/lib/maven3/conf"/>
     <property name="jdk.debug" value="release"/>
     <property name="java.class.version" value="55.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="maven.repo.local" value="/home/student/.m2/repository"/>
     <property name="os.version" value="5.15.0-173-generic"/>
-    <property name="library.jansi.path" value="/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven3/lib/jansi-native"/>
+    <property name="library.jansi.path" value="/snap/intellij-idea-ultimate/742/plugins/maven/lib/maven3/lib/jansi-native"/>
     <property name="user.home" value="/home/student"/>
     <property name="user.timezone" value="America/Chicago"/>
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="11"/>
     <property name="user.name" value="student"/>
-    <property name="java.class.path" value="/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven3/boot/plexus-classworlds-2.9.0.jar"/>
+    <property name="java.class.path" value="/snap/intellij-idea-ultimate/742/plugins/maven/lib/maven3/boot/plexus-classworlds-2.9.0.jar"/>
     <property name="java.vm.specification.version" value="11"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Didea.version=2025.3.4 -Dmaven.ext.class.path=/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven-event-listener.jar -Djansi.passthrough=true -Dstyle.color=always -Dmaven.repo.local=/home/student/.m2/repository install -f pom.xml"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Didea.version=2026.1 -Dmaven.ext.class.path=/snap/intellij-idea-ultimate/742/plugins/maven/lib/intellij.maven.rt/maven-event-listener.jar -Djansi.passthrough=true -Dstyle.color=always -Dmaven.repo.local=/home/student/.m2/repository install -f pom.xml"/>
     <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-amd64"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -56,7 +56,7 @@
     <property name="java.version" value="11.0.30"/>
     <property name="java.vendor" value="Ubuntu"/>
     <property name="java.specification.maintenance.version" value="3"/>
-    <property name="maven.home" value="/snap/intellij-idea-ultimate/738/plugins/maven/lib/maven3"/>
+    <property name="maven.home" value="/snap/intellij-idea-ultimate/742/plugins/maven/lib/maven3"/>
     <property name="style.color" value="always"/>
     <property name="file.separator" value="/"/>
     <property name="java.version.date" value="2026-01-20"/>
@@ -66,10 +66,10 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="testUpdateReservation" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="2.789"/>
-  <testcase name="testGetById" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.264"/>
-  <testcase name="testSaveReservation" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.178"/>
-  <testcase name="testDeleteReservation" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.317"/>
-  <testcase name="testCreateReservationIfAvailable_failure" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.438"/>
-  <testcase name="testCreateReservationIfAvailable" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.201"/>
+  <testcase name="testUpdateReservation" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="1.193"/>
+  <testcase name="testGetById" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.163"/>
+  <testcase name="testSaveReservation" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.105"/>
+  <testcase name="testDeleteReservation" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.268"/>
+  <testcase name="testCreateReservationIfAvailable_failure" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.419"/>
+  <testcase name="testCreateReservationIfAvailable" classname="com.ceichhorst.reservation.dao.ReservationDaoTest" time="0.191"/>
 </testsuite>

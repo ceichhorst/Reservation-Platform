@@ -2,7 +2,9 @@ package com.ceichhorst.reservation.entity;
 
 import com.ceichhorst.reservation.service.ServiceTemplate;
 import com.ceichhorst.reservation.service.ServiceInstance;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 
 import java.util.List;
 import java.util.HashSet;
@@ -24,6 +26,7 @@ public class Restaurant {
     private SchedulingType schedulingType;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ServiceInstance> serviceInstances;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)

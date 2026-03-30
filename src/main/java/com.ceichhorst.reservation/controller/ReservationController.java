@@ -13,12 +13,17 @@ import com.ceichhorst.reservation.entity.ReservationStatus;
 
 import java.util.List;
 
-@Path("/reservations")
+@Path("/reservation")
 public class ReservationController {
 
     private final ReservationDao reservationDao = new ReservationDao();
 
+    public ReservationController() {
+        System.out.println("ReservationController loaded");
+    }
+
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getReservations(
             @QueryParam("id") Long id,
             @QueryParam("customerName") String customerName,

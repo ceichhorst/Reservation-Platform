@@ -1,12 +1,14 @@
 package com.ceichhorst.reservation.service;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "service_instance")
@@ -18,6 +20,7 @@ public class ServiceInstance {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonBackReference
     private Restaurant restaurant;
 
     @Column(name = "service_date", nullable = false)
@@ -33,6 +36,7 @@ public class ServiceInstance {
     private int version;
 
     @OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Reservation> reservations;
 
     public int getId() {

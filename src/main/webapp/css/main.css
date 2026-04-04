@@ -52,13 +52,13 @@ header {
     gap: 0.6rem;
 }
 
-.symbol-logo {
+.symbol_logo {
     width: 54px;
     height: auto;
     padding-right: 0.2rem;
 }
 
-.text-logo {
+.text_logo {
     height: 34px;
     width: auto;
 }

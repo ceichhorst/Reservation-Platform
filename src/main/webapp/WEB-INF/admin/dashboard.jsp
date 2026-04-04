@@ -1,19 +1,62 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: student
-  Date: 3/19/26
-  Time: 3:19 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Dashboard</title>
+    <title>Admin Dashboard | Dyana</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<c:url value='/css/styles.css' />">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<c:url value='/css/main.css' />">
+    <link rel="stylesheet" href="<c:url value='/css/home.css' />">
+    <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
-    <h1>Welcome to the Admin Dashboard!</h1>
+    <jsp:include page="/WEB-INF/components/header.jsp" />
+    <nav>
+        <a href="${pageContext.request.contextPath}/admin/reservations">Manage Reservations</a>
+        <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
+    </nav>
+    <div class="container">
+        <h2>Overview</h2>
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Upcoming Services</h3>
+                <ul>
+                    <c:forEach var="service" items="${services}">
+                        <li>${service.serviceDate}</li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Total Reservations (Per Service)</h3>
+                <ul>
+                    <c:forEach var="reservation" items="${reservations}">
+                        <li>${reservation.Reservation}</li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <hr>
+            <h2>Quick Actions</h2>
+            <div class="cta-buttons">
+                <a href="${pageContext.request.contextPath}/admin/reservations">View Reservations</a>
+            </div>
+            <hr>
+            <h2>System Messages</h2>
+            <!-- Info Message -->
+            <c:if test="${not empty message}">
+                <div class="message">
+                    ${message}
+                </div>
+            </c:if>
+            <!-- Error Message -->
+            <c:if test="${not empty error}">
+                <div class="error">
+                        ${error}
+                </div>
+            </c:if>
+
+        </div>
+    </div>
+    <jsp:include page="/WEB-INF/components/footer.jsp" />
 </body>
 </html>

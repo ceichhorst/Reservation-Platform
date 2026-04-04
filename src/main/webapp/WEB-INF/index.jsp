@@ -6,29 +6,12 @@
     <title>Dyana - Home Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<c:url value='/css/styles.css' />">
+    <link rel="stylesheet" href="<c:url value='/css/main.css' />">
+    <link rel="stylesheet" href="<c:url value='/css/home.css' />">
     <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
-    <header>
-        <div class="header-bar">
-            <div class="header-left">
-                <a href="${pageContext.request.contextPath}/home" class="logo-link">
-                    <div class="logo-wrap">
-                        <img src="<c:url value='/images/dyana_symbol_logo_alt.svg' />" class="symbol_logo">
-                        <img src="<c:url value='/images/dyana_text_logo.svg' />" class="text_logo">
-                    </div>
-                </a>
-            </div>
-
-            <div class="header-right">
-                <div class="admin-button">
-                    <a href="${pageContext.request.contextPath}/login" class="admin-link">Admin Login</a>
-                </div>
-            </div>
-        </div>
-
-    </header>
+    <jsp:include page="/WEB-INF/components/header.jsp" />
     <section class="restaurant-info">
         <h1 class="restaurant-name"><strong>Diane's Delicious Diner</strong></h1>
         <p class="restaurant-location">Madison, Wisconsin</p>
@@ -122,8 +105,6 @@
             <pre>${stackTrace}</pre>
         </c:if>
     </div>
-<footer>
-    &copy; 2026 Dyana | Chris Eichhorst
-</footer>
+    <jsp:include page="/WEB-INF/components/footer.jsp" />
 </body>
 </html>

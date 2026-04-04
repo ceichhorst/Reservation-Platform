@@ -3,43 +3,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reservation Platform</title>
+    <title>Dyana - Home Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/styles.css' />">
+    <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
     <header>
-        <h1>Enterprise Reservation Platform</h1>
-        <p>Scalable. Reliable. Built for Real-Time Availability. [FILLER]</p>
-        <p style="color:red;">DATA VERSION</p>
-    </header>
-    <nav>
-        <a href="${pageContext.request.contextPath}/home">Home</a>
-        <a href="#">Make Reservation</a>
-        <a href="${pageContext.request.contextPath}/login">Admin Login</a>
-    </nav>
-    <div class="container">
-        <h2>Welcome</h2>
-        <p>
-            Our platform provides real-time reservation management designed to prevent overbooking and ensure a seamless
-            experience for both customers and administrators. Built using enterprise-grade Java technologies, the
-            system guarantees data integrity, secure authentication, and scalable performance under high demand.
-        </p>
+        <div class="header-bar">
+            <div class="header-left">
+                <a href="${pageContext.request.contextPath}/home" class="logo-link">
+                    <div class="logo-wrap">
+                        <img src="<c:url value='/images/dyana_symbol_logo_alt.svg' />" class="symbol_logo">
+                        <img src="<c:url value='/images/dyana_text_logo.svg' />" class="text_logo">
+                    </div>
+                </a>
+            </div>
 
-        <h2>Key Features</h2>
-        <ul>
-            <li>Real-time availability enforcement</li>
-            <li>Secure authentication and role-based access</li>
-            <li>Centralized reservation management</li>
-            <li>Concurrency-safe booking process</li>
-            <li>Cloud-hosted infrastructure</li>
-        </ul>
-
-        <div class="cta-buttons">
-            <a href="#">Make a Reservation</a>
-            <a href="#">Administrator Access</a>
+            <div class="header-right">
+                <div class="admin-button">
+                    <a href="${pageContext.request.contextPath}/login" class="admin-link">Admin Login</a>
+                </div>
+            </div>
         </div>
 
+    </header>
+    <section class="restaurant-info">
+        <h1 class="restaurant-name"><strong>Diane's Delicious Diner</strong></h1>
+        <p class="restaurant-location">Madison, Wisconsin</p>
+        <p class="restaurant-description">
+            Diane's Delicious Diner is a simulated restaurant environment where Madison College students develop and
+            apply their culinary skills.
+        </p>
+    </section>
+
+    <section class="reservation-bar">
+        <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="post">
+            <input type="date" name="date" required>
+            <select name="partySize" required>
+                <option value="">Party Size</option>
+                <c:forEach begin="1" end="10" var="i">
+                    <option value="${i}">${i}</option>
+                </c:forEach>
+            </select>
+            <select name="time" class="time-select">
+                <option value="">Any Time</option>
+                <!-- dynamically populate -->
+            </select>
+            <button type="submit">Make a Reservation</button>
+        </form>
+    </section>
+    <section class="upcoming-dates">
+        <h2>Upcoming Service Dates</h2>
+        <ul>
+            <c:forEach var="service" items="${services}">
+                <li>${service.serviceDate}</li>
+            </c:forEach>
+        </ul>
+    </section>
+    <section class="mini-calendar">
+        <h2>Availability Calendar</h2>
+        <div class="calendar-grid">
+            <!-- static placeholder for now -->
+            <div class="day disabled">1</div>
+            <div class="day disabled">2</div>
+            <div class="day available">3</div>
+            <div class="day full">4</div>
+            <div class="day available">5</div>
+        </div>
+    </section>
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <p>
+            Reservations are accepted on select days throughout the season.
+            Choose a date above to see real-time availability.
+            Time options may vary depending on the service schedule set by the restaurant.
+        </p>
+    </section>
+    <div class="container">
         <hr>
         <h2>Available Restaurants</h2>
 
@@ -81,7 +123,7 @@
         </c:if>
     </div>
 <footer>
-    &copy; 2026 Reservation Platform | Enterprise Java Project
+    &copy; 2026 Dyana | Chris Eichhorst
 </footer>
 </body>
 </html>

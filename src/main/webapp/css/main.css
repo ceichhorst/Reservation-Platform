@@ -1,0 +1,330 @@
+/* ==================================================
+   DYANA BRANDING DESIGN SYSTEM - COLORS & TYPOGRAPHY
+   ================================================== */
+
+/* ============= GLOBAL RESET ============= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F7F9FC;
+    color: #111111;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* ============= HEADER ============= */
+header {
+    background-color: #F7F9FC;
+    color: #011e41;
+    padding: 1.5rem 0;
+}
+
+.header-bar {
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 0 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.header-left,
+.header-right {
+    flex: 0 0 auto;
+}
+
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+}
+
+.logo-wrao {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.symbol-logo {
+    width: 54px;
+    height: auto;
+    padding-right: 0.2rem;
+}
+
+.text-logo {
+    height: 34px;
+    width: auto;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.tagline {
+    height: 24px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.admin-link {
+    background-color: #011e41;
+    color: #FAFAFA;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.admin-link:hover {
+    background-color: #2a7093;
+}
+
+/* ========== RESERVATION FORM ========== */
+.reservation-bar {
+    background: #AAD1DF;
+    padding: 20px 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.reservation-form {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.reservation-form input,
+.reservation-form select {
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    min-wdith: 150px;
+}
+
+.reservation-form button {
+    background-color: #0077a0;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.reservation-form button:hover {
+    background-color: #2a7093;
+}
+
+/* ========= NAVBAR ========= */
+nav {
+    background-color: #115376;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 1rem;
+}
+
+nav a {
+    color: #F7F9FC;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #2a7093;
+}
+
+/* ======== MAIN CONTAINER ======== */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+/* ======== HEADINGS ======== */
+h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #011e41;
+}
+
+/* ======== CTA BUTTONS ======== */
+.cta-buttons {
+    margin-top: 25px;
+}
+
+.cta-buttons a {
+    display: inline-block;
+    padding: 14px 24px;
+    margin: 10px 10px 0 0;
+    background-color: #0077a0;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.cta-buttons a:hover {
+    background-color: #2a7093;
+    transform: translateY(-1px);
+}
+
+/* ======== TABLES ======== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+th {
+    background-color: #F1F5F9;
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+}
+
+td {
+    padding: 12px;
+    border-top: 1px solid #E5E7EB;
+}
+
+tr:hover {
+    background-color: #F9FAFB;
+}
+
+/* ======== DASHBOARD CARDS ======== */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: #F9FAFB;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #E5E7EB;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #011e41;
+}
+
+.card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0077a0;
+}
+
+/* ======== ALERTS ======== */
+.message {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #E5E7EB;
+    color: #0369A1;
+    border-radius: 6px;
+}
+
+.error {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #FEE2E2;
+    color: #A22E02;
+    border-radius: 6px;
+}
+
+/* ======== FOOTER ======== */
+footer {
+    text-align: center;
+    padding: 25px;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+/* ======== RESPONSIVE ========= */
+@media (max-width: 600px) {
+    body {
+        font-size: 17px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* ======== RESERVATION DETAILS PAGE ======== */
+.reservation-details, .confirmation-page {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.reservation-details h1, .confirmation-success h1 {
+    font-size: 2rem;
+    color: #011e41;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.details-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 0.7rem;
+    border: 1px solid #c7d3e0;
+    border-radius: 6px;
+}
+
+.confirm-button, .button-primary {
+    background-color: #011e41;;
+    color: #FAFAFA;
+    padding: 0.9rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}

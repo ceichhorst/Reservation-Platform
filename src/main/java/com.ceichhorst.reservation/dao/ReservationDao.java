@@ -21,13 +21,13 @@ public class ReservationDao extends GenericDao<Reservation> {
         super(Reservation.class);
     }
 
-    public boolean createReservationIfAvailable(int serviceId, int partySize, String customerName, String email) {
+    public boolean createReservationIfAvailable(Reservation reservation) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
 
         ServiceInstance service = session.get(
                 ServiceInstance.class,
-                serviceId,
+                reservation.getServiceInstance().getId(),
                 LockMode.PESSIMISTIC_WRITE
         );
 
@@ -36,16 +36,12 @@ public class ReservationDao extends GenericDao<Reservation> {
             .mapToInt(Reservation::getPartySize)
                 .sum();
 
-        if (currentBooked + partySize > service.getCapacity()) {
+        if (currentBooked + reservation.getPartySize() > service.getCapacity()) {
             tx.rollback();
             session.close();
             return false;
         }
 
-        Reservation reservation = new Reservation();
-        reservation.setCustomerName(customerName);
-        reservation.setEmail(email);
-        reservation.setPartySize(partySize);
         reservation.setServiceInstance(service);
 
         session.persist(reservation);

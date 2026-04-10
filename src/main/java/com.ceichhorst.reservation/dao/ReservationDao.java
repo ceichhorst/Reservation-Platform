@@ -1,99 +1,107 @@
 package com.ceichhorst.reservation.dao;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.LockMode;
-
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
-import javax.persistence.EntityManager;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.LockMode;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.util.List;
 
-public class ReservationDao extends GenericDaoImpl<Reservation> {
+public class ReservationDao extends GenericDao<Reservation> {
 
     public ReservationDao() {
         super(Reservation.class);
     }
 
     public boolean createReservationIfAvailable(int serviceId, int partySize, String customerName, String email) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
 
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
+        ServiceInstance service = session.get(
+                ServiceInstance.class,
+                serviceId,
+                LockMode.PESSIMISTIC_WRITE
+        );
 
-            ServiceInstance service = session.get(ServiceInstance.class, serviceId, LockMode.PESSIMISTIC_WRITE);
+        int currentBooked = service.getReservations()
+            .stream()
+            .mapToInt(Reservation::getPartySize)
+                .sum();
 
-            int currentBooked = service.getReservations()
-                    .stream()
-                    .mapToInt(Reservation::getPartySize)
-                    .sum();
-
-            if (currentBooked + partySize > service.getCapacity()) {
-                tx.rollback();
-                return false;
-            }
-
-            Reservation reservation = new Reservation();
-            reservation.setCustomerName(customerName);
-            reservation.setEmail(email);
-            reservation.setPartySize(partySize);
-            reservation.setServiceInstance(service);
-
-            session.persist(reservation);
-            tx.commit();
-            return true;
+        if (currentBooked + partySize > service.getCapacity()) {
+            tx.rollback();
+            session.close();
+            return false;
         }
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerName(customerName);
+        reservation.setEmail(email);
+        reservation.setPartySize(partySize);
+        reservation.setServiceInstance(service);
+
+        session.persist(reservation);
+
+        tx.commit();
+        session.close();
+
+        return true;
+
     }
 
-    /**
-     * Admin side methods - add tests to ReservationDaoTest
-     *
-     */
+    List<Reservation> getByStatus(ReservationStatus status) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
-    public List<Reservation> getByStatus(ReservationStatus status) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery(
-                    "FROM Reservation r WHERE r.status = :status", Reservation.class).setParameter("status", status)
-                    .getResultList();
-        }
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+
+        cq.select(root)
+                .where(cb.equal(root.get("status"), status));
+
+        List<Reservation> results = session.createQuery(cq).getResultList();
+        session.close();
+
+        return results;
     }
 
     public List<Reservation> findByCustomerName(String name) {
-        EntityManager em = HibernateUtil.getEntityManager();
-        try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
-            Root<Reservation> root = cq.from(Reservation.class);
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
-            cq.select(root)
-                    .where(cb.equal(root.get("customerName"), name));
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
 
-            return em.createQuery(cq).getResultList();
-        } finally {
-            em.close();
-        }
+        cq.select(root)
+                .where(cb.equal(root.get("customerName"), name));
+
+        List<Reservation> results = session.createQuery(cq).getResultList();
+        session.close();
+
+        return results;
     }
 
     public List<Reservation> findByEmail(String email) {
-        EntityManager em = HibernateUtil.getEntityManager();
-        try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
-            Root<Reservation> root = cq.from(Reservation.class);
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
-            cq.select(root)
-                    .where(cb.equal(root.get("email"), email));
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
 
-            return em.createQuery(cq).getResultList();
-        } finally {
-            em.close();
-        }
+        cq.select(root)
+                .where(cb.equal(root.get("email"), email));
+
+        List<Reservation> results = session.createQuery(cq).getResultList();
+        session.close();
+
+        return results;
     }
-
 }

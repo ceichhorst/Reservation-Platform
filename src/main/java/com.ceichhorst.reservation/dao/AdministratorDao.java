@@ -11,7 +11,7 @@ import com.ceichhorst.reservation.util.HibernateUtil;
 
 import java.util.List;
 
-public class AdministratorDao extends GenericDaoImpl<Administrator> {
+public class AdministratorDao extends GenericDao<Administrator> {
 
     public AdministratorDao() {
         super(Administrator.class);

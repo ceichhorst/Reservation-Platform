@@ -85,65 +85,36 @@ public class ReservationDaoTest {
 
     @Test
     void testGetById() {
-        ServiceInstance service = createTestService(10);
-
-        Reservation reservation = new Reservation();
-        reservation.setCustomerName("Get Test");
-        reservation.setEmail("test@email.com");
-        reservation.setPartySize(3);
-        reservation.setServiceInstance(service);
-
-        reservationDao.save(reservation);
-
-        Reservation fetched = reservationDao.getById(reservation.getId());
+        Reservation fetched = reservationDao.getById(1001L);
 
         assertNotNull(fetched);
-        assertEquals("Get Test", fetched.getCustomerName());
+        assertEquals("Seed User", fetched.getCustomerName());
     }
 
     @Test
     void testDeleteReservation() {
-        ServiceInstance service = createTestService(10);
-
-        Reservation reservation = new Reservation();
-        reservation.setCustomerName("Delete Test");
-        reservation.setEmail("test@email.com");
-        reservation.setPartySize(2);
-        reservation.setServiceInstance(service);
-
-        reservationDao.save(reservation);
-        Long id = reservation.getId();
+        Reservation reservation = reservationDao.getById(1001L);
+        assertNotNull(reservation);
 
         reservationDao.delete(reservation);
 
-        Reservation deleted = reservationDao.getById(id);
-
+        Reservation deleted = reservationDao.getById(1001L);
         assertNull(deleted);
     }
 
     @Test
     void testUpdateReservation() {
-        ServiceInstance service = createTestService(10);
-
-        Reservation reservation = new Reservation();
-        reservation.setCustomerName("Original Name");
-        reservation.setEmail("original@email.com");
-        reservation.setPartySize(2);
-        reservation.setServiceInstance(service);
-
-        reservationDao.save(reservation);
-        Long id = reservation.getId();
+        Reservation reservation = reservationDao.getById(1001L);
 
         reservation.setCustomerName("Updated Name");
         reservation.setPartySize(4);
 
         reservationDao.update(reservation);
 
-        Reservation updated = reservationDao.getById(id);
-
-        assertNotNull(updated);
+        Reservation updated = reservationDao.getById(1001L);
         assertEquals("Updated Name", updated.getCustomerName());
         assertEquals(4, updated.getPartySize());
+
     }
 
     @Test

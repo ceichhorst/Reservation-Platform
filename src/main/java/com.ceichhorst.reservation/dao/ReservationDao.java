@@ -31,6 +31,8 @@ public class ReservationDao extends GenericDao<Reservation> {
                 LockMode.PESSIMISTIC_WRITE
         );
 
+        session.refresh(service);
+
         int currentBooked = service.getReservations()
             .stream()
             .mapToInt(Reservation::getPartySize)

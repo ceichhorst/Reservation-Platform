@@ -6,7 +6,7 @@ DELETE FROM restaurant;
 
 -- Insert test restaurant
 INSERT INTO restaurant (id, name, requireAllergenInfo, schedulingType)
-VALUES (1, 'Test Restaurant', 0, 'DATE_TIME');
+VALUES (1, 'Test Restaurant', false, 'DATE_TIME');
 
 -- Insert test service instance
 INSERT INTO service_instance (id, restaurant_id, service_date, service_time, capacity, version)

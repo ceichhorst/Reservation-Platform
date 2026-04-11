@@ -16,7 +16,6 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Reservation.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationController.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationStatus.java
-/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/GenericDaoImpl.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceInstance.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationManagementServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/Login.java

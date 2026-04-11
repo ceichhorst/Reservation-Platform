@@ -2,7 +2,6 @@ com/ceichhorst/reservation/controller/AdminDashboardServlet.class
 com/ceichhorst/reservation/entity/Reservation.class
 com/ceichhorst/reservation/dao/ServiceInstanceDao.class
 com/ceichhorst/reservation/entity/Administrator.class
-com/ceichhorst/reservation/dao/GenericDaoImpl.class
 com/ceichhorst/reservation/controller/HomeServlet.class
 com/ceichhorst/reservation/controller/ReservationController.class
 com/ceichhorst/reservation/controller/Login.class

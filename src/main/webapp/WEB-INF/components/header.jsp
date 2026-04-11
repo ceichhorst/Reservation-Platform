@@ -20,15 +20,14 @@
         <div class="header-right">
             <div class="admin-button">
                 <c:set var="isAdmin" value="${not empty sessionScope.userEmail}" />
+                <!-- If LOGGED IN -->
                 <c:choose>
-                    <!-- If LOGGED IN -->
                     <c:when test="${isAdmin}">
                         <a href="${pageContext.request.contextPath}/logout"
                            class="admin-link">
                             Logout
                         </a>
                     </c:when>
-                    <!-- If NOT LOGGED IN -->
                     <c:otherwise>
                         <a href="${pageContext.request.contextPath}/login"
                            class="admin-link">

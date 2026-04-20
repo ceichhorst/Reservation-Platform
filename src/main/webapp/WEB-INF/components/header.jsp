@@ -18,19 +18,26 @@
         <!-- LOGIN BUTTON -->
         <div class="header-right">
             <div class="admin-button">
-                <c:set var="isAdmin" value="${not empty sessionScope.userEmail}" />
+                <c:set var="isLoggedIn" value="${not empty sessionScope.userEmail}" />
+                <c:set var="role" value="${sessionScope.role}" />
                 <!-- If LOGGED IN -->
                 <c:choose>
-                    <c:when test="${isAdmin}">
-                        <a href="${pageContext.request.contextPath}/logout"
-                           class="admin-link">
-                            Logout
-                        </a>
-                    </c:when>
-                    <c:otherwise>
+                    <c:when test="${not isLoggedIn}">
                         <a href="${pageContext.request.contextPath}/login"
                            class="admin-link">
                             Admin Login
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <c:if test="${role eq 'ADMIN'}">
+                            <a href="${pageContext.request.contextPath}/admin/dashboard"
+                               class="admin-link">
+                                Dashboard
+                            </a>
+                        </c:if>
+                        <a href="${pageContext.request.contextPath}/logout"
+                           class="admin-link">
+                            Logout
                         </a>
                     </c:otherwise>
                 </c:choose>

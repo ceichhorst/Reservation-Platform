@@ -33,4 +33,18 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
             return session.createQuery(cq).getResultList();
         }
     }
+
+    public List<ServiceInstance> getByRestaurantId(Long restaurantId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb =session.getCriteriaBuilder();
+            CriteriaQuery<ServiceInstance> cq = cb.createQuery(ServiceInstance.class);
+            Root<ServiceInstance> root = cq.from(ServiceInstance.class);
+
+            // Filters for future dates
+            cq.select(root)
+                    .where(cb.equal(root.get("restaurant").get("id"), restaurantId));
+
+            return session.createQuery(cq).getResultList();
+        }
+    }
 }

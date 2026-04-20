@@ -29,7 +29,7 @@ public class HomeServlet extends HttpServlet {
 
         try {
             ServiceInstanceDao dao = new ServiceInstanceDao();
-            services = dao.getAll();
+            services = dao.getUpcomingServices();
             request.setAttribute("services", services);
 
             RestaurantDao restaurantDao = new RestaurantDao();

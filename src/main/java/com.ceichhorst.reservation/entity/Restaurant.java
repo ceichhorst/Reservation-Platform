@@ -4,7 +4,7 @@ import com.ceichhorst.reservation.service.ServiceTemplate;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.HashSet;

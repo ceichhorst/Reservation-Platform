@@ -11,13 +11,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.io.*;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URI;
@@ -77,7 +77,8 @@ public class Auth extends HttpServlet implements PropertiesLoader {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String authCode = req.getParameter("code");
-        String userEmail = null;
+        String userEmail;
+        String role;
 
         if (authCode == null || authCode.isEmpty()) {
             logger.warn("No auth code received in /auth request.");
@@ -89,13 +90,17 @@ public class Auth extends HttpServlet implements PropertiesLoader {
             HttpRequest authRequest = buildAuthRequest(authCode);
             try {
                 TokenResponse tokenResponse = getToken(authRequest);
-                userEmail = validate(tokenResponse);
+                Map<String, String> authData = validate(tokenResponse);
+
+                userEmail = authData.get("email");
+                role = authData.get("role");
 
                 //Administrator admin = getAdminFromDatabase(userEmail);
 
                 HttpSession session = req.getSession();
                 //session.setAttribute("adminUser", admin);
                 session.setAttribute("userEmail", userEmail);
+                session.setAttribute("role", role);
 
             } catch (IOException e) {
                 logger.error("Error getting or validating the token: " + e.getMessage(), e);
@@ -147,7 +152,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
      * @return
      * @throws IOException
      */
-    private String validate(TokenResponse tokenResponse) throws IOException, ServletException {
+    private Map<String, String> validate(TokenResponse tokenResponse) throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
         CognitoTokenHeader tokenHeader = mapper.readValue(CognitoJWTParser.getHeader(tokenResponse.getIdToken()).toString(), CognitoTokenHeader.class);
 
@@ -164,8 +169,11 @@ public class Auth extends HttpServlet implements PropertiesLoader {
          */
         KeysItem signingKey = jwks.getKeys().stream().filter(k -> k.getKid().equals(keyId)).findFirst().orElseThrow(() -> new ServletException("Unable to find matching key for kid: " + keyId));
         // Use Key's N and E
-        BigInteger modulus = new BigInteger(1, org.apache.commons.codec.binary.Base64.decodeBase64(jwks.getKeys().get(0).getN()));
-        BigInteger exponent = new BigInteger(1, org.apache.commons.codec.binary.Base64.decodeBase64(jwks.getKeys().get(0).getE()));
+        BigInteger modulus = new BigInteger(1,
+                java.util.Base64.getUrlDecoder().decode(signingKey.getN()));
+
+        BigInteger exponent = new BigInteger(1,
+                java.util.Base64.getUrlDecoder().decode(signingKey.getE()));
 
         // Create a public key
         PublicKey publicKey = null;
@@ -192,14 +200,24 @@ public class Auth extends HttpServlet implements PropertiesLoader {
 
         // Verify the token
         DecodedJWT jwt = verifier.verify(tokenResponse.getIdToken());
+        List<String> groups = jwt.getClaim("cognito:groups").asList(String.class);
         String userEmail = jwt.getClaim("email").asString();
-        logger.debug("here's the userEmail: " + userEmail);
 
+        String role = "USER";
+        if (groups != null && groups.contains("ADMIN")) {
+            role = "ADMIN";
+        }
+
+        logger.debug("here's the userEmail: " + userEmail);
+        logger.debug("here's the role: " + role);
         logger.debug("here are all the available claims: " + jwt.getClaims());
 
         // keeping it simple and just returning the userEmail
+        Map<String, String> result = new HashMap();
+        result.put("email", userEmail);
+        result.put("role", role);
+        return result;
 
-        return userEmail;
     }
 
     /** Create the auth url and use it to build the request.

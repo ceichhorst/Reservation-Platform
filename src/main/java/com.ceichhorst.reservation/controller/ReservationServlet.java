@@ -7,9 +7,9 @@ import com.ceichhorst.reservation.util.HibernateUtil;
 
 import org.hibernate.Session;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/reservation")

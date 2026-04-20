@@ -4,9 +4,9 @@ import com.ceichhorst.reservation.util.PropertiesLoader;
 
 import java.io.IOException;
 import java.util.Properties;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 
 @WebServlet(name = "cognitoStartup", urlPatterns = {"/cognito-startup"}, loadOnStartup = 1)
 public class CognitoStartup extends HttpServlet implements PropertiesLoader {

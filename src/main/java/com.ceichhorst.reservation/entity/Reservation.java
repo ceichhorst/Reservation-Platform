@@ -1,6 +1,6 @@
 package com.ceichhorst.reservation.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 

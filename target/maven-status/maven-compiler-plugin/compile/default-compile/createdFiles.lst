@@ -8,10 +8,12 @@ com/ceichhorst/reservation/controller/Login.class
 com/ceichhorst/reservation/util/PropertiesLoader.class
 com/ceichhorst/reservation/service/ServiceInstance.class
 com/ceichhorst/reservation/auth/CognitoJWTParser.class
+com/ceichhorst/reservation/controller/ReservationServlet.class
 com/ceichhorst/reservation/controller/ReservationManagementServlet.class
 com/ceichhorst/reservation/auth/CognitoTokenHeader.class
 com/ceichhorst/reservation/controller/LogoutServlet.class
 com/ceichhorst/reservation/entity/Restaurant.class
+com/ceichhorst/reservation/controller/AppShutdownListener.class
 com/ceichhorst/reservation/listener/ApplicationStartup.class
 com/ceichhorst/reservation/service/ServiceTemplate.class
 com/ceichhorst/reservation/dao/RestaurantDao.class

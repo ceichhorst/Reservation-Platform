@@ -1,7 +1,7 @@
 package com.ceichhorst.reservation.service;
 
 import com.ceichhorst.reservation.entity.Restaurant;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.time.LocalTime;
 

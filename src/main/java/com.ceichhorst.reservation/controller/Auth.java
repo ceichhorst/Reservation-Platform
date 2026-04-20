@@ -262,9 +262,8 @@ public class Auth extends HttpServlet implements PropertiesLoader {
 
         try {
             URL jwksURL = new URL(String.format("https://cognito-idp.%s.amazonaws.com/%s/.well-known/jwks.json", REGION, POOL_ID));
-            File jwksFile = new File("jwks.json");
-            FileUtils.copyURLToFile(jwksURL, jwksFile);
-            jwks = mapper.readValue(jwksFile, Keys.class);
+
+            jwks = mapper.readValue(jwksURL, Keys.class);
             logger.debug("Keys are loaded. Here's e: " + jwks.getKeys().get(0).getE());
         } catch (IOException ioException) {
             logger.error("Cannot load json..." + ioException.getMessage(), ioException);

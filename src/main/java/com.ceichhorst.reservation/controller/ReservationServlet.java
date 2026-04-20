@@ -1,6 +1,7 @@
 package com.ceichhorst.reservation.controller;
 
 import com.ceichhorst.reservation.dao.ReservationDao;
+import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
@@ -11,6 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
+import java.time.LocalDate;
 
 @WebServlet("/reservation")
 public class ReservationServlet extends HttpServlet {
@@ -20,6 +23,32 @@ public class ReservationServlet extends HttpServlet {
     @Override
     public void init() {
         reservationDao = new ReservationDao();
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String dateParam = request.getParameter("date");
+
+        if (dateParam != null && !dateParam.isEmpty()) {
+
+            try {
+                LocalDate date = LocalDate.parse(dateParam);
+
+                ServiceInstanceDao dao = new ServiceInstanceDao();
+
+                List<ServiceInstance> instances = dao.getByDate(date);
+
+                request.setAttribute("availableTimes", instances);
+
+            } catch (Exception e) {
+                request.setAttribute("message", "Invalid date format.");
+            }
+        }
+
+        request.getRequestDispatcher("/WEB-INF/index.jsp")
+                .forward(request, response);
     }
 
     @Override

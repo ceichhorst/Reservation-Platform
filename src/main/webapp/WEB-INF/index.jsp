@@ -19,8 +19,14 @@
     </section>
 
     <section class="reservation-bar">
-        <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="post">
-            <input type="date" name="date" required>
+        <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="get">
+            <select name="date" required>
+                <option value="">Select a Date</option>
+                <c:forEach var="day" items="${calendar}">
+                    <option value="${day.date}">
+                        ${day.date} ${day.available ? '' : '(Full)'}
+                    </option>
+                </c:forEach>
             <select name="partySize" required>
                 <option value="">Party Size</option>
                 <c:forEach begin="1" end="10" var="i">
@@ -28,8 +34,10 @@
                 </c:forEach>
             </select>
             <select name="time" class="time-select">
-                <option value="">Any Time</option>
-                <!-- dynamically populate -->
+                <c:forEach var="slot" items="${availableTimes}">
+                    <option value="">${slot.serviceTime}</option>
+                        ${slot.serviceTime}
+                </c:forEach>
             </select>
             <button type="submit">Make a Reservation</button>
         </form>

@@ -18,8 +18,10 @@
         <p class="restaurant-description">${restaurant.description}</p>
     </section>
 
+    <!-- RESERVATION DATE & TIME SELECTOR -->
     <section class="reservation-bar">
         <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="get">
+            <!-- DATE -->
             <select name="date" required>
                 <option value="">Select a Date</option>
                 <c:forEach var="day" items="${calendar}">
@@ -27,18 +29,26 @@
                         ${day.date} ${day.available ? '' : '(Full)'}
                     </option>
                 </c:forEach>
+            </select>
+
+            <!-- TIME -->
+            <select name="time" class="time-select">
+                <option value="">Select Time</option>
+                <c:forEach var="slot" items="${availableTimes}">
+                    <option value="${slot.serviceTime}">
+                            ${slot.serviceTime}
+                    </option>
+                </c:forEach>
+            </select>
+
+            <!-- PARTY SIZE -->
             <select name="partySize" required>
                 <option value="">Party Size</option>
                 <c:forEach begin="1" end="10" var="i">
                     <option value="${i}">${i}</option>
                 </c:forEach>
             </select>
-            <select name="time" class="time-select">
-                <c:forEach var="slot" items="${availableTimes}">
-                    <option value="">${slot.serviceTime}</option>
-                        ${slot.serviceTime}
-                </c:forEach>
-            </select>
+
             <button type="submit">Make a Reservation</button>
         </form>
     </section>

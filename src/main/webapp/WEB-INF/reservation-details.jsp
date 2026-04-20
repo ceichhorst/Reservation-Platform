@@ -27,7 +27,7 @@
         <!-- Contact Information Form -->
         <section class="contact-info">
             <h2>Your Information</h2>
-            <form action="${pageContext.request.contentPath}/confirm-reservation"
+            <form action="${pageContext.request.contextPath}/confirm-reservation"
                   method="POST"
                   class="details-form">
                 <div class="form-group">
@@ -46,7 +46,7 @@
                     <label for="guestAllergies">Allergies/Dietary Restrictions</label>
                     <input type="text"
                            id="guestAllergies"
-                           name="uestAllergies"
+                           name="guestAllergies"
                            placeholder="If none, please enter 'N/A'"
                            required>
                 </div>

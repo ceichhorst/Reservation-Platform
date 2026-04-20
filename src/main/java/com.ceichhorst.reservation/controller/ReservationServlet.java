@@ -70,8 +70,8 @@ public class ReservationServlet extends HttpServlet {
 
         int partySize = Integer.parseInt(partySizeStr);
 
-        request.setAttribute("date", date);
-        request.setAttribute("time", time);
+        request.setAttribute("reservationDate", date);
+        request.setAttribute("reservationTime", time);
         request.setAttribute("partySize", partySize);
 
         request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")

@@ -13,7 +13,7 @@
 <body>
     <jsp:include page="/WEB-INF/components/header.jsp" />
     <section class="restaurant-info">
-        <h1 class="restaurant-name"><strong>Diane's Delicious Diner</strong></h1>
+        <h1 class="restaurant-name"><strong>${restaurant.name}</strong></h1>
         <p class="restaurant-location">Madison, Wisconsin</p>
         <p class="restaurant-description">
             Diane's Delicious Diner is a simulated restaurant environment where Madison College students develop and

@@ -14,11 +14,8 @@
     <jsp:include page="/WEB-INF/components/header.jsp" />
     <section class="restaurant-info">
         <h1 class="restaurant-name"><strong>${restaurant.name}</strong></h1>
-        <p class="restaurant-location">Madison, Wisconsin</p>
-        <p class="restaurant-description">
-            Diane's Delicious Diner is a simulated restaurant environment where Madison College students develop and
-            apply their culinary skills.
-        </p>
+        <p class="restaurant-location">${restaurant.city}, ${restaurant.state}</p>
+        <p class="restaurant-description">${restaurant.description}</p>
     </section>
 
     <section class="reservation-bar">
@@ -47,21 +44,16 @@
     </section>
     <section class="mini-calendar">
         <h2>Availability Calendar</h2>
-        <div class="calendar-grid">
-            <!-- static placeholder for now -->
-            <div class="day disabled">1</div>
-            <div class="day disabled">2</div>
-            <div class="day available">3</div>
-            <div class="day full">4</div>
-            <div class="day available">5</div>
-        </div>
+        <c:forEach var="day" items="${calendar}">
+            <div class="day ${day.available ? 'available' : 'full'}">
+                ${day.date}
+            </div>
+        </c:forEach>
     </section>
     <section class="how-it-works">
         <h2>How It Works</h2>
         <p>
-            Reservations are accepted on select days throughout the season.
-            Choose a date above to see real-time availability.
-            Time options may vary depending on the service schedule set by the restaurant.
+            ${restaurant.how_it_works};
         </p>
     </section>
     <div class="container">

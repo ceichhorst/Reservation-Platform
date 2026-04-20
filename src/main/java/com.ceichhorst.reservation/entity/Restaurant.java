@@ -38,6 +38,7 @@ public class Restaurant {
     private String city;
     private String state;
     private String description;
+    private String how_it_works;
 
     // getters & setters (toString?)
 
@@ -119,5 +120,13 @@ public class Restaurant {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getHow_it_works() {
+        return how_it_works;
+    }
+
+    public void setHow_it_works(String how_it_works) {
+        this.how_it_works = how_it_works;
     }
 }

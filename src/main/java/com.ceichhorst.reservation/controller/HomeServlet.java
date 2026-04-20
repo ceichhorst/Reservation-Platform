@@ -48,12 +48,15 @@ public class HomeServlet extends HttpServlet {
         try {
             ServiceInstanceDao serviceDao = new ServiceInstanceDao();
             RestaurantDao restaurantDao = new RestaurantDao();
+            AvailabilityService availabilityService = new AvailabilityService();
 
             restaurant = restaurantDao.getById(restaurantId);
             services = serviceDao.getByRestaurantId(restaurantId);
+            List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
             request.setAttribute("restaurants", restaurant);
             request.setAttribute("services", services);
+            request.setAttribute("calendar", calendar);
 
             String message = "Servlet is working!";
             logger.info("Successfully retrieved services and restaurants");

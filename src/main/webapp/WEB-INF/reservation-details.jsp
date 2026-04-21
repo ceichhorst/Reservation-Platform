@@ -39,10 +39,6 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
                     <label for="guestAllergies">Allergies/Dietary Restrictions</label>
                     <input type="text"
                            id="guestAllergies"
@@ -59,6 +55,7 @@
                 </div>
 
                 <!-- Hidden fields -->
+                <input type="hidden" name="restaurantId" value="${restaurantId}">
                 <input type="hidden" name="reservationDate" value="${reservationDate}">
                 <input type="hidden" name="reservationTime" value="${reservationTime}">
                 <input type="hidden" name="partySize" value="${partySize}">

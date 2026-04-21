@@ -37,7 +37,6 @@
                 <ul>
                     <li><strong>Name:</strong> ${customerName}</li>
                     <li><strong>Email:</strong> ${email}</li>
-                    <li><strong>Phone Number:</strong> ${phone}</li>
                     <li><strong>Allergens:</strong>${guestAllergens}</li>
                     <li><strong>Comment:</strong>${guestComments}</li>
                 </ul>

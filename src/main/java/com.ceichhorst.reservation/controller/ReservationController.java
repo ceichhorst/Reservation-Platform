@@ -13,6 +13,7 @@ import com.ceichhorst.reservation.entity.ReservationStatus;
 
 import java.util.List;
 
+// API / REST layer to access data
 @Path("/reservation")
 public class ReservationController {
 

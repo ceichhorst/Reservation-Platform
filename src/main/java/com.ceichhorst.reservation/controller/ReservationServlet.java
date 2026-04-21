@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.time.LocalDate;
 
+// Core user flow component for customers to make reservations
 @WebServlet("/r/*/reservation")
 public class ReservationServlet extends HttpServlet {
     // Adding variable for ReservationDao for validating availability down the road

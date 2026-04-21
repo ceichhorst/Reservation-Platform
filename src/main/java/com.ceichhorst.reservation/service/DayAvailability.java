@@ -2,6 +2,7 @@ package com.ceichhorst.reservation.service;
 
 import java.time.LocalDate;
 
+// DTO
 public class DayAvailability {
 
     private LocalDate date;

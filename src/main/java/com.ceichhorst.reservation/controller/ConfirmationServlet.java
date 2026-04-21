@@ -6,6 +6,8 @@ import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.service.ReservationService;
+import com.ceichhorst.reservation.service.ReservationResult;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,11 +23,13 @@ public class ConfirmationServlet extends HttpServlet{
 
     private ReservationDao reservationDao = new ReservationDao();
     private ServiceInstanceDao serviceInstanceDao = new ServiceInstanceDao();
+    private ReservationService reservationService = new ReservationService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Extract form data
         String name = request.getParameter("customerName");
         String email = request.getParameter("email");
         String dateStr = request.getParameter("reservationDate");
@@ -35,54 +39,69 @@ public class ConfirmationServlet extends HttpServlet{
         String allergies = request.getParameter("guestAllergens");
         String note = request.getParameter("guestNotes");
 
+        // Validation
+        if (name == null || email == null || dateStr == null || timeStr == null ||
+            partySizeStr == null || restaurantIdStr == null || name.isEmpty() ||
+            email.isEmpty() || dateStr.isEmpty() || timeStr.isEmpty() || partySizeStr.isEmpty() ||
+            restaurantIdStr.isEmpty()) {
+
+            request.setAttribute("message", "All required fields must be filled out.");
+            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+                    .forward(request, response);
+            return;
+        }
+
         // Convert types
-        Long restaurantId = Long.parseLong(restaurantIdStr);
-        LocalDate date = LocalDate.parse(dateStr);
-        int partySize = Integer.parseInt(partySizeStr);
+        Long restaurantId;
+        int partySize;
+
+        try {
+            partySize = Integer.parseInt(partySizeStr);
+            restaurantId = Long.parseLong(restaurantIdStr);
+        } catch (Exception e) {
+            request.setAttribute("message", "Invalid input values.");
+            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+                    .forward(request, response);
+            return;
+        }
 
         // Find matching service instance
-        List<ServiceInstance> services = serviceInstanceDao.getServicesByRestaurantOnDate(restaurantId, date);
+        ReservationResult result = reservationService.createReservation(
+                restaurantId,
+                dateStr,
+                timeStr,
+                partySize,
+                name,
+                email,
+                allergies,
+                note
+        );
 
-        LocalTime time = LocalTime.parse(timeStr);
-        ServiceInstance selected = services.stream()
-                .filter(s -> s.getServiceTime().equals(time))
-                .findFirst()
-                .orElse(null);
+        // Handle failure
+        if (!result.isSuccess()) {
+            request.setAttribute("message", result.getMessage());
+            // Preserve previously entered details
+            request.setAttribute("reservationDate", dateStr);
+            request.setAttribute("reservationTime", timeStr);
+            request.setAttribute("partySize", partySize);
+            request.setAttribute("restaurantId", restaurantId);
 
-        if (selected == null) {
-            request.setAttribute("message", "Invalid time selection.");
             request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
                     .forward(request, response);
             return;
         }
 
         // Create reservation
-        Reservation reservation = new Reservation();
-        reservation.setCustomerName(name);
-        reservation.setEmail(email);
-        reservation.setServiceInstance(selected);
-        reservation.setPartySize(partySize);
-        reservation.setStatus(ReservationStatus.CONFIRMED);
-        reservation.setAllergenInfo(allergies);
-        reservation.setAdditionalComments(note);
-
-        // TODO: capacity check here
-        boolean success = reservationDao.createReservationIfAvailable(reservation);
-        if (!success) {
-            request.setAttribute("message", "That time slot is full.");
-            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
-                    .forward(request, response);
-            return;
-        }
-
-        // Send to confirmation page
-        request.setAttribute("customerName", name);
+        Reservation reservation = result.getReservation();
+        request.setAttribute("customerName", reservation.getCustomerName());
         request.setAttribute("reservationDate", dateStr);
         request.setAttribute("reservationTime", timeStr);
         request.setAttribute("partySize", partySize);
         request.setAttribute("confirmationId", reservation.getId());
+
+        request.setAttribute("email", email);
         request.setAttribute("guestAllergens", allergies);
-        request.setAttribute("guestComments", note);
+        request.setAttribute("guetComments", note);
 
         request.getRequestDispatcher("/WEB-INF/confirm-reservation.jsp")
                 .forward(request, response);

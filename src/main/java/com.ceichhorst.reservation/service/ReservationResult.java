@@ -14,11 +14,11 @@ public class ReservationResult {
         this.reservation = reservation;
     }
 
-    private static ReservationResult success(Reservation reservation) {
+    public static ReservationResult success(Reservation reservation) {
         return new ReservationResult(true, null, reservation);
     }
 
-    private ReservationResult failure(Reservation reservation) {
+    public static ReservationResult failure(String message) {
         return new ReservationResult(false, message, null);
     }
 

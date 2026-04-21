@@ -4,7 +4,6 @@ import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
-import com.ceichhorst.reservation.service.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

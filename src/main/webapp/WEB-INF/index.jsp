@@ -20,7 +20,11 @@
 
     <!-- RESERVATION DATE & TIME SELECTOR -->
     <section class="reservation-bar">
+<<<<<<< Updated upstream
         <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="get">
+=======
+        <form class="reservation-form" action="${pageContext.request.contextPath}/r/${restaurant.id}/reservation" method="get">
+>>>>>>> Stashed changes
             <!-- DATE -->
             <select name="date" required>
                 <option value="">Select a Date</option>
@@ -35,7 +39,11 @@
             <select name="time" class="time-select">
                 <option value="">Select Time</option>
                 <c:forEach var="slot" items="${availableTimes}">
+<<<<<<< Updated upstream
                     <option value="${slot.serviceTime}">
+=======
+                    <option value="${slot.id}">
+>>>>>>> Stashed changes
                             ${slot.serviceTime}
                     </option>
                 </c:forEach>
@@ -71,7 +79,11 @@
     <section class="how-it-works">
         <h2>How It Works</h2>
         <p>
+<<<<<<< Updated upstream
             ${restaurant.how_it_works};
+=======
+            ${restaurant.how_it_works}
+>>>>>>> Stashed changes
         </p>
     </section>
     <div class="container">
@@ -84,7 +96,7 @@
                 <th>Name</th>
                 <th>Scheduling Type</th>
             </tr>
-            <c:forEach var="restaurant" items="${restaurants}">
+            <c:forEach var="restaurant" items="${restaurant}">
                 <tr>
                     <td>${restaurant.id}</td>
                     <td>${restaurant.name}</td>

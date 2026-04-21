@@ -3,6 +3,7 @@ package com.ceichhorst.reservation.controller;
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.time.LocalDate;
 
-@WebServlet("/reservation")
+@WebServlet("/r/*/reservation")
 public class ReservationServlet extends HttpServlet {
     // Adding variable for ReservationDao for validating availability down the road
     private ReservationDao reservationDao;
@@ -55,6 +56,23 @@ public class ReservationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String pathInfo = request.getPathInfo();
+
+        if (pathInfo == null || pathInfo.equals("/")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing restaurant id");
+            return;
+        }
+
+        String[] parts = pathInfo.split("/");
+
+        Long restaurantId;
+        try {
+            restaurantId = Long.parseLong(parts[1]);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid restaurant id");
+            return;
+        }
+
         String date = request.getParameter("date");
         String time = request.getParameter("time");
         String partySizeStr = request.getParameter("partySize");
@@ -70,6 +88,8 @@ public class ReservationServlet extends HttpServlet {
 
         int partySize = Integer.parseInt(partySizeStr);
 
+
+        request.setAttribute("restaurantId", restaurantId);
         request.setAttribute("reservationDate", date);
         request.setAttribute("reservationTime", time);
         request.setAttribute("partySize", partySize);

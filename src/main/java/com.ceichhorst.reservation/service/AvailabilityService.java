@@ -3,14 +3,14 @@ package com.ceichhorst.reservation.service;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.time.LocalDate;
 
 // Query logic (read)
 public class AvailabilityService {
 
     public List<DayAvailability> buildCalendar(List<ServiceInstance> services) {
-        Map<LocalDate, List<ServiceInstance>> grouped = new HashMap<>();
+        Map<LocalDate, List<ServiceInstance>> grouped = new TreeMap<>();
 
         for (ServiceInstance s : services) {
             LocalDate date = s.getServiceDate();

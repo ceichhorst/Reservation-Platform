@@ -18,7 +18,7 @@ public class ServiceInstance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonBackReference
     private Restaurant restaurant;

@@ -20,8 +20,10 @@ public class Restaurant {
 
     private String name;
 
+    @Column(name = "require_allergen_info")
     private boolean requireAllergenInfo;
 
+    @Column(name = "scheduling_type")
     @Enumerated(EnumType.STRING)
     private SchedulingType schedulingType;
 
@@ -35,10 +37,17 @@ public class Restaurant {
     @ManyToMany(mappedBy = "restaurants")
     private Set<Administrator> administrators = new HashSet<>();
 
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "state")
     private String state;
+
+    @Column(name = "description")
     private String description;
-    private String how_it_works;
+
+    @Column(name = "how_it_works")
+    private String howItWorks;
 
     // getters & setters (toString?)
 
@@ -122,11 +131,11 @@ public class Restaurant {
         this.description = description;
     }
 
-    public String getHow_it_works() {
-        return how_it_works;
+    public String getHowItWorks() {
+        return howItWorks;
     }
 
-    public void setHow_it_works(String how_it_works) {
-        this.how_it_works = how_it_works;
+    public void setHowItWorks(String howItWorks) {
+        this.howItWorks = howItWorks;
     }
 }

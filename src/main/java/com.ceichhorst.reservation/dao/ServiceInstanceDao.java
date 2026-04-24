@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.JoinType;
 import org.hibernate.Session;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,8 +50,11 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
             CriteriaQuery<ServiceInstance> cq = cb.createQuery(ServiceInstance.class);
             Root<ServiceInstance> root = cq.from(ServiceInstance.class);
 
+            root.fetch("reservations", JoinType.LEFT);
+
             // Filters for future dates
             cq.select(root)
+                    .distinct(true)
                     .where(cb.equal(root.get("restaurant").get("id"), restaurantId));
 
             return session.createQuery(cq).getResultList();

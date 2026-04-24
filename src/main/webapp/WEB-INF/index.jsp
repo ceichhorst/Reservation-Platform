@@ -20,11 +20,7 @@
 
     <!-- RESERVATION DATE & TIME SELECTOR -->
     <section class="reservation-bar">
-<<<<<<< Updated upstream
-        <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="get">
-=======
         <form class="reservation-form" action="${pageContext.request.contextPath}/r/${restaurant.id}/reservation" method="get">
->>>>>>> Stashed changes
             <!-- DATE -->
             <select name="date" required>
                 <option value="">Select a Date</option>
@@ -36,18 +32,29 @@
             </select>
 
             <!-- TIME -->
-            <select name="time" class="time-select">
-                <option value="">Select Time</option>
-                <c:forEach var="slot" items="${availableTimes}">
-<<<<<<< Updated upstream
-                    <option value="${slot.serviceTime}">
-=======
-                    <option value="${slot.id}">
->>>>>>> Stashed changes
-                            ${slot.serviceTime}
-                    </option>
-                </c:forEach>
-            </select>
+            <c:choose>
+                <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
+                    <select name="time" class="time-select" disabled>
+                        <option value="">Select Time</option>
+                        <c:forEach var="slot" items="${availableTimes}">
+                            <option value="${slot.id}">
+                                ${slot.serviceTime} (assigned automatically)
+                            </option>
+                        </c:forEach>
+                    </select>
+                    <input type="hidden" name="serviceTime" value="${serviceInstance.serviceTime}" />
+                </c:when>
+                <c:otherwise>
+                    <select name="time" class="time-select" required>
+                        <option value="">Select Time</option>
+                        <c:forEach var="slot" items="${availableTimes}">
+                            <option value="${slot.id}">
+                                ${slot.serviceTime}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </c:otherwise>
+            </c:choose>
 
             <!-- PARTY SIZE -->
             <select name="partySize" required>
@@ -79,11 +86,7 @@
     <section class="how-it-works">
         <h2>How It Works</h2>
         <p>
-<<<<<<< Updated upstream
-            ${restaurant.how_it_works};
-=======
-            ${restaurant.how_it_works}
->>>>>>> Stashed changes
+            ${restaurant.howItWorks};
         </p>
     </section>
     <div class="container">
@@ -96,13 +99,11 @@
                 <th>Name</th>
                 <th>Scheduling Type</th>
             </tr>
-            <c:forEach var="restaurant" items="${restaurant}">
-                <tr>
-                    <td>${restaurant.id}</td>
-                    <td>${restaurant.name}</td>
-                    <td>${restaurant.schedulingType}</td>
-                </tr>
-            </c:forEach>
+            <tr>
+                <td>${restaurant.id}</td>
+                <td>${restaurant.name}</td>
+                <td>${restaurant.schedulingType}</td>
+            </tr>
         </table>
         <br>
         <h2>Upcoming Service Instances</h2>

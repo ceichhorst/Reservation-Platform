@@ -54,8 +54,6 @@ public class HomeServlet extends HttpServlet {
             services = serviceDao.getByRestaurantId(restaurantId);
             List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
-            request.setAttribute("restaurants", restaurant);
-
             request.setAttribute("restaurant", restaurant);
 
             request.setAttribute("services", services);

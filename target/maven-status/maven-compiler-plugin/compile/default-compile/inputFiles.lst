@@ -6,6 +6,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/auth/Keys.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/util/HibernateUtil.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Administrator.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ReservationService.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/ServiceInstanceDao.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/ReservationDao.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/HomeServlet.java
@@ -18,7 +19,11 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationController.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/filter/AuthFilter.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationStatus.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/DayAvailability.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ConfirmationServlet.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ReservationResult.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceInstance.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/AvailabilityService.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationManagementServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/Login.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/auth/CognitoTokenHeader.java

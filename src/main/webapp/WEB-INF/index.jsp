@@ -20,33 +20,44 @@
 
     <!-- RESERVATION DATE & TIME SELECTOR -->
     <section class="reservation-bar">
-        <form class="reservation-form" action="${pageContext.request.contextPath}/r/${restaurant.id}/reservation" method="get">
-            <!-- DATE -->
-            <select name="date" required>
+        <!-- DATE -->
+        <form action="${pageContext.request.contextPath}/reservation" method="get">
+
+            <input type="hidden" name="restaurantId" value="${restaurant.id}" />
+
+            <select name="date" onchange="this.form.submit()" required>
                 <option value="">Select a Date</option>
+
                 <c:forEach var="day" items="${calendar}">
-                    <option value="${day.date}">
-                        ${day.date} ${day.available ? '' : '(Full)'}
+                    <option value="${day.date}"
+                            <c:if test="${day.date == selectedDate}">selected</c:if>>
+                            ${day.date} ${day.available ? '' : '(Full)'}
                     </option>
                 </c:forEach>
             </select>
 
-            <!-- TIME -->
+        </form>
+        <!-- TIME -->
+        <form action="${pageContext.request.contextPath}/reservation" method="post">
+
+            <input type="hidden" name="restaurantId" value="${restaurant.id}" />
+            <input type="hidden" name="date" value="${selectedDate}" />
+
             <c:choose>
                 <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
-                    <select name="time" class="time-select" disabled>
-                        <option value="">Select Time</option>
-                        <c:forEach var="slot" items="${availableTimes}">
-                            <option value="${slot.id}">
-                                ${slot.serviceTime} (assigned automatically)
-                            </option>
-                        </c:forEach>
-                    </select>
-                    <input type="hidden" name="serviceTime" value="${serviceInstance.serviceTime}" />
+                    <c:if test="${not empty availableTimes}">
+                        <div class="fixed-slot">
+                                ${availableTimes[0].serviceTime} (assigned automatically)
+                        </div>
+                        <input type="hidden"
+                               name="serviceInstanceId"
+                               value="${availableTimes[0].id}" />
+                    </c:if>
                 </c:when>
+
                 <c:otherwise>
-                    <select name="time" class="time-select" required>
-                        <option value="">Select Time</option>
+                    <select name="serviceInstanceId" required>
+                        <option value="">Select a Time</option>
                         <c:forEach var="slot" items="${availableTimes}">
                             <option value="${slot.id}">
                                 ${slot.serviceTime}
@@ -65,6 +76,7 @@
             </select>
 
             <button type="submit">Make a Reservation</button>
+
         </form>
     </section>
     <section class="upcoming-dates">

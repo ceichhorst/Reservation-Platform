@@ -4,6 +4,9 @@ import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
+import com.ceichhorst.reservation.dao.RestaurantDao;
+import com.ceichhorst.reservation.service.AvailabilityService;
+import com.ceichhorst.reservation.service.DayAvailability;
 import com.ceichhorst.reservation.service.ReservationService;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
@@ -18,36 +21,64 @@ import java.util.List;
 import java.time.LocalDate;
 
 // Core user flow component for customers to make reservations
-@WebServlet("/r/*/reservation")
+@WebServlet("/reservation")
 public class ReservationServlet extends HttpServlet {
-    // Adding variable for ReservationDao for validating availability down the road
-    private ReservationDao reservationDao;
+
+    private ServiceInstanceDao serviceInstanceDao;
 
     @Override
     public void init() {
-        reservationDao = new ReservationDao();
+        serviceInstanceDao = new ServiceInstanceDao();
+
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String dateParam = request.getParameter("date");
+        String restaurantIdStr = request.getParameter("restaurantId");
 
-        if (dateParam != null && !dateParam.isEmpty()) {
+        if (restaurantIdStr == null || restaurantIdStr.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing restaurant id");
+            return;
+        }
 
-            try {
-                LocalDate date = LocalDate.parse(dateParam);
+        Long restaurantId = Long.parseLong(restaurantIdStr);
 
-                ServiceInstanceDao dao = new ServiceInstanceDao();
+        try {
+            ServiceInstanceDao serviceDao = new ServiceInstanceDao();
+            RestaurantDao restaurantDao = new RestaurantDao();
+            AvailabilityService availabilityService = new AvailabilityService();
 
-                List<ServiceInstance> instances = dao.getByDate(date);
+            Restaurant restaurant = restaurantDao.getById(restaurantId);
+            List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
+            List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
-                request.setAttribute("availableTimes", instances);
+            request.setAttribute("restaurant", restaurant);
+            request.setAttribute("services", services);
+            request.setAttribute("calendar", calendar);
 
-            } catch (Exception e) {
-                request.setAttribute("message", "Invalid date format.");
+            if (dateParam != null && !dateParam.isEmpty()) {
+
+                request.setAttribute("selectedDate", dateParam);
+
+                try {
+                    LocalDate date = LocalDate.parse(dateParam);
+
+                    List<ServiceInstance> instances =
+                            serviceDao.getServicesByRestaurantOnDate(restaurantId, date);
+
+                    request.setAttribute("availableTimes", instances);
+
+                } catch (Exception e) {
+                    request.setAttribute("message", "Invalid date format.");
+                }
             }
+
+        } catch (Exception e) {
+            request.setAttribute("message", "Error loading page data.");
+            e.printStackTrace();
         }
 
         request.getRequestDispatcher("/WEB-INF/index.jsp")
@@ -58,46 +89,44 @@ public class ReservationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String pathInfo = request.getPathInfo();
-
-        if (pathInfo == null || pathInfo.equals("/")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing restaurant id");
-            return;
-        }
-
-        String[] parts = pathInfo.split("/");
-
-        Long restaurantId;
-        try {
-            restaurantId = Long.parseLong(parts[1]);
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid restaurant id");
-            return;
-        }
-
-        String date = request.getParameter("date");
-        String time = request.getParameter("time");
+        String restaurantIdStr = request.getParameter("restaurantId");
+        String serviceInstanceIdStr = request.getParameter("serviceInstanceId");
         String partySizeStr = request.getParameter("partySize");
 
-        if (date == null || time == null || partySizeStr == null ||
-            date.isEmpty() || time.isEmpty() || partySizeStr.isEmpty()) {
+        if (restaurantIdStr == null || restaurantIdStr.isEmpty()
+                || serviceInstanceIdStr == null || serviceInstanceIdStr.isEmpty()
+                || partySizeStr == null || partySizeStr.isEmpty()) {
 
-            request.setAttribute("message", "All fields are required.");
+            request.setAttribute("message", "Missing required fields");
             request.getRequestDispatcher("/WEB-INF/index.jsp")
                     .forward(request, response);
             return;
         }
 
-        int partySize = Integer.parseInt(partySizeStr);
+        try {
+            Long restaurantId = Long.parseLong(restaurantIdStr);
+            Long serviceInstanceId = Long.parseLong(serviceInstanceIdStr);
+            int partySize = Integer.parseInt(partySizeStr);
 
+            ServiceInstance instance = serviceInstanceDao.getById(serviceInstanceId);
 
-        request.setAttribute("restaurantId", restaurantId);
-        request.setAttribute("reservationDate", date);
-        request.setAttribute("reservationTime", time);
-        request.setAttribute("partySize", partySize);
+            if (instance == null) {
+                request.setAttribute("message", "Invalid service selection");
+                request.getRequestDispatcher("/WEB-INF/index.jsp")
+                        .forward(request, response);
+                return;
+            }
 
-        request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
-                .forward(request, response);
+            request.setAttribute("restaurantId", restaurantId);
+            request.setAttribute("reservationDate", instance.getServiceDate().toString());
+            request.setAttribute("reservationTime", instance.getServiceTime().toString());
+            request.setAttribute("partySize", partySize);
 
+            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+                    .forward(request, response);
+
+        } catch (Exception e) {
+            throw new ServletException("Error processing reservation", e);
+        }
     }
 }

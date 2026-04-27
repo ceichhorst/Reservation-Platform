@@ -2,10 +2,7 @@ package com.ceichhorst.reservation.controller;
 
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
-import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Reservation;
-import com.ceichhorst.reservation.entity.ReservationStatus;
-import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.service.ReservationService;
 import com.ceichhorst.reservation.service.ReservationResult;
 
@@ -13,16 +10,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.util.List;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 // Core user flow component to confirm a reservation made by a customer for a restaurant
-@WebServlet("/r/*/confirm-reservation")
+@WebServlet("/confirm-reservation")
 public class ConfirmationServlet extends HttpServlet{
 
-    private ReservationDao reservationDao = new ReservationDao();
-    private ServiceInstanceDao serviceInstanceDao = new ServiceInstanceDao();
     private ReservationService reservationService = new ReservationService();
 
     @Override
@@ -36,7 +28,7 @@ public class ConfirmationServlet extends HttpServlet{
         String timeStr = request.getParameter("reservationTime");
         String partySizeStr = request.getParameter("partySize");
         String restaurantIdStr = request.getParameter("restaurantId");
-        String allergies = request.getParameter("guestAllergens");
+        String allergies = request.getParameter("guestAllergies");
         String note = request.getParameter("guestNotes");
 
         // Validation
@@ -101,7 +93,7 @@ public class ConfirmationServlet extends HttpServlet{
 
         request.setAttribute("email", email);
         request.setAttribute("guestAllergens", allergies);
-        request.setAttribute("guetComments", note);
+        request.setAttribute("guestComments", note);
 
         request.getRequestDispatcher("/WEB-INF/confirm-reservation.jsp")
                 .forward(request, response);

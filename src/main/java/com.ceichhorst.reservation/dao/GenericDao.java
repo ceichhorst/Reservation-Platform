@@ -21,7 +21,7 @@ public class GenericDao<T> {
     public T getById(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         T entity = session.get(type, id);
-        session.refresh(entity);
+
         session.close();
         return entity;
     }

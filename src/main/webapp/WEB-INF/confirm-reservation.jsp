@@ -57,7 +57,7 @@
             </section>
             <!-- Actions -->
             <section class="confirmation-actions">
-                <a href="${pageContext.request.contextPath}/home"
+                <a href="${pageContext.request.contextPath}/r/${restaurant.id}"
                    class="button-primary">
                    Make Another Reservation
                 </a>

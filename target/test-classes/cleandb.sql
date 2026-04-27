@@ -5,7 +5,7 @@ DELETE FROM service_template;
 DELETE FROM restaurant;
 
 -- Insert test restaurant
-INSERT INTO restaurant (id, name, requireAllergenInfo, schedulingType)
+INSERT INTO restaurant (id, name, require_allergen_info, scheduling_type)
 VALUES (1, 'Test Restaurant', false, 'DATE_TIME');
 
 -- Insert test service instance

@@ -1,2 +1,3 @@
 com/ceichhorst/reservation/testutils/TestDatabase.class
 com/ceichhorst/reservation/dao/ReservationDaoTest.class
+com/ceichhorst/reservation/service/AvailabilityServiceTest.class

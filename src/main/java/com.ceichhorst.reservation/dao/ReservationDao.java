@@ -12,8 +12,9 @@ import org.hibernate.LockMode;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-
+import jakarta.persistence.criteria.Predicate;
 import java.util.List;
+import java.time.LocalDate;
 
 public class ReservationDao extends GenericDao<Reservation> {
 
@@ -30,8 +31,6 @@ public class ReservationDao extends GenericDao<Reservation> {
                 reservation.getServiceInstance().getId(),
                 LockMode.PESSIMISTIC_WRITE
         );
-
-        session.refresh(service);
 
         int currentBooked = service.getReservations()
             .stream()
@@ -102,4 +101,6 @@ public class ReservationDao extends GenericDao<Reservation> {
 
         return results;
     }
+
+
 }

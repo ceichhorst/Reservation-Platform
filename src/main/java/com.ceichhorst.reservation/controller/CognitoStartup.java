@@ -19,7 +19,7 @@ public class CognitoStartup extends HttpServlet implements PropertiesLoader {
         } catch (IOException e) {
             throw new ServletException("Failed to load cognito properties.");
         } catch (Exception e) {
-            throw new ServletException("Unexpected error in CognitoStartup.");
+            throw new ServletException("Unexpected error in CognitoStartup.", e);
         }
     }
 }

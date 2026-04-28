@@ -3,7 +3,7 @@
     <div class="header-bar">
         <!-- MAIN LOGO / HOME BUTTON -->
         <div class="header-left">
-            <a href="${pageContext.request.contextPath}/home" class="logo-link">
+            <a href="${pageContext.request.contextPath}/r/${restaurant.id}" class="logo-link">
                 <div class="logo-wrap">
                     <img src="<c:url value='/images/dyana_symbol_logo_alt.svg' />"
                          class="symbol_logo"

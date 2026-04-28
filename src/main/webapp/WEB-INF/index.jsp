@@ -13,28 +13,70 @@
 <body>
     <jsp:include page="/WEB-INF/components/header.jsp" />
     <section class="restaurant-info">
-        <h1 class="restaurant-name"><strong>Diane's Delicious Diner</strong></h1>
-        <p class="restaurant-location">Madison, Wisconsin</p>
-        <p class="restaurant-description">
-            Diane's Delicious Diner is a simulated restaurant environment where Madison College students develop and
-            apply their culinary skills.
-        </p>
+        <h1 class="restaurant-name"><strong>${restaurant.name}</strong></h1>
+        <p class="restaurant-location">${restaurant.city}, ${restaurant.state}</p>
+        <p class="restaurant-description">${restaurant.description}</p>
     </section>
 
+    <!-- RESERVATION DATE & TIME SELECTOR -->
     <section class="reservation-bar">
-        <form class="reservation-form" action="${pageContext.request.contextPath}/reservation" method="post">
-            <input type="date" name="date" required>
+        <!-- DATE -->
+        <form action="${pageContext.request.contextPath}/reservation" method="get">
+
+            <input type="hidden" name="restaurantId" value="${restaurant.id}" />
+
+            <select name="date" onchange="this.form.submit()" required>
+                <option value="">Select a Date</option>
+
+                <c:forEach var="day" items="${calendar}">
+                    <option value="${day.date}"
+                            <c:if test="${day.date == selectedDate}">selected</c:if>>
+                            ${day.date} ${day.available ? '' : '(Full)'}
+                    </option>
+                </c:forEach>
+            </select>
+
+        </form>
+        <!-- TIME -->
+        <form action="${pageContext.request.contextPath}/reservation" method="post">
+
+            <input type="hidden" name="restaurantId" value="${restaurant.id}" />
+            <input type="hidden" name="date" value="${selectedDate}" />
+
+            <c:choose>
+                <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
+                    <c:if test="${not empty availableTimes}">
+                        <div class="fixed-slot">
+                                ${availableTimes[0].serviceTime} (assigned automatically)
+                        </div>
+                        <input type="hidden"
+                               name="serviceInstanceId"
+                               value="${availableTimes[0].id}" />
+                    </c:if>
+                </c:when>
+
+                <c:otherwise>
+                    <select name="serviceInstanceId" required>
+                        <option value="">Select a Time</option>
+                        <c:forEach var="slot" items="${availableTimes}">
+                            <option value="${slot.id}">
+                                ${slot.serviceTime}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </c:otherwise>
+            </c:choose>
+
+            <!-- PARTY SIZE -->
             <select name="partySize" required>
                 <option value="">Party Size</option>
                 <c:forEach begin="1" end="10" var="i">
                     <option value="${i}">${i}</option>
                 </c:forEach>
             </select>
-            <select name="time" class="time-select">
-                <option value="">Any Time</option>
-                <!-- dynamically populate -->
-            </select>
+
             <button type="submit">Make a Reservation</button>
+
         </form>
     </section>
     <section class="upcoming-dates">
@@ -47,21 +89,16 @@
     </section>
     <section class="mini-calendar">
         <h2>Availability Calendar</h2>
-        <div class="calendar-grid">
-            <!-- static placeholder for now -->
-            <div class="day disabled">1</div>
-            <div class="day disabled">2</div>
-            <div class="day available">3</div>
-            <div class="day full">4</div>
-            <div class="day available">5</div>
-        </div>
+        <c:forEach var="day" items="${calendar}">
+            <div class="day ${day.available ? 'available' : 'full'}">
+                ${day.date}
+            </div>
+        </c:forEach>
     </section>
     <section class="how-it-works">
         <h2>How It Works</h2>
         <p>
-            Reservations are accepted on select days throughout the season.
-            Choose a date above to see real-time availability.
-            Time options may vary depending on the service schedule set by the restaurant.
+            ${restaurant.howItWorks};
         </p>
     </section>
     <div class="container">
@@ -74,13 +111,11 @@
                 <th>Name</th>
                 <th>Scheduling Type</th>
             </tr>
-            <c:forEach var="restaurant" items="${restaurants}">
-                <tr>
-                    <td>${restaurant.id}</td>
-                    <td>${restaurant.name}</td>
-                    <td>${restaurant.schedulingType}</td>
-                </tr>
-            </c:forEach>
+            <tr>
+                <td>${restaurant.id}</td>
+                <td>${restaurant.name}</td>
+                <td>${restaurant.schedulingType}</td>
+            </tr>
         </table>
         <br>
         <h2>Upcoming Service Instances</h2>

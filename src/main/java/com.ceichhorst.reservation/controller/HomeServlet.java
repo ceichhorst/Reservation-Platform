@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-@WebServlet("/home")
+@WebServlet("/r/*")
 public class HomeServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(HomeServlet.class);
@@ -23,18 +23,41 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
              throws ServletException, IOException {
 
+        String pathInfo = request.getPathInfo();
+
+        if (pathInfo == null || pathInfo.equals("/")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing restaurant ID");
+            return;
+        }
+
+        String[] parts = pathInfo.split("/");
+
+        Long restaurantId;
+        try {
+            restaurantId = Long.parseLong(parts[1]);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Restaruant ID");
+            return;
+        }
+
+        String page = (parts.length > 2) ? parts[2] : "home";
+
         List<ServiceInstance> services = null;
-        List<Restaurant> restaurants = null;
-        String stackTrace = null;
+        Restaurant restaurant = null;
 
         try {
-            ServiceInstanceDao dao = new ServiceInstanceDao();
-            services = dao.getUpcomingServices();
-            request.setAttribute("services", services);
-
+            ServiceInstanceDao serviceDao = new ServiceInstanceDao();
             RestaurantDao restaurantDao = new RestaurantDao();
-            restaurants = restaurantDao.getAll();
-            request.setAttribute("restaurants", restaurants);
+            AvailabilityService availabilityService = new AvailabilityService();
+
+            restaurant = restaurantDao.getById(restaurantId);
+            services = serviceDao.getByRestaurantId(restaurantId);
+            List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+
+            request.setAttribute("restaurant", restaurant);
+
+            request.setAttribute("services", services);
+            request.setAttribute("calendar", calendar);
 
             String message = "Servlet is working!";
             logger.info("Successfully retrieved services and restaurants");

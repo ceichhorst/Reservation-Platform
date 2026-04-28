@@ -11,6 +11,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
+// Core admin component for admins to manage reservations on admin pages
 @WebServlet("/admin/reservations")
 public class ReservationManagementServlet extends HttpServlet {
 

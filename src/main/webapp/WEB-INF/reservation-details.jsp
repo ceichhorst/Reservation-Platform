@@ -27,7 +27,7 @@
         <!-- Contact Information Form -->
         <section class="contact-info">
             <h2>Your Information</h2>
-            <form action="${pageContext.request.contentPath}/confirm-reservation"
+            <form action="${pageContext.request.contextPath}/confirm-reservation"
                   method="POST"
                   class="details-form">
                 <div class="form-group">
@@ -39,14 +39,10 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
                     <label for="guestAllergies">Allergies/Dietary Restrictions</label>
                     <input type="text"
                            id="guestAllergies"
-                           name="uestAllergies"
+                           name="guestAllergies"
                            placeholder="If none, please enter 'N/A'"
                            required>
                 </div>
@@ -59,6 +55,7 @@
                 </div>
 
                 <!-- Hidden fields -->
+                <input type="hidden" name="restaurantId" value="${restaurantId}">
                 <input type="hidden" name="reservationDate" value="${reservationDate}">
                 <input type="hidden" name="reservationTime" value="${reservationTime}">
                 <input type="hidden" name="partySize" value="${partySize}">

@@ -21,6 +21,13 @@ public class ReservationManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("userEmail") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
         List<Reservation> reservations = reservationDao.getAll();
 
         request.setAttribute("reservations", reservations);
@@ -32,6 +39,13 @@ public class ReservationManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("userEmail") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
         Long reservationId = Long.parseLong(request.getParameter("id"));
         String action = request.getParameter("action");

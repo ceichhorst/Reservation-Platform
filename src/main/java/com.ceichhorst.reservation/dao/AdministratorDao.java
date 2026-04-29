@@ -7,9 +7,12 @@ import org.hibernate.query.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Join;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class AdministratorDao extends GenericDao<Administrator> {
 
@@ -53,6 +56,21 @@ public class AdministratorDao extends GenericDao<Administrator> {
 
             Query<Administrator> query = session.createQuery(criteriaQuery);
             return query.getResultList();
+        }
+    }
+
+    public Set<Long> getRestaurantIds(Long adminId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+            Root<Administrator> root = criteriaQuery.from(Administrator.class);
+
+            Join<Object, Object> restaurants = root.join("restaurants");
+
+            criteriaQuery.select(restaurants.get("id"))
+                    .where(criteriaBuilder.equal(root.get("id"), adminId));
+
+            return new HashSet<>(session.createQuery(criteriaQuery).getResultList());
         }
     }
 

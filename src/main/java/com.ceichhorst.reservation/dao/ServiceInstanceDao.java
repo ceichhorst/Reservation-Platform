@@ -1,6 +1,6 @@
 package com.ceichhorst.reservation.dao;
 
-import com.ceichhorst.reservation.controller.HomeServlet;
+import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Join;
 import org.hibernate.Session;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
 
@@ -102,6 +104,24 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         }
 
         return services;
+    }
+
+    public List<ServiceInstance> getServicesByRestaurants(Set<Long> restaurantIds) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<ServiceInstance> cq = cb.createQuery(ServiceInstance.class);
+
+        Root<ServiceInstance> root = cq.from(ServiceInstance.class);
+
+        Join<ServiceInstance, Restaurant> restaurantJoin = root.join("restaurant");
+
+        cq.select(root)
+                .where(root.get("restaurant").get("id").in(restaurantIds));
+
+        List<ServiceInstance> results = session.createQuery(cq).getResultList();
+
+        return results;
     }
 
 }

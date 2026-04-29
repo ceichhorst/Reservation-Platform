@@ -29,11 +29,7 @@
             </div>
             <div class="card">
                 <h3>Total Reservations (Per Service)</h3>
-                <ul>
-                    <c:forEach var="reservation" items="${reservations}">
-                        <li>${reservation.Reservation}</li>
-                    </c:forEach>
-                </ul>
+                <p>${reservationCount}</p>
             </div>
             <hr>
             <h2>Quick Actions</h2>

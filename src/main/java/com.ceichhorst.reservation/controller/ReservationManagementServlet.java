@@ -21,6 +21,7 @@ public class ReservationManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Is it best to make the auth check a called method compared to duplicating code?
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("userEmail") == null) {
@@ -61,6 +62,6 @@ public class ReservationManagementServlet extends HttpServlet {
             reservationDao.update(reservation);
         }
 
-        response.sendRedirect("reservations");
+        response.sendRedirect(request.getContextPath() + "/admin/reservations");
     }
 }

@@ -30,6 +30,19 @@ public class AdministratorDao extends GenericDao<Administrator> {
         }
     }
 
+    public Administrator getAdministratorByEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Administrator> criteriaQuery = criteriaBuilder.createQuery(Administrator.class);
+            Root<Administrator> root = criteriaQuery.from(Administrator.class);
+
+            criteriaQuery.select(root)
+                    .where(criteriaBuilder.equal(root.get("email"), email));
+
+            return session.createQuery(criteriaQuery).uniqueResult();
+        }
+    }
+
     public List<Administrator> getAdministratorByRole(String role) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

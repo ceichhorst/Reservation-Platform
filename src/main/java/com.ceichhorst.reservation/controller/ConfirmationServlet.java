@@ -3,6 +3,7 @@ package com.ceichhorst.reservation.controller;
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ReservationService;
 import com.ceichhorst.reservation.service.ReservationResult;
 
@@ -20,6 +21,15 @@ public class ConfirmationServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        Restaurant restaurant = (Restaurant) session.getAttribute("restaurant");
+
+        if (restaurant == null) {
+            request.setAttribute("message", "Session expired. Please restart reservation.");
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
 
         // Extract form data
         String name = request.getParameter("customerName");
@@ -94,6 +104,8 @@ public class ConfirmationServlet extends HttpServlet{
         request.setAttribute("email", email);
         request.setAttribute("guestAllergens", allergies);
         request.setAttribute("guestComments", note);
+
+        request.setAttribute("restaurant", restaurant);
 
         request.getRequestDispatcher("/WEB-INF/confirm-reservation.jsp")
                 .forward(request, response);

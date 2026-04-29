@@ -55,6 +55,7 @@ public class HomeServlet extends HttpServlet {
             List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
             request.setAttribute("restaurant", restaurant);
+            request.getSession().setAttribute("restaurant", restaurant);
 
             request.setAttribute("services", services);
             request.setAttribute("calendar", calendar);

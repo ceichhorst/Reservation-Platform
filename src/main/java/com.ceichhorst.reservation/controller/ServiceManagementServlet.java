@@ -5,6 +5,7 @@ import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.service.ServiceManager;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class ServiceManagementServlet extends HttpServlet {
     private ServiceInstanceDao serviceDao = new ServiceInstanceDao();
     private AdministratorDao adminDao = new AdministratorDao();
+    private ServiceManager serviceManager = new ServiceManager();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -78,6 +80,41 @@ public class ServiceManagementServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
+
+        Long adminId = (Long) session.getAttribute("adminId");
+        String action = request.getParameter("action");
+        Long restaurantId = Long.parseLong(request.getParameter("restaurantId"));
+        Long serviceId = Long.parseLong(request.getParameter("serviceId"));
+
+        try {
+            switch (action) {
+                case "addService":
+                    LocalDate date = LocalDate.parse(request.getParameter("date"));
+                    LocalTime time = LocalTime.parse(request.getParameter("time"));
+                    int capacity = Integer.parseInt(request.getParameter("capacity"));
+
+                    serviceManager.addService(adminId, restaurantId, date, time, capacity);
+                    break;
+
+                case "deleteService":
+                    serviceManager.deleteService(adminId, serviceId);
+                    break;
+
+                case "updateService":
+                    String schedulingType = request.getParameter("scheduleType");
+                    serviceManager.updateSchedulingType(adminId, restaurantId, schedulingType);
+                    break;
+
+                case "toggleVisibility":
+                    serviceManager.toggleVisibility(adminId, serviceId);
+                    break;
+            }
+
+        } catch (RuntimeException e) {
+            request.getSession().setAttribute("error", e.getMessage());
+        }
+
+        response.sendRedirect(request.getContextPath() + "/admin/services");
 
     }
 }

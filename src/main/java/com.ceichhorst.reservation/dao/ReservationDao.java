@@ -142,7 +142,7 @@ public class ReservationDao extends GenericDao<Reservation> {
                 ServiceReservationStats.class,
                 serviceJoin.get("serviceDate"),
                 cb.count(root),
-                cb.sum(root.get("partySize"))
+                cb.sum(root.get("partySize")).as(Long.class)
         ));
 
         cq.where(restaurantJoin.get("id").in(restaurantIds));

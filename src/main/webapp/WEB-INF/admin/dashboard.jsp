@@ -18,23 +18,26 @@
     </nav>
     <div class="container">
         <h2>Overview</h2>
+        <!-- Don't need time listed on this table -->
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Service Date</th>
+                    <th>Total Reservations Confirmed</th>
+                    <th>Total Seats Booked</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="stat" items="${reservationStats}">
+                    <tr>
+                        <td>${stat.serviceDate}</td>
+                        <td>${stat.reservationCount}</td>
+                        <td>${stat.totalSeatsBooked}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
         <div class="dashboard-cards">
-            <div class="card">
-                <h3>Upcoming Services</h3>
-                <ul>
-                    <c:forEach var="service" items="${services}">
-                        <li>${service.serviceDate}</li>
-                    </c:forEach>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Total Reservations (Per Service)</h3>
-                <p>${reservationCount}</p>
-            </div>
-            <div class="card">
-                <h3>Seats Booked</h3>
-                <p>${totalSeatsBooked}</p>
-            </div>
             <hr>
             <h2>Quick Actions</h2>
             <div class="cta-buttons">

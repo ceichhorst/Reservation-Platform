@@ -28,7 +28,7 @@
             <div class="error">${error}</div>
         </c:if>
         <c:choose>
-            <c:when test="$empty reservations">
+            <c:when test="${empty reservations}">
                 <p>No reservations found.</p>
             </c:when>
             <c:otherwise>
@@ -48,15 +48,15 @@
                         <c:forEach var="reservation" items="${reservations}">
                             <tr>
                                 <td>${reservation.id}</td>
-                                <td>${reservation.name}</td>
+                                <td>${reservation.customerName}</td>
                                 <td>${reservation.email}</td>
-                                <td>${reservation.serviceDate}</td>
-                                <td>${reservation.serviceTime}</td>
+                                <td>${reservation.serviceInstance.serviceDate}</td>
+                                <td>${reservation.serviceInstance.serviceTime}</td>
                                 <td>
                                     <span class="status ${reservation.status}">
                                         ${reservation.status}
                                     </span>
-                                </td>2
+                                </td>
                                 <td>
                                     <c:if test="${reservation.status != 'CONFIRMED'}">
                                         <form method="post" style="display:inline;">
@@ -65,7 +65,7 @@
                                             <button type="submit">Confirm</button>
                                         </form>
                                     </c:if>
-                                    <c:if test="${reservation.status != 'CANCELLEd'}">
+                                    <c:if test="${reservation.status != 'CANCELLED'}">
                                         <form method="post" style="display:inline;">
                                             <input type="hidden" name="id" value="${reservation.id}" />
                                             <input type="hidden" name="action" value="cancel" />

@@ -17,6 +17,7 @@
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
     <div class="container">
+        <!-- Add admin profile section or simple 'Welcome $ { adminUser }' message -->
         <h2>Overview</h2>
         <!-- Don't need time listed on this table -->
         <table class="dashboard-table">

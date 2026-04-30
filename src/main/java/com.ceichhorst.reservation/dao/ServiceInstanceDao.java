@@ -114,8 +114,6 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
 
         Root<ServiceInstance> root = cq.from(ServiceInstance.class);
 
-        Join<ServiceInstance, Restaurant> restaurantJoin = root.join("restaurant");
-
         cq.select(root)
                 .where(root.get("restaurant").get("id").in(restaurantIds));
 

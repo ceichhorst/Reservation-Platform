@@ -31,6 +31,18 @@
                 <h3>Total Reservations (Per Service)</h3>
                 <p>${reservationCount}</p>
             </div>
+            <div class="card">
+                <h3>Seats Booked</h3>
+                <ul>
+                    <c:forEach var="stat" items="${reservationStats}">
+                        <li>
+                            ${stat.serviceDate} -
+                            ${stat.reservationCount} reservations,
+                            ${stat.totalSeatsBooked} seats booked.
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
             <hr>
             <h2>Quick Actions</h2>
             <div class="cta-buttons">

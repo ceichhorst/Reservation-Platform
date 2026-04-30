@@ -48,8 +48,8 @@ public class ServiceManagementServlet extends HttpServlet {
         // Selected restaurant
         String restaurantIdParam = request.getParameter("restaurantId");
 
-        if (restaurantIdParam != null) {
-            Long restaurantId = Long.parseLong(restaurantIdParam);
+        if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
+            final Long restaurantId = Long.parseLong(restaurantIdParam);
 
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
 
@@ -83,38 +83,51 @@ public class ServiceManagementServlet extends HttpServlet {
 
         Long adminId = (Long) session.getAttribute("adminId");
         String action = request.getParameter("action");
-        Long restaurantId = Long.parseLong(request.getParameter("restaurantId"));
-        Long serviceId = Long.parseLong(request.getParameter("serviceId"));
+        Long restaurantId = null;
 
         try {
             switch (action) {
-                case "addService":
+                case "addService": {
+                    restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     LocalDate date = LocalDate.parse(request.getParameter("date"));
                     LocalTime time = LocalTime.parse(request.getParameter("time"));
                     int capacity = Integer.parseInt(request.getParameter("capacity"));
 
                     serviceManager.addService(adminId, restaurantId, date, time, capacity);
                     break;
+                }
 
-                case "deleteService":
+                case "deleteService": {
+                    Long serviceId = Long.parseLong(request.getParameter("serviceId"));
                     serviceManager.deleteService(adminId, serviceId);
                     break;
+                }
 
-                case "updateService":
+                case "updateService": {
+                    restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     String schedulingType = request.getParameter("scheduleType");
                     serviceManager.updateSchedulingType(adminId, restaurantId, schedulingType);
                     break;
+                }
 
-                case "toggleVisibility":
+                case "toggleVisibility": {
+                    Long serviceId = Long.parseLong(request.getParameter("serviceId"));
                     serviceManager.toggleVisibility(adminId, serviceId);
                     break;
+                }
             }
 
         } catch (RuntimeException e) {
             request.getSession().setAttribute("error", e.getMessage());
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/services");
+        if (restaurantId != null) {
+            response.sendRedirect(
+                    request.getContextPath() + "/admin/services?restaurantId=" + restaurantId
+            );
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/services");
+        }
 
     }
 }

@@ -78,7 +78,7 @@ public class ServiceManager {
 
         authorizeAdminAccess(adminId, service.getRestaurant().getId());
 
-        service.setVisible(!service.isVisible());
+        service.setVisible(!service.getVisible());
         serviceDao.update(service);
     }
 

@@ -36,7 +36,7 @@ public class ServiceInstance {
     private int version;
 
     @Column(name = "visible")
-    private boolean visible;
+    private Boolean visible;
 
     @OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -90,11 +90,11 @@ public class ServiceInstance {
         this.version = version;
     }
 
-    public boolean isVisible() {
+    public Boolean getVisible() {
         return visible;
     }
 
-    public void setVisible(boolean visible) {
+    public void setVisible(Boolean visible) {
         this.visible = visible;
     }
 

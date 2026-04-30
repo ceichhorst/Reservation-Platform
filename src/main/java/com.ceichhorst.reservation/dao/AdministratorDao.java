@@ -81,9 +81,9 @@ public class AdministratorDao extends GenericDao<Administrator> {
             CriteriaQuery<Restaurant> criteriaQuery = criteriaBuilder.createQuery(Restaurant.class);
             Root<Administrator> root = criteriaQuery.from(Administrator.class);
 
-            Join<Object, Object> restaurants = root.join("restaurants");
+            Join<Administrator, Restaurant> restaurants = root.join("restaurants");
 
-            criteriaQuery.select(restaurants.get("id"))
+            criteriaQuery.select(restaurants)
                     .where(criteriaBuilder.equal(root.get("id"), adminId));
 
             return session.createQuery(criteriaQuery).getResultList();

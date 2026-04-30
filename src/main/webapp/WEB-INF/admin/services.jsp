@@ -21,11 +21,12 @@
             <form method="get" action="${pageContext.request.contextPath}/admin/services">
                 <select name="restaurantId" onchange="this.form.submit()">
                     <option value="">-- Select Restaurant --</option>
-                    <c:forEach> var="restaurant" items="${restaurants}">
+                    <c:forEach var="restaurant" items="${restaurants}">
                         <option value="${restaurant.id}"
                             <c:if test="${restaurant.id == selectedRestaurantId}">
-                                selected
+                                selected="selected"
                             </c:if>
+                        >
                             ${restaurant.name}
                         </option>
                     </c:forEach>
@@ -52,7 +53,7 @@
         <div class="card">
             <h3>Add Service Dates</h3>
             <form method="post" action="${pageContext.request.contextPath}/admin/services">
-                <input type="hidden" name="action" value="updateService"/>
+                <input type="hidden" name="action" value="addService"/>
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
 
                 <label>Date:</label>
@@ -95,7 +96,7 @@
                                 </td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${service.visible}">
+                                        <c:when test="${service.visible == true}">
                                             Active
                                         </c:when>
                                         <c:otherwise>

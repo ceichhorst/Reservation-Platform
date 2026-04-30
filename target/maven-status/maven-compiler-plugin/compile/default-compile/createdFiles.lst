@@ -27,6 +27,8 @@ com/ceichhorst/reservation/auth/Keys.class
 com/ceichhorst/reservation/service/ServiceReservationStats.class
 com/ceichhorst/reservation/controller/CognitoStartup.class
 com/ceichhorst/reservation/auth/TokenResponse.class
+com/ceichhorst/reservation/service/ServiceManager.class
+com/ceichhorst/reservation/controller/ServiceManagementServlet.class
 com/ceichhorst/reservation/controller/Auth.class
 com/ceichhorst/reservation/entity/ReservationStatus.class
 com/ceichhorst/reservation/util/HibernateUtil.class

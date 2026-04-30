@@ -33,15 +33,7 @@
             </div>
             <div class="card">
                 <h3>Seats Booked</h3>
-                <ul>
-                    <c:forEach var="stat" items="${reservationStats}">
-                        <li>
-                            ${stat.serviceDate} -
-                            ${stat.reservationCount} reservations,
-                            ${stat.totalSeatsBooked} seats booked.
-                        </li>
-                    </c:forEach>
-                </ul>
+                <p>${totalSeatsBooked}</p>
             </div>
             <hr>
             <h2>Quick Actions</h2>

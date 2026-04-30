@@ -21,6 +21,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationStatus.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/DayAvailability.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ConfirmationServlet.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceReservationStats.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ReservationResult.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceInstance.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/AvailabilityService.java

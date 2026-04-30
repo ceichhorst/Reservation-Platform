@@ -24,6 +24,7 @@ com/ceichhorst/reservation/service/ServiceTemplate.class
 com/ceichhorst/reservation/service/DayAvailability.class
 com/ceichhorst/reservation/dao/RestaurantDao.class
 com/ceichhorst/reservation/auth/Keys.class
+com/ceichhorst/reservation/service/ServiceReservationStats.class
 com/ceichhorst/reservation/controller/CognitoStartup.class
 com/ceichhorst/reservation/auth/TokenResponse.class
 com/ceichhorst/reservation/controller/Auth.class

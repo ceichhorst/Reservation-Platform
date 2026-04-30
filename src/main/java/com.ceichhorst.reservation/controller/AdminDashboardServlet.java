@@ -7,6 +7,7 @@ import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.dao.ReservationDao;
+import com.ceichhorst.reservation.service.ServiceReservationStats;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -65,10 +66,12 @@ public class AdminDashboardServlet extends HttpServlet {
 
         List<ServiceInstance> services = serviceDao.getServicesByRestaurants(restaurantIds);
         Long reservationCount = reservationDao.countReservationsByService(restaurantIds);
+        List<ServiceReservationStats> reservationStats = reservationDao.countReservationsGroupedByService(restaurantIds);
 
         request.setAttribute("restaurants", restaurantIds);
         request.setAttribute("services", services);
         request.setAttribute("reservationCount", reservationCount);
+        request.setAttribute("reservationStats", reservationStats);
 
         request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp")
                 .forward(request, response);

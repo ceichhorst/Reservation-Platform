@@ -1,6 +1,7 @@
 package com.ceichhorst.reservation.dao;
 
 import com.ceichhorst.reservation.entity.Administrator;
+import com.ceichhorst.reservation.entity.Restaurant;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -71,6 +72,21 @@ public class AdministratorDao extends GenericDao<Administrator> {
                     .where(criteriaBuilder.equal(root.get("id"), adminId));
 
             return new HashSet<>(session.createQuery(criteriaQuery).getResultList());
+        }
+    }
+
+    public List<Restaurant> getRestaurantByAdminId(Long adminId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Restaurant> criteriaQuery = criteriaBuilder.createQuery(Restaurant.class);
+            Root<Administrator> root = criteriaQuery.from(Administrator.class);
+
+            Join<Object, Object> restaurants = root.join("restaurants");
+
+            criteriaQuery.select(restaurants.get("id"))
+                    .where(criteriaBuilder.equal(root.get("id"), adminId));
+
+            return session.createQuery(criteriaQuery).getResultList();
         }
     }
 

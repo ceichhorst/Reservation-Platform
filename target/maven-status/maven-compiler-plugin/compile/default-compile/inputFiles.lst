@@ -13,6 +13,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/auth/CognitoJWTParser.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceManager.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/LogoutServlet.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/LogoutSuccessServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/AdminDashboardServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/CognitoStartup.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/util/PropertiesLoader.java

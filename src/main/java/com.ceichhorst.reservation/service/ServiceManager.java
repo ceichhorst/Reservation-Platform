@@ -47,7 +47,7 @@ public class ServiceManager {
 
         authorizeAdminAccess(adminId, service.getRestaurant().getId());
 
-        if (service.getReservations() != null && !service.getReservations().isEmpty()) {
+        if (serviceDao.hasReservations(serviceId)) {
             throw new IllegalStateException("Cannot delete a service with reservations.");
         }
 

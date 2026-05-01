@@ -70,6 +70,12 @@
         </div>
         <!-- Service Table (Show seats booked in here potentially)-->
         <div class="card">
+            <c:if test="${not empty sessionScope.error}">
+                <div class="error">
+                    ${sessionScope.error}
+                </div>
+                <c:remove var="error" scope="session"/>
+            </c:if>
             <h3>Existing Services</h3>
             <c:choose>
                 <c:when test="${empty services}">
@@ -108,11 +114,13 @@
                                     <form method="post" style="display:inline;">
                                         <input type="hidden" name="action" value="toggleVisibility"/>
                                         <input type="hidden" name="serviceId" value="${service.id}"/>
+                                        <input type="hidden" name="restaurantId" value="${selectedRestauantId}"/>
                                         <button type="submit">Show/Hide</button>
                                     </form>
                                     <form method="post" style="display:inline;">
                                         <input type="hidden" name="action" value="deleteService"/>
                                         <input type="hidden" name="serviceId" value="${service.id}"/>
+                                        <input type="hidden" name="restaurantId" value="${selectedRestauantId}"/>
                                         <button type="submit">Delete</button>
                                     </form>
                                 </td>

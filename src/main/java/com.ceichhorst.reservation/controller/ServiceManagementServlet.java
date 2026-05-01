@@ -99,6 +99,7 @@ public class ServiceManagementServlet extends HttpServlet {
 
                 case "deleteService": {
                     Long serviceId = Long.parseLong(request.getParameter("serviceId"));
+                    restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     serviceManager.deleteService(adminId, serviceId);
                     break;
                 }
@@ -112,6 +113,7 @@ public class ServiceManagementServlet extends HttpServlet {
 
                 case "toggleVisibility": {
                     Long serviceId = Long.parseLong(request.getParameter("serviceId"));
+                    restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     serviceManager.toggleVisibility(adminId, serviceId);
                     break;
                 }

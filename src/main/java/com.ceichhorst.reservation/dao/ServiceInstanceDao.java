@@ -122,4 +122,22 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         return results;
     }
 
+    public boolean hasReservations(Long serviceId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+            Root<ServiceInstance> root = cq.from(ServiceInstance.class);
+
+            Join<Object, Object> reservations = root.join("reservations", JoinType.INNER);
+
+            cq.select(cb.count(reservations));
+            cq.where(cb.equal(root.get("id"), serviceId));
+
+            Long count = session.createQuery(cq).getSingleResult();
+
+            return count != null && count > 0;
+        }
+    }
+
 }

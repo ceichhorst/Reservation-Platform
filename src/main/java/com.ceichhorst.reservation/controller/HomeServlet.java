@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/r/*")
 public class HomeServlet extends HttpServlet {
@@ -52,6 +53,12 @@ public class HomeServlet extends HttpServlet {
 
             restaurant = restaurantDao.getById(restaurantId);
             services = serviceDao.getByRestaurantId(restaurantId);
+
+            // Check what service dates are active or hidden
+            services = services.stream()
+                    .filter(ServiceInstance::getVisible)
+                    .collect(Collectors.toList());
+
             List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
             request.setAttribute("restaurant", restaurant);

@@ -12,7 +12,9 @@ import com.ceichhorst.reservation.entity.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -66,6 +68,24 @@ public class HomeServlet extends HttpServlet {
                     .filter(ServiceInstance::getVisible)
                     .collect(Collectors.toList());
 
+            String selectedDateParam = request.getParameter("date");
+            List<ServiceInstance> availableTimes = new ArrayList<>();
+
+            if (selectedDateParam != null && !selectedDateParam.isEmpty()) {
+                LocalDate selectedDate = LocalDate.parse(selectedDateParam);
+
+                availableTimes = availabilityService.getAvailableTimes(
+                        restaurant,
+                        services,
+                        selectedDate
+                );
+
+                request.setAttribute("selectedDate", selectedDate);
+            }
+
+            request.setAttribute("availableTimes", availableTimes);
+
+            // Build availability calendar
             List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
             request.setAttribute("restaurant", restaurant);

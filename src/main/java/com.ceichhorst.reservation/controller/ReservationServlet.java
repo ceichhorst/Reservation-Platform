@@ -73,10 +73,14 @@ public class ReservationServlet extends HttpServlet {
                 try {
                     LocalDate date = LocalDate.parse(dateParam);
 
-                    List<ServiceInstance> instances =
-                            serviceDao.getServicesByRestaurantOnDate(restaurantId, date);
+                    List<ServiceInstance> availableTimes =
+                            availabilityService.getAvailableTimes(
+                                    restaurant,
+                                    services,
+                                    date
+                            );
 
-                    request.setAttribute("availableTimes", instances);
+                    request.setAttribute("availableTimes", availableTimes);
 
                 } catch (Exception e) {
                     request.setAttribute("message", "Invalid date format.");

@@ -35,6 +35,9 @@ public class ServiceInstance {
     @Version
     private int version;
 
+    @Column(name = "visible")
+    private Boolean visible;
+
     @OneToMany(mappedBy = "serviceInstance", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Reservation> reservations;
@@ -85,6 +88,14 @@ public class ServiceInstance {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 
     public List<Reservation> getReservations() {

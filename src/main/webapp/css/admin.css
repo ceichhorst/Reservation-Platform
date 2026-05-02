@@ -1,0 +1,71 @@
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.reservation-table th,
+.reservation-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.reservation-table th {
+    background-color: #F7F9FC;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.9em;
+}
+
+.status.CONFIRMED {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.CANCELLED {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+button {
+    padding: 6px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+button.danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* ADMIN DASHBOARD TABLE OVERVIEW */
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.dashboard-table th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+}
+
+.dashboard-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.dashboard-table tr:hover {
+    background-color: #f1f1f1;
+}

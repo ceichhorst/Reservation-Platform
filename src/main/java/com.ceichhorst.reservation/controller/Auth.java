@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ceichhorst.reservation.auth.*;
 import com.ceichhorst.reservation.util.PropertiesLoader;
@@ -33,6 +34,7 @@ import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,6 +50,7 @@ import com.ceichhorst.reservation.entity.Administrator;
  */
 
 public class Auth extends HttpServlet implements PropertiesLoader {
+
     Properties properties;
     String CLIENT_ID;
     String CLIENT_SECRET;
@@ -77,6 +80,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String authCode = req.getParameter("code");
+        String userName;
         String userEmail;
         String role;
 
@@ -92,13 +96,32 @@ public class Auth extends HttpServlet implements PropertiesLoader {
                 TokenResponse tokenResponse = getToken(authRequest);
                 Map<String, String> authData = validate(tokenResponse);
 
+                userName = authData.get("username");
                 userEmail = authData.get("email");
                 role = authData.get("role");
 
-                //Administrator admin = getAdminFromDatabase(userEmail);
+                AdministratorDao administratorDao = new AdministratorDao();
+                Administrator administrator = administratorDao.getAdministratorByEmail(userEmail);
+
+                if (administrator == null) {
+                    administrator = new Administrator();
+                    administrator.setUsername(userName);
+                    administrator.setEmail(userEmail);
+                    administrator.setRole(role);
+                    administrator.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+
+                    // Make note of admin_restaurant join table
+                    // Consider implementing at login or manually assigned via 'Dyana administrators'
+
+                    administratorDao.save(administrator);
+                }
+
+                // Last login
+                administrator.setLastLogin(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+                administratorDao.update(administrator);
 
                 HttpSession session = req.getSession();
-                //session.setAttribute("adminUser", admin);
+                session.setAttribute("adminId", administrator.getId());
                 session.setAttribute("userEmail", userEmail);
                 session.setAttribute("role", role);
 
@@ -132,6 +155,13 @@ public class Auth extends HttpServlet implements PropertiesLoader {
         HttpResponse<?> response = null;
 
         response = client.send(authRequest, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            System.out.println("STATUS: " + response.statusCode());
+            System.out.println("ERROR BODY: " + response.body());
+
+            throw new IOException("Failed to get token from Cognito");
+        }
 
 
         logger.debug("Response headers: " + response.headers().toString());
@@ -201,6 +231,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
         // Verify the token
         DecodedJWT jwt = verifier.verify(tokenResponse.getIdToken());
         List<String> groups = jwt.getClaim("cognito:groups").asList(String.class);
+        String userName = jwt.getClaim("cognito:username").asString();
         String userEmail = jwt.getClaim("email").asString();
 
         String role = "USER";
@@ -214,6 +245,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
 
         // keeping it simple and just returning the userEmail
         Map<String, String> result = new HashMap();
+        result.put("username", userName);
         result.put("email", userEmail);
         result.put("role", role);
         return result;

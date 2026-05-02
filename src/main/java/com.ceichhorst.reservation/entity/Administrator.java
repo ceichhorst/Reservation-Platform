@@ -16,8 +16,8 @@ public class Administrator {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "role", nullable = false)
     private String role;
@@ -53,12 +53,12 @@ public class Administrator {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRole() {

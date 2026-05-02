@@ -17,24 +17,28 @@
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
     <div class="container">
+        <!-- Add admin profile section or simple 'Welcome $ { adminUser }' message -->
         <h2>Overview</h2>
+        <!-- Don't need time listed on this table -->
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Service Date</th>
+                    <th>Total Reservations Confirmed</th>
+                    <th>Total Seats Booked</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="stat" items="${reservationStats}">
+                    <tr>
+                        <td>${stat.serviceDate}</td>
+                        <td>${stat.reservationCount}</td>
+                        <td>${stat.totalSeatsBooked}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
         <div class="dashboard-cards">
-            <div class="card">
-                <h3>Upcoming Services</h3>
-                <ul>
-                    <c:forEach var="service" items="${services}">
-                        <li>${service.serviceDate}</li>
-                    </c:forEach>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Total Reservations (Per Service)</h3>
-                <ul>
-                    <c:forEach var="reservation" items="${reservations}">
-                        <li>${reservation.Reservation}</li>
-                    </c:forEach>
-                </ul>
-            </div>
             <hr>
             <h2>Quick Actions</h2>
             <div class="cta-buttons">

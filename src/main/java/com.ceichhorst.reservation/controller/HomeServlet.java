@@ -13,7 +13,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Servlet for the home page of the Reservation Platform
+ *
+ * URL contains the ID of the corresponding restaurant the program is working with
+ * (This is an 'individualized' platform)
+ */
 @WebServlet("/r/*")
 public class HomeServlet extends HttpServlet {
 
@@ -39,6 +46,7 @@ public class HomeServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Restaruant ID");
             return;
         }
+        request.getSession().setAttribute("lastRestaurantId", restaurantId);
 
         String page = (parts.length > 2) ? parts[2] : "home";
 
@@ -52,9 +60,16 @@ public class HomeServlet extends HttpServlet {
 
             restaurant = restaurantDao.getById(restaurantId);
             services = serviceDao.getByRestaurantId(restaurantId);
+
+            // Check what service dates are active or hidden
+            services = services.stream()
+                    .filter(ServiceInstance::getVisible)
+                    .collect(Collectors.toList());
+
             List<DayAvailability> calendar = availabilityService.buildCalendar(services);
 
             request.setAttribute("restaurant", restaurant);
+            request.getSession().setAttribute("restaurant", restaurant);
 
             request.setAttribute("services", services);
             request.setAttribute("calendar", calendar);

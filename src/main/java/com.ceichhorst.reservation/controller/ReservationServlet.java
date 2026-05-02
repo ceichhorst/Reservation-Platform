@@ -36,6 +36,9 @@ public class ReservationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession();
+        Restaurant sessionRestaurant = (Restaurant) session.getAttribute("restaurant");
+
         String dateParam = request.getParameter("date");
         String restaurantIdStr = request.getParameter("restaurantId");
 
@@ -54,6 +57,10 @@ public class ReservationServlet extends HttpServlet {
             Restaurant restaurant = restaurantDao.getById(restaurantId);
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
             List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+
+            if (sessionRestaurant == null || !sessionRestaurant.getId().equals(restaurantId)) {
+                session.setAttribute("restaurant", restaurant);
+            }
 
             request.setAttribute("restaurant", restaurant);
             request.setAttribute("services", services);

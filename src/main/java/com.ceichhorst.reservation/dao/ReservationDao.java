@@ -2,8 +2,10 @@ package com.ceichhorst.reservation.dao;
 
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
+import com.ceichhorst.reservation.service.ServiceReservationStats;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,7 +15,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Join;
 import java.util.List;
+import java.util.Set;
 import java.time.LocalDate;
 
 public class ReservationDao extends GenericDao<Reservation> {
@@ -100,6 +104,57 @@ public class ReservationDao extends GenericDao<Reservation> {
         session.close();
 
         return results;
+    }
+
+    public Long countReservationsByService (Set<Long> restaurantIds) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+
+        // Join: Reservation -> ServiceInstance -> Restaurant
+        Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
+        Join<ServiceInstance, Restaurant> restaurantJoin = serviceJoin.join("restaurant");
+
+        cq.select(cb.count(root))
+                .where(restaurantJoin.get("id").in(restaurantIds));
+
+        Long count = session.createQuery(cq).getSingleResult();
+        session.close();
+
+        return count;
+
+    }
+
+    public List<ServiceReservationStats> countReservationsGroupedByService (Set<Long> restaurantIds) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<ServiceReservationStats> cq = cb.createQuery(ServiceReservationStats.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+
+        // Join: Reservation -> ServiceInstance -> Restaurant
+        Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
+        Join<ServiceInstance, Restaurant> restaurantJoin = serviceJoin.join("restaurant");
+
+        cq.select(cb.construct(
+                ServiceReservationStats.class,
+                serviceJoin.get("serviceDate"),
+                cb.count(root),
+                cb.sum(root.get("partySize")).as(Long.class)
+        ));
+
+        cq.where(restaurantJoin.get("id").in(restaurantIds));
+        cq.groupBy(serviceJoin.get("serviceDate"));
+        cq.orderBy(cb.asc(serviceJoin.get("serviceDate")));
+
+
+        List<ServiceReservationStats> results = session.createQuery(cq).getResultList();
+        session.close();
+
+        return results;
+
     }
 
 

@@ -13,13 +13,15 @@ import java.net.URLEncoder;
 import java.util.Properties;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Servlet that directs the Cognito logout to the logout success page
+ */
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet implements PropertiesLoader {
 
     private Properties properties;
     private String CLIENT_ID;
     private String LOGOUT_URL;
-    private String LOGOUT_REDIRECT;
 
     @Override
     public void init() throws ServletException {
@@ -27,7 +29,6 @@ public class LogoutServlet extends HttpServlet implements PropertiesLoader {
             properties = loadProperties("/cognito.properties");
             CLIENT_ID = properties.getProperty("client.id");
             LOGOUT_URL = properties.getProperty("logoutURL");
-            LOGOUT_REDIRECT = properties.getProperty("logoutRedirect");
         } catch (Exception e) {
             throw new ServletException("Unable to load Cognito Properties", e);
         }
@@ -40,13 +41,32 @@ public class LogoutServlet extends HttpServlet implements PropertiesLoader {
 
         HttpSession session = request.getSession(false);
 
+        Long restaurantId = null;
+
         if (session != null) {
+            restaurantId = (Long) session.getAttribute("lastRestaurantId");
             session.invalidate();
+        }
+
+        String redirectUri;
+
+        if (restaurantId != null) {
+            redirectUri = request.getContextPath() + "/logout-success";
+            request.getSession(true).setAttribute("postLogoutRedirect", "/r/" + restaurantId);
+        } else {
+            redirectUri = request.getContextPath() + "/logout-success";
+            request.getSession(true).setAttribute("postLogoutRedirect", "/");
         }
 
         String redirectUrl = LOGOUT_URL
                 + "?client_id=" + CLIENT_ID
-                + "&logout_uri=" + LOGOUT_REDIRECT;
+                + "&logout_uri=" + URLEncoder.encode(
+                        request.getScheme() + "://" +
+                        request.getServerName() + ":" +
+                        request.getServerPort() +
+                        redirectUri,
+                        StandardCharsets.UTF_8
+                );
 
         response.sendRedirect(redirectUrl);
     }

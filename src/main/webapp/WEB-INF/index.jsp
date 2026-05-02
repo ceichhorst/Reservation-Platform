@@ -31,7 +31,7 @@
                 <c:forEach var="day" items="${calendar}">
                     <option value="${day.date}"
                             <c:if test="${day.date == selectedDate}">selected</c:if>>
-                            ${day.date} ${day.available ? '' : '(Full)'}
+                            ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
                     </option>
                 </c:forEach>
             </select>

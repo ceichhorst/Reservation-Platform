@@ -29,6 +29,9 @@ public class ServiceInstance {
     @Column(name = "service_time", nullable = false)
     private LocalTime serviceTime;
 
+    @Column(name = "end_time")
+    private LocalTime endTime;
+
     @Column(nullable = false)
     private int capacity;
 
@@ -68,6 +71,14 @@ public class ServiceInstance {
 
     public LocalTime getServiceTime() {
         return serviceTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     public void setServiceTime(LocalTime serviceTime) {

@@ -9,6 +9,7 @@ import com.ceichhorst.reservation.service.AvailabilityService;
 import com.ceichhorst.reservation.service.DayAvailability;
 import com.ceichhorst.reservation.service.ReservationService;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
 import org.hibernate.Session;
@@ -25,6 +26,7 @@ import java.time.LocalDate;
 public class ReservationServlet extends HttpServlet {
 
     private ServiceInstanceDao serviceInstanceDao;
+    private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
     @Override
     public void init() {
@@ -80,6 +82,7 @@ public class ReservationServlet extends HttpServlet {
                                     date
                             );
 
+                    availableTimes = formatter.formatTimes(availableTimes);
                     request.setAttribute("availableTimes", availableTimes);
 
                 } catch (Exception e) {

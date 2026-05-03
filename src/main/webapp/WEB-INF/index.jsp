@@ -59,7 +59,7 @@
                 <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
                     <c:if test="${not empty availableTimes}">
                         <div class="fixed-slot">
-                                ${availableTimes[0].serviceTime} (assigned automatically)
+                                ${availableTimes[0].serviceTimeFormatted} (assigned automatically)
                         </div>
                         <input type="hidden"
                                name="serviceInstanceId"
@@ -72,7 +72,7 @@
                         <option value="">Select a Time</option>
                         <c:forEach var="slot" items="${availableTimes}">
                             <option value="${slot.id}">
-                                ${slot.serviceTime.format(DateTimeFormatter.ofPattern("h:mm a"))}
+                                ${slot.serviceTimeFormatted}
                             </option>
                         </c:forEach>
                     </select>

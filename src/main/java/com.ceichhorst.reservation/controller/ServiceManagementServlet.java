@@ -7,6 +7,7 @@ import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.service.ServiceManager;
+import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,6 +24,7 @@ public class ServiceManagementServlet extends HttpServlet {
     private ServiceInstanceDao serviceDao = new ServiceInstanceDao();
     private AdministratorDao adminDao = new AdministratorDao();
     private ServiceManager serviceManager = new ServiceManager();
+    private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,6 +55,7 @@ public class ServiceManagementServlet extends HttpServlet {
             final Long restaurantId = Long.parseLong(restaurantIdParam);
 
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
+            services = formatter.formatTimes(services);
 
             request.setAttribute("services", services);
             request.setAttribute("selectedRestaurantId", restaurantId);

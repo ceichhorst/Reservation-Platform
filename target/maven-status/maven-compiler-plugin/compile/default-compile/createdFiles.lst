@@ -2,6 +2,7 @@ com/ceichhorst/reservation/controller/ConfirmationServlet.class
 com/ceichhorst/reservation/controller/AdminDashboardServlet.class
 com/ceichhorst/reservation/entity/Reservation.class
 com/ceichhorst/reservation/dao/ServiceInstanceDao.class
+com/ceichhorst/reservation/service/ServiceTimeFormatter.class
 com/ceichhorst/reservation/service/AvailabilityService$1.class
 com/ceichhorst/reservation/entity/Administrator.class
 com/ceichhorst/reservation/service/ReservationResult.class

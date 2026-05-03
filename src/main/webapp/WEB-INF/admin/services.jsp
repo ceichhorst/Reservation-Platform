@@ -33,19 +33,28 @@
                 </select>
             </form>
         </div>
-        <c:if test="${not empty selectedRestaurantId and restaurant.id == selectedRestaurantId}">
+        <c:if test="${not empty selectedRestaurantId}">
         <!-- Service Config -->
         <div class="card">
             <h3>Service Configuration</h3>
-            <p><strong>Schedule Type:</strong> ${schedulingType}</p>
+            <p><strong>Schedule Type:</strong> ${scheduleType}</p>
             <form method="post" action="${pageContext.request.contextPath}/admin/services">
                 <input type="hidden" name="action" value="updateService"/>
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
 
                 <select name="scheduleType">
-                    <option value="DATE_ONLY" ${scheduleType == 'DATE_ONLY' ? 'selected' : ''}>DATE ONLY</option>
-                    <option value="DATE_TIME" ${scheduleType == 'DATE_TIME' ? 'selected' : ''}>DATE & TIME</option>
-                    <option value="FIXED_TIME_SLOTS" ${scheduleType == 'FIXED_TIME_SLOTS' ? 'selected' : ''}>FIXED TIME SLOTS</option>
+                    <option value="DATE_ONLY"
+                            <c:if test="${scheduleType == 'DATE_ONLY'}">selected</c:if>>
+                        DATE ONLY
+                    </option>
+                    <option value="DATE_TIME"
+                            <c:if test="${scheduleType == 'DATE_TIME'}">selected</c:if>>
+                        DATE & TIME
+                    </option>
+                    <option value="FIXED_TIME_SLOTS"
+                            <c:if test="${scheduleType == 'FIXED_TIME_SLOTS'}">selected</c:if>>
+                        FIXED TIME SLOTS
+                    </option>
                 </select>
                 <button type="submit">Update</button>
             </form>
@@ -119,12 +128,12 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${scheduleType == 'DATE_TIME'}">
-                                            ${service.serviceTime}
+                                            ${service.serviceTimeFormatted}
                                             -
-                                            ${service.endTime}
+                                            ${service.endTimeFormatted}
                                         </c:when>
                                         <c:otherwise>
-                                            ${service.serviceTime}
+                                            ${service.serviceTimeFormatted}
                                         </c:otherwise>
                                     </c:choose>
                                 </td>

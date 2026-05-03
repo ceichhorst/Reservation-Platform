@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 public class HomeServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(HomeServlet.class);
+    private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -82,6 +83,9 @@ public class HomeServlet extends HttpServlet {
 
                 request.setAttribute("selectedDate", selectedDate);
             }
+
+            services = formatter.formatTimes(services);
+            availableTimes = formatter.formatTimes(availableTimes);
 
             request.setAttribute("availableTimes", availableTimes);
 

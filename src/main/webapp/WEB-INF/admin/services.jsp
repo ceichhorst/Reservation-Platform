@@ -33,6 +33,7 @@
                 </select>
             </form>
         </div>
+        <c:if test="${not empty selectedRestaurantId and restaurant.id == selectedRestaurantId}">
         <!-- Service Config -->
         <div class="card">
             <h3>Service Configuration</h3>
@@ -42,9 +43,9 @@
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
 
                 <select name="scheduleType">
-                    <option value="DATE_ONLY">DATE ONLY</option>
-                    <option value="DATE_TIME">DATE & TIME</option>
-                    <option value="FIXED_TIME_SLOTS">FIXED TIME SLOTS</option>
+                    <option value="DATE_ONLY" ${scheduleType == 'DATE_ONLY' ? 'selected' : ''}>DATE ONLY</option>
+                    <option value="DATE_TIME" ${scheduleType == 'DATE_TIME' ? 'selected' : ''}>DATE & TIME</option>
+                    <option value="FIXED_TIME_SLOTS" ${scheduleType == 'FIXED_TIME_SLOTS' ? 'selected' : ''}>FIXED TIME SLOTS</option>
                 </select>
                 <button type="submit">Update</button>
             </form>
@@ -56,14 +57,32 @@
                 <input type="hidden" name="action" value="addService"/>
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
 
-                <label>Date:</label>
-                <input type="date" name="date" required />
+                <c:choose>
+                    <c:when test="${scheduleType == 'DATE_TIME'}">
+                        <label>Date:</label>
+                        <input type="date" name="date" required />
 
-                <label>Time:</label>
-                <input type="time" name="time" required />
+                        <label>Start Time:</label>
+                        <input type="time" name="time" required />
 
-                <label>Capacity:</label>
-                <input type="number" name="capacity" required />
+                        <label>End Time:</label>
+                        <input type="time" name="endTime" required />
+
+                        <label>Capacity:</label>
+                        <input type="number" name="capacity" required />
+
+                    </c:when>
+                    <c:otherwise>
+                        <label>Date:</label>
+                        <input type="date" name="date" required />
+
+                        <label>Time:</label>
+                        <input type="time" name="time" required />
+
+                        <label>Capacity:</label>
+                        <input type="number" name="capacity" required />
+                    </c:otherwise>
+                </c:choose>
 
                 <button type="submit">Add Service</button>
             </form>
@@ -96,7 +115,18 @@
                         <c:forEach var="service" items="${services}">
                             <tr>
                                 <td>${service.serviceDate}</td>
-                                <td>${service.serviceTime}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${scheduleType == 'DATE_TIME'}">
+                                            ${service.serviceTime}
+                                            -
+                                            ${service.endTime}
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${service.serviceTime}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td>
                                     ${service.capacity}
                                 </td>
@@ -114,13 +144,13 @@
                                     <form method="post" style="display:inline;">
                                         <input type="hidden" name="action" value="toggleVisibility"/>
                                         <input type="hidden" name="serviceId" value="${service.id}"/>
-                                        <input type="hidden" name="restaurantId" value="${selectedRestauantId}"/>
+                                        <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
                                         <button type="submit">Show/Hide</button>
                                     </form>
                                     <form method="post" style="display:inline;">
                                         <input type="hidden" name="action" value="deleteService"/>
                                         <input type="hidden" name="serviceId" value="${service.id}"/>
-                                        <input type="hidden" name="restaurantId" value="${selectedRestauantId}"/>
+                                        <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
                                         <button type="submit">Delete</button>
                                     </form>
                                 </td>
@@ -131,6 +161,7 @@
                 </c:otherwise>
             </c:choose>
         </div>
+        </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
 </body>

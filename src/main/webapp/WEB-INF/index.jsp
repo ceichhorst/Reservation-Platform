@@ -28,12 +28,24 @@
             <select name="date" onchange="this.form.submit()" required>
                 <option value="">Select a Date</option>
 
-                <c:forEach var="day" items="${calendar}">
-                    <option value="${day.date}"
-                            <c:if test="${day.date == selectedDate}">selected</c:if>>
-                            ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
-                    </option>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
+                        <c:forEach var="day" items="${calendar}">
+                            <option value="${day.date}"
+                                    <c:if test="${day.date == selectedDate}">selected</c:if>>
+                                    ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
+                            </option>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="day" items="${calendar}">
+                            <option value="${day.date}"
+                                    <c:if test="${day.date == selectedDate}">selected</c:if>>
+                                    ${day.date}
+                            </option>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </select>
 
         </form>
@@ -60,7 +72,7 @@
                         <option value="">Select a Time</option>
                         <c:forEach var="slot" items="${availableTimes}">
                             <option value="${slot.id}">
-                                ${slot.serviceTime}
+                                ${slot.serviceTime.format(DateTimeFormatter.ofPattern("h:mm a"))}
                             </option>
                         </c:forEach>
                     </select>
@@ -79,6 +91,7 @@
 
         </form>
     </section>
+    <!--
     <section class="upcoming-dates">
         <h2>Upcoming Service Dates</h2>
         <ul>
@@ -87,6 +100,7 @@
             </c:forEach>
         </ul>
     </section>
+    -->
     <section class="mini-calendar">
         <h2>Availability Calendar</h2>
         <c:forEach var="day" items="${calendar}">

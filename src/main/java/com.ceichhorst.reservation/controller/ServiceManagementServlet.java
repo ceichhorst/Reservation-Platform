@@ -2,6 +2,7 @@ package com.ceichhorst.reservation.controller;
 
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.dao.AdministratorDao;
+import com.ceichhorst.reservation.dao.RestaurantDao;
 import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
@@ -56,10 +57,7 @@ public class ServiceManagementServlet extends HttpServlet {
             request.setAttribute("services", services);
             request.setAttribute("selectedRestaurantId", restaurantId);
 
-            Restaurant selected = restaurants.stream()
-                    .filter(r -> r.getId().equals(restaurantId))
-                    .findFirst()
-                    .orElse(null);
+            Restaurant selected = new RestaurantDao().getById(restaurantId);
 
             if (selected != null) {
                 request.setAttribute("scheduleType", selected.getSchedulingType());
@@ -91,9 +89,10 @@ public class ServiceManagementServlet extends HttpServlet {
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     LocalDate date = LocalDate.parse(request.getParameter("date"));
                     LocalTime time = LocalTime.parse(request.getParameter("time"));
+                    LocalTime endTime = LocalTime.parse(request.getParameter("endTime"));
                     int capacity = Integer.parseInt(request.getParameter("capacity"));
 
-                    serviceManager.addService(adminId, restaurantId, date, time, capacity);
+                    serviceManager.addService(adminId, restaurantId, date, time, endTime, capacity);
                     break;
                 }
 

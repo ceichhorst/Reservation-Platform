@@ -96,10 +96,16 @@ public class ServiceManagementServlet extends HttpServlet {
                     break;
                 }
 
-                case "deleteService": {
-                    Long serviceId = Long.parseLong(request.getParameter("serviceId"));
+                case "bulkDelete": {
+                    String[] serviceIds = request.getParameterValues("serviceIds");
+
+                    if (serviceIds != null) {
+                        for (String id : serviceIds) {
+                            serviceManager.deleteService(adminId, Long.parseLong(id));
+                        }
+                    }
+
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
-                    serviceManager.deleteService(adminId, serviceId);
                     break;
                 }
 
@@ -110,10 +116,16 @@ public class ServiceManagementServlet extends HttpServlet {
                     break;
                 }
 
-                case "toggleVisibility": {
-                    Long serviceId = Long.parseLong(request.getParameter("serviceId"));
+                case "bulkToggleVisibility": {
+                    String[] serviceIds = request.getParameterValues("serviceIds");
+
+                    if (serviceIds != null) {
+                        for (String id : serviceIds) {
+                            serviceManager.toggleVisibility(adminId, Long.parseLong(id));
+                        }
+                    }
+
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
-                    serviceManager.toggleVisibility(adminId, serviceId);
                     break;
                 }
             }

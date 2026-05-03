@@ -101,6 +101,7 @@
                     <p>No services found for this restaurant.</p>
                 </c:when>
                 <c:otherwise>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/services">
                     <table class="reservation-table">
                         <thead>
                         <tr>
@@ -108,7 +109,7 @@
                             <th>Time</th>
                             <th>Capacity</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Select</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -141,23 +142,20 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <form method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="toggleVisibility"/>
-                                        <input type="hidden" name="serviceId" value="${service.id}"/>
-                                        <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
-                                        <button type="submit">Show/Hide</button>
-                                    </form>
-                                    <form method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="deleteService"/>
-                                        <input type="hidden" name="serviceId" value="${service.id}"/>
-                                        <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
-                                        <button type="submit">Delete</button>
-                                    </form>
+                                    <input type="checkbox" name="serviceIds" value="${service.id}" />
                                 </td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                    <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
+                    <button type="submit" name="action" value="bulkToggleVisibility">
+                        Toggle Visibility
+                    </button>
+                    <button type="submit" name="action" value="bulkDelete">
+                        Delete
+                    </button>
+                    </form>
                 </c:otherwise>
             </c:choose>
         </div>

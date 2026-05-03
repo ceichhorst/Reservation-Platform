@@ -133,7 +133,7 @@ public class ReservationServlet extends HttpServlet {
 
             request.setAttribute("restaurantId", restaurantId);
             request.setAttribute("reservationDate", instance.getServiceDate().toString());
-            request.setAttribute("reservationTime", instance.getServiceTime().toString());
+            request.setAttribute("reservationTime", instance.getServiceTimeFormatted());
             request.setAttribute("partySize", partySize);
 
             request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")

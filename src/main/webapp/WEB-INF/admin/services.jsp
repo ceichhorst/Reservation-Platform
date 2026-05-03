@@ -105,58 +105,74 @@
                 <c:remove var="error" scope="session"/>
             </c:if>
             <h3>Existing Services</h3>
+            <div class="filter-bar">
+                <form method="get" action="${pageContext.request.contextPath}/admin/services">
+                    <input type="hidden" name="restaurantId" value="${selectedRestaurantId}" />
+                    <label>Filter:</label>
+                    <select name="filterType" onchange="toggleFilterInputs()">
+                        <option value="">All Dates</option>
+                        <option value="DATE" ${param.filterType == 'DATE'? 'selected' : ''}>Specific Date</option>
+                        <option value="MONTH" ${param.filterType == 'MONTH'? 'selected' : ''}>By Month</option>
+                    </select>
+                        <input type="date" id="dateInput" name="date" value="${param.date}" style="display:none" />
+                        <input type="month" id="monthInput" name="month" value="${param.month}" style="display:none" />
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
             <c:choose>
                 <c:when test="${empty services}">
                     <p>No services found for this restaurant.</p>
                 </c:when>
                 <c:otherwise>
                     <form method="post" action="${pageContext.request.contextPath}/admin/services">
-                    <table class="reservation-table">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Capacity</th>
-                            <th>Status</th>
-                            <th>Select</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="service" items="${services}">
-                            <tr>
-                                <td>${service.serviceDate}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${scheduleType == 'DATE_TIME'}">
-                                            ${service.serviceTimeFormatted}
-                                            -
-                                            ${service.endTimeFormatted}
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${service.serviceTimeFormatted}
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    ${service.capacity}
-                                </td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${service.visible == true}">
-                                            Active
-                                        </c:when>
-                                        <c:otherwise>
-                                            Hidden
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="serviceIds" value="${service.id}" />
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                        <div class="scroll-container">
+                            <table class="reservation-table">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Capacity</th>
+                                    <th>Status</th>
+                                    <th>Select</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="service" items="${services}">
+                                    <tr>
+                                        <td>${service.serviceDate}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${scheduleType == 'DATE_TIME'}">
+                                                    ${service.serviceTimeFormatted}
+                                                    -
+                                                    ${service.endTimeFormatted}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${service.serviceTimeFormatted}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                                ${service.capacity}
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${service.visible == true}">
+                                                    Active
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Hidden
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="serviceIds" value="${service.id}" />
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
                     <button type="submit" name="action" value="bulkToggleVisibility">
                         Toggle Visibility
@@ -171,6 +187,7 @@
         </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <script src="<c:url value='/js/admin.js' />"></script>
 </body>
 </html>
 

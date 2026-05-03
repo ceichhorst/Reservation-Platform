@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @WebServlet("/admin/services")
 public class ServiceManagementServlet extends HttpServlet {
@@ -54,7 +55,45 @@ public class ServiceManagementServlet extends HttpServlet {
         if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
             final Long restaurantId = Long.parseLong(restaurantIdParam);
 
+            // Filtering variables for Existing Services table
+            String filterType = request.getParameter("filterType");
+            String filterDate = request.getParameter("filterDate");
+            String filterMonth = request.getParameter("filterMonth");
+
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
+
+            // Filtering
+            if (filterType != null) {
+                switch (filterType) {
+                    case "DATE":
+                        if (filterDate != null && !filterDate.isEmpty()) {
+                            LocalDate date = LocalDate.parse(filterDate);
+                            services.stream()
+                                    .filter(s -> s.getServiceDate().equals(date))
+                                    .collect(Collectors.toList());
+                        }
+                        break;
+
+                    case "MONTH":
+                        if (filterDate != null && !filterDate.isEmpty()) {
+                            String[] parts = filterMonth.split("-");
+                            int year = Integer.parseInt(parts[0]);
+                            int month = Integer.parseInt(parts[1]);
+                            services.stream()
+                                    .filter(s ->
+                                            s.getServiceDate().getYear() == year &&
+                                            s.getServiceDate().getMonthValue() == month
+                                    )
+                                    .collect(Collectors.toList());
+                        }
+                        break;
+
+                    case "ALL":
+                    default:
+                        break;
+                }
+            }
+
             services = formatter.formatTimes(services);
 
             request.setAttribute("services", services);

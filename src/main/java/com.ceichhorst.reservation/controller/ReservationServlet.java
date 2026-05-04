@@ -9,6 +9,7 @@ import com.ceichhorst.reservation.service.AvailabilityService;
 import com.ceichhorst.reservation.service.DayAvailability;
 import com.ceichhorst.reservation.service.ReservationService;
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
 import org.hibernate.Session;
@@ -25,6 +26,7 @@ import java.time.LocalDate;
 public class ReservationServlet extends HttpServlet {
 
     private ServiceInstanceDao serviceInstanceDao;
+    private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
     @Override
     public void init() {
@@ -73,10 +75,15 @@ public class ReservationServlet extends HttpServlet {
                 try {
                     LocalDate date = LocalDate.parse(dateParam);
 
-                    List<ServiceInstance> instances =
-                            serviceDao.getServicesByRestaurantOnDate(restaurantId, date);
+                    List<ServiceInstance> availableTimes =
+                            availabilityService.getAvailableTimes(
+                                    restaurant,
+                                    services,
+                                    date
+                            );
 
-                    request.setAttribute("availableTimes", instances);
+                    availableTimes = formatter.formatTimes(availableTimes);
+                    request.setAttribute("availableTimes", availableTimes);
 
                 } catch (Exception e) {
                     request.setAttribute("message", "Invalid date format.");
@@ -126,7 +133,7 @@ public class ReservationServlet extends HttpServlet {
 
             request.setAttribute("restaurantId", restaurantId);
             request.setAttribute("reservationDate", instance.getServiceDate().toString());
-            request.setAttribute("reservationTime", instance.getServiceTime().toString());
+            request.setAttribute("reservationTime", instance.getServiceTimeFormatted());
             request.setAttribute("partySize", partySize);
 
             request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")

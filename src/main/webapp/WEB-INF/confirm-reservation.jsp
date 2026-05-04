@@ -49,7 +49,7 @@
             <!-- Helper Footer -->
             <section class="confirmation-footer">
                 <p>
-                    A confirmation email has been sent to <strong>${guestEmail}</strong>.
+                    A confirmation email has been sent to <strong>${email}</strong>.
                 </p>
                 <p>
                     If you need to make changes to your reservation, please email ${restaurantEmail}.

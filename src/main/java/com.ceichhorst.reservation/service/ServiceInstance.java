@@ -29,6 +29,15 @@ public class ServiceInstance {
     @Column(name = "service_time", nullable = false)
     private LocalTime serviceTime;
 
+    @Column(name = "end_time")
+    private LocalTime endTime;
+
+    @Transient
+    private String serviceTimeFormatted;
+
+    @Transient
+    private String endTimeFormatted;
+
     @Column(nullable = false)
     private int capacity;
 
@@ -70,8 +79,32 @@ public class ServiceInstance {
         return serviceTime;
     }
 
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
     public void setServiceTime(LocalTime serviceTime) {
         this.serviceTime = serviceTime;
+    }
+
+    public String getServiceTimeFormatted() {
+        return serviceTimeFormatted;
+    }
+
+    public void setServiceTimeFormatted(String serviceTimeFormatted) {
+        this.serviceTimeFormatted = serviceTimeFormatted;
+    }
+
+    public String getEndTimeFormatted() {
+        return endTimeFormatted;
+    }
+
+    public void setEndTimeFormatted(String endTimeFormatted) {
+        this.endTimeFormatted = endTimeFormatted;
     }
 
     public int getCapacity() {

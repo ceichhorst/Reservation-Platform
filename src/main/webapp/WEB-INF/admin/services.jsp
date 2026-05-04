@@ -33,18 +33,28 @@
                 </select>
             </form>
         </div>
+        <c:if test="${not empty selectedRestaurantId}">
         <!-- Service Config -->
         <div class="card">
             <h3>Service Configuration</h3>
-            <p><strong>Schedule Type:</strong> ${schedulingType}</p>
+            <p><strong>Schedule Type:</strong> ${scheduleType}</p>
             <form method="post" action="${pageContext.request.contextPath}/admin/services">
                 <input type="hidden" name="action" value="updateService"/>
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
 
                 <select name="scheduleType">
-                    <option value="DATE_ONLY">DATE ONLY</option>
-                    <option value="DATE_TIME">DATE & TIME</option>
-                    <option value="FIXED_TIME_SLOTS">FIXED TIME SLOTS</option>
+                    <option value="DATE_ONLY"
+                            <c:if test="${scheduleType == 'DATE_ONLY'}">selected</c:if>>
+                        DATE ONLY
+                    </option>
+                    <option value="DATE_TIME"
+                            <c:if test="${scheduleType == 'DATE_TIME'}">selected</c:if>>
+                        DATE & TIME
+                    </option>
+                    <option value="FIXED_TIME_SLOTS"
+                            <c:if test="${scheduleType == 'FIXED_TIME_SLOTS'}">selected</c:if>>
+                        FIXED TIME SLOTS
+                    </option>
                 </select>
                 <button type="submit">Update</button>
             </form>
@@ -56,14 +66,32 @@
                 <input type="hidden" name="action" value="addService"/>
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
 
-                <label>Date:</label>
-                <input type="date" name="date" required />
+                <c:choose>
+                    <c:when test="${scheduleType == 'DATE_TIME'}">
+                        <label>Date:</label>
+                        <input type="date" name="date" required />
 
-                <label>Time:</label>
-                <input type="time" name="time" required />
+                        <label>Start Time:</label>
+                        <input type="time" name="time" required />
 
-                <label>Capacity:</label>
-                <input type="number" name="capacity" required />
+                        <label>End Time:</label>
+                        <input type="time" name="endTime" required />
+
+                        <label>Capacity:</label>
+                        <input type="number" name="capacity" required />
+
+                    </c:when>
+                    <c:otherwise>
+                        <label>Date:</label>
+                        <input type="date" name="date" required />
+
+                        <label>Time:</label>
+                        <input type="time" name="time" required />
+
+                        <label>Capacity:</label>
+                        <input type="number" name="capacity" required />
+                    </c:otherwise>
+                </c:choose>
 
                 <button type="submit">Add Service</button>
             </form>
@@ -77,62 +105,89 @@
                 <c:remove var="error" scope="session"/>
             </c:if>
             <h3>Existing Services</h3>
+            <div class="filter-bar">
+                <form method="get" action="${pageContext.request.contextPath}/admin/services">
+                    <input type="hidden" name="restaurantId" value="${selectedRestaurantId}" />
+                    <label>Filter:</label>
+                    <select name="filterType" onchange="toggleFilterInputs()">
+                        <option value="">All Dates</option>
+                        <option value="DATE" ${param.filterType == 'DATE'? 'selected' : ''}>Specific Date</option>
+                        <option value="MONTH" ${param.filterType == 'MONTH'? 'selected' : ''}>By Month</option>
+                    </select>
+                        <input type="date" id="dateInput" name="date" value="${param.date}" style="display:none" />
+                        <input type="month" id="monthInput" name="month" value="${param.month}" style="display:none" />
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
             <c:choose>
                 <c:when test="${empty services}">
                     <p>No services found for this restaurant.</p>
                 </c:when>
                 <c:otherwise>
-                    <table class="reservation-table">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Capacity</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="service" items="${services}">
-                            <tr>
-                                <td>${service.serviceDate}</td>
-                                <td>${service.serviceTime}</td>
-                                <td>
-                                    ${service.capacity}
-                                </td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${service.visible == true}">
-                                            Active
-                                        </c:when>
-                                        <c:otherwise>
-                                            Hidden
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <form method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="toggleVisibility"/>
-                                        <input type="hidden" name="serviceId" value="${service.id}"/>
-                                        <input type="hidden" name="restaurantId" value="${selectedRestauantId}"/>
-                                        <button type="submit">Show/Hide</button>
-                                    </form>
-                                    <form method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="deleteService"/>
-                                        <input type="hidden" name="serviceId" value="${service.id}"/>
-                                        <input type="hidden" name="restaurantId" value="${selectedRestauantId}"/>
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/services">
+                        <div class="scroll-container">
+                            <table class="reservation-table">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Capacity</th>
+                                    <th>Status</th>
+                                    <th>Select</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="service" items="${services}">
+                                    <tr>
+                                        <td>${service.serviceDate}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${scheduleType == 'DATE_TIME'}">
+                                                    ${service.serviceTimeFormatted}
+                                                    -
+                                                    ${service.endTimeFormatted}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${service.serviceTimeFormatted}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                                ${service.capacity}
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${service.visible == true}">
+                                                    Active
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Hidden
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="serviceIds" value="${service.id}" />
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
+                    <button type="submit" name="action" value="bulkToggleVisibility">
+                        Toggle Visibility
+                    </button>
+                    <button type="submit" name="action" value="bulkDelete">
+                        Delete
+                    </button>
+                    </form>
                 </c:otherwise>
             </c:choose>
         </div>
+        </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <script src="<c:url value='/js/admin.js' />"></script>
 </body>
 </html>
 

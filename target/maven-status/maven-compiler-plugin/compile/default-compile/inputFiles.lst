@@ -17,6 +17,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/AdminDashboardServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/CognitoStartup.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/util/PropertiesLoader.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceTimeFormatter.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Reservation.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationController.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/filter/AuthFilter.java

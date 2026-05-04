@@ -15,7 +15,7 @@ public class ServiceManager {
     private RestaurantDao restaurantDao = new RestaurantDao();
     private AdministratorDao adminDao = new AdministratorDao();
 
-    public void addService(Long adminId, Long restaurantId, LocalDate date, LocalTime time, int capacity) {
+    public void addService(Long adminId, Long restaurantId, LocalDate date, LocalTime time, LocalTime endTime, int capacity) {
 
         // Authorize admin access
         authorizeAdminAccess(adminId, restaurantId);
@@ -26,15 +26,58 @@ public class ServiceManager {
             throw new IllegalArgumentException("Restaurant not found.");
         }
 
-        ServiceInstance service = new ServiceInstance();
-        service.setRestaurant(restaurant);
-        service.setServiceDate(date);
-        service.setServiceTime(time);
-        service.setCapacity(capacity);
-        service.setVisible(true);
+        SchedulingType type = restaurant.getSchedulingType();
 
-        serviceDao.save(service);
+        switch (type) {
 
+            case DATE_ONLY : {
+                ServiceInstance service = new ServiceInstance();
+                service.setRestaurant(restaurant);
+                service.setServiceDate(date);;
+                service.setServiceTime(LocalTime.MIDNIGHT);
+                service.setEndTime(null);
+                service.setCapacity(capacity);
+                service.setVisible(true);
+                serviceDao.save(service);
+            }
+
+            case FIXED_TIME_SLOTS : {
+                ServiceInstance service = new ServiceInstance();
+                service.setRestaurant(restaurant);
+                service.setServiceDate(date);;
+                service.setServiceTime(time);
+                service.setEndTime(null);
+                service.setCapacity(capacity);
+                service.setVisible(true);
+                serviceDao.save(service);
+            }
+
+            case DATE_TIME : {
+                if (time == null || endTime == null) {
+                    throw new IllegalArgumentException("Start and end time required");
+                }
+
+                if (!time.isBefore(endTime)) {
+                    throw new IllegalArgumentException("Start time must be before end time");
+                }
+
+                LocalTime cursor = time;
+
+                while(cursor.isBefore(endTime)) {
+                    ServiceInstance service = new ServiceInstance();
+                    service.setRestaurant(restaurant);
+                    service.setServiceDate(date);
+                    service.setServiceTime(cursor);
+                    service.setEndTime(endTime);
+                    service.setCapacity(capacity);
+                    service.setVisible(true);
+
+                    serviceDao.save(service);
+
+                    cursor = cursor.plusMinutes(15);
+                }
+            }
+        }
     }
 
     public void deleteService(Long adminId, Long serviceId) {

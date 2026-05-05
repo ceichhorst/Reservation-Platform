@@ -20,14 +20,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Data Access Object (DAO) for {@link ServiceInstance} entities.
+ *
+ * <p>This class extends {@link GenericDao} and provides query methods for
+ * retrieving service instances based on date, restaurant, and reservation state.</p>
+ *
+ * <p>It uses the JPA Criteria API for type-safe query construction and supports
+ * common filtering and lookup operations required for scheduling and availability.</p>
+ *
+ * @author ceichhorst
+ */
 public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
 
     private static final Logger logger = LogManager.getLogger(ServiceInstanceDao.class);
 
+    /**
+     * Constructs a new ServiceInstanceDao
+     */
     public ServiceInstanceDao() {
         super(ServiceInstance.class);
     }
 
+    // TODO do I really need this method?
+    /**
+     * Retrieves all upcoming service instances from today onward.
+     * @return a list of upcoming service instances
+     */
     public List<ServiceInstance> getUpcomingServices() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb =session.getCriteriaBuilder();
@@ -46,6 +65,11 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         }
     }
 
+    /**
+     * Retrieves all service instances for a given restaurant.
+     * @param restaurantId the ID of the restaurant
+     * @return a list of service instances for the specified restaurant
+     */
     public List<ServiceInstance> getByRestaurantId(Long restaurantId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb =session.getCriteriaBuilder();
@@ -63,6 +87,12 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         }
     }
 
+    // TODO do I need this method? - think about 'future' filtering here
+    /**
+     * Retrieves all service instances for a specific date.
+     * @param date the service date to filter by
+     * @return a list of service instances occurring on the specified date
+     */
     public List<ServiceInstance> getByDate(LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb =session.getCriteriaBuilder();
@@ -78,6 +108,12 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         }
     }
 
+    /**
+     * Retrieves service instances for a specific restaurant on a given date.
+     * @param restaurantId the ID of the restaurant
+     * @param date date the service date
+     * @return a list of matching service instances
+     */
     public List<ServiceInstance> getServicesByRestaurantOnDate(Long restaurantId, LocalDate date) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -106,6 +142,11 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         return services;
     }
 
+    /**
+     * Retrieves service instances belonging to any of the specified restaurants.
+     * @param restaurantIds the set of restaurant IDs to include
+     * @return a list of matching service instances
+     */
     public List<ServiceInstance> getServicesByRestaurants(Set<Long> restaurantIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -122,6 +163,11 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         return results;
     }
 
+    /**
+     * Determines whether a service instance has any associated reservations.
+     * @param serviceId the ID of the service instance
+     * @return {@code true} if at least one reservation exists; {@code false} otherwise
+     */
     public boolean hasReservations(Long serviceId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();

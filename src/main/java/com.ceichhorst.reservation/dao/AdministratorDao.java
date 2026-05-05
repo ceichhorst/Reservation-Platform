@@ -15,12 +15,32 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
+/**
+ * Data Access Object (DAO) for {@link Administrator} entities.
+ *
+ * <p>This class extends {@link GenericDao} and provides additional query methods
+ * for retrieving administrators based on unique attributes (such as username and email),
+ * as well as accessing associated {@link Restaurant} entities.</p>
+ *
+ * <p>Queries are implemented using the JPA Criteria API for type safety and flexibility.</p>
+ *
+ * @author ceichhorst
+ */
 public class AdministratorDao extends GenericDao<Administrator> {
 
+    /**
+     * Constructs a new AdminstratorDao
+     */
     public AdministratorDao() {
         super(Administrator.class);
     }
 
+    // TODO do I really need this method anymore after using email now?
+    /**
+     * Retrieves an administrator by their username
+     * @param username the username to search for
+     * @return the matching administrator
+     */
     public Administrator getAdministratorByUsername(String username) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -34,6 +54,11 @@ public class AdministratorDao extends GenericDao<Administrator> {
         }
     }
 
+    /**
+     * Retrieves an administrator by their email address.
+     * @param email the email address to search for
+     * @return the matching administrator
+     */
     public Administrator getAdministratorByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -47,6 +72,12 @@ public class AdministratorDao extends GenericDao<Administrator> {
         }
     }
 
+    // TODO do I need one still too? I have email which seems to be enough
+    /**
+     * Retrieves all administrators with a given role.
+     * @param role the role to filter by (e.g., "ADMIN", "MANAGER")
+     * @return a list of administrators with the specified role
+     */
     public List<Administrator> getAdministratorByRole(String role) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -60,6 +91,11 @@ public class AdministratorDao extends GenericDao<Administrator> {
         }
     }
 
+    /**
+     * Retrieves the IDs of restaurants managed by a specific administrator.
+     * @param adminId the ID of the administrator
+     * @return a set of restaurant IDs associated with the administrator
+     */
     public Set<Long> getRestaurantIds(Long adminId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -75,6 +111,11 @@ public class AdministratorDao extends GenericDao<Administrator> {
         }
     }
 
+    /**
+     * Retrieves all {@link Restaurant} entities associated with a given administrator.
+     * @param adminId the ID of the administrator
+     * @return a list of restaurants managed by the administrator
+     */
     public List<Restaurant> getRestaurantByAdminId(Long adminId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

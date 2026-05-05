@@ -55,6 +55,7 @@ public class ServiceManagementServlet extends HttpServlet {
         if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
             final Long restaurantId = Long.parseLong(restaurantIdParam);
 
+            // TODO should the filtering be a class and placed in the filter directory?
             // Filtering variables for Existing Services table
             String filterType = request.getParameter("filterType");
             String filterDate = request.getParameter("filterDate");

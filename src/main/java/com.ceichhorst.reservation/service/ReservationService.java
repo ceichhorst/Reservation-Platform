@@ -9,11 +9,51 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Service layer responsible for handling reservation creation workflows.
+ *
+ * <p>This class coordinates between data access objects and domain entities
+ * to process reservation requests, including:</p>
+ * <ul>
+ *   <li>Parsing and validating input data</li>
+ *   <li>Locating the appropriate {@link ServiceInstance}</li>
+ *   <li>Constructing a {@link Reservation} entity</li>
+ *   <li>Delegating concurrency-safe persistence to {@link ReservationDao}</li>
+ * </ul>
+ *
+ * @author ceichhorst
+ */
 public class ReservationService {
 
     private ReservationDao reservationDao = new ReservationDao();
     private ServiceInstanceDao serviceInstanceDao = new ServiceInstanceDao();
 
+    /**
+     * Attempts to create a reservation for a given restaurant, date, and time.
+     *
+     * <p>This method performs the following steps:</p>
+     * <ol>
+     *   <li>Parses the provided date and time strings into {@link LocalDate} and {@link LocalTime}</li>
+     *   <li>Retrieves all {@link ServiceInstance} objects for the specified restaurant and date</li>
+     *   <li>Selects the service instance matching the requested time</li>
+     *   <li>Constructs a {@link Reservation} entity with the provided details</li>
+     *   <li>Attempts to persist the reservation using a concurrency-safe DAO method</li>
+     * </ol>
+     *
+     * <p>If the requested time slot does not exist, or if capacity has already been
+     * reached, the operation will fail with an appropriate message.</p>
+     *
+     * @param restaurantId the ID of the restaurant
+     * @param dateStr the requested reservation date (ISO-8601 format, e.g., {@code yyyy-MM-dd})
+     * @param timeStr the requested reservation time (ISO-8601 format, e.g., {@code HH:mm})
+     * @param partySize the number of guests for the reservation
+     * @param name the customer's name
+     * @param email the customer's email address
+     * @param allergies any allergy information provided by the customer
+     * @param note additional comments or special requests
+     * @return a {@link ReservationResult} indicating success or failure;
+     *         on success, contains the created reservation
+     */
     public ReservationResult createReservation (
             Long restaurantId,
             String dateStr,

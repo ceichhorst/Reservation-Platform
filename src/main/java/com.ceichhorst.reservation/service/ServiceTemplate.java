@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalTime;
 
+// TODO is this class necessary anymore? Will need to delete table in DB as well if so
 @Entity
 @Table(name = "service_template")
 public class ServiceTemplate {

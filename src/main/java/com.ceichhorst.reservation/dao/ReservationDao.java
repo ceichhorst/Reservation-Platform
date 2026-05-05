@@ -20,12 +20,32 @@ import java.util.List;
 import java.util.Set;
 import java.time.LocalDate;
 
+/**
+ * Data Access Object (DAO) for {@link Reservation} entities.
+ *
+ * <p>This class extends {@link GenericDao} and provides additional
+ * domain-specific queries and operations related to reservations.</p>
+ *
+ * <p><strong>Concurrency:</strong> This DAO includes logic to safely create
+ * reservations under concurrent access using pessimistic locking to prevent
+ * overbooking of a {@link ServiceInstance}.</p>
+ *
+ * @author ceichhorst
+ */
 public class ReservationDao extends GenericDao<Reservation> {
 
+    /**
+     * Constructs a new reservation.
+     */
     public ReservationDao() {
         super(Reservation.class);
     }
 
+    /**
+     * Attempts to create a reservation if sufficient capacity is available.
+     * @param reservation the reservation to create; must include a valid service instance
+     * @return {@code true} if the reservation was successfully created; {@code false} if capacity would be exceeded
+     */
     public boolean createReservationIfAvailable(Reservation reservation) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -58,6 +78,12 @@ public class ReservationDao extends GenericDao<Reservation> {
 
     }
 
+    // TODO Do I need this one?
+    /**
+     * Retrieves all reservations with the specified status.
+     * @param status the reservation status to filter by
+     * @return a list of matching reservations
+     */
     List<Reservation> getByStatus(ReservationStatus status) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -74,6 +100,11 @@ public class ReservationDao extends GenericDao<Reservation> {
         return results;
     }
 
+    /**
+     * Finds reservations by an exact match on customer name.
+     * @param name the customer name to search for
+     * @return a list of matching reservations
+     */
     public List<Reservation> findByCustomerName(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -90,6 +121,11 @@ public class ReservationDao extends GenericDao<Reservation> {
         return results;
     }
 
+    /**
+     * Finds reservations by an exact match on email address.
+     * @param email the email address to search for
+     * @return a list of matching reservations
+     */
     public List<Reservation> findByEmail(String email) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -106,6 +142,11 @@ public class ReservationDao extends GenericDao<Reservation> {
         return results;
     }
 
+    /**
+     * Counts the total number of reservations associated with a set of restaurants.
+     * @param restaurantIds the set of restaurant IDs to include in the count
+     * @return the total number of matching reservations
+     */
     public Long countReservationsByService (Set<Long> restaurantIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -127,6 +168,20 @@ public class ReservationDao extends GenericDao<Reservation> {
 
     }
 
+    /**
+     * Aggregates reservation statistics grouped by service date for given restaurants.
+     * <p>This method returns a list of {@link ServiceReservationStats} projections,
+     * each containing:</p>
+     * <ul>
+     *     <li>Service date</li>
+     *     <li>Total number of reservations</li>
+     *     <li>Total number of guests (sum of {@code partySize})</li>
+     * </ul>
+     *
+     * <p>Results are grouped by {@code serviceDate} and ordered chronologically.</p>
+     * @param restaurantIds the set of restaurant IDs to include
+     * @return a list of aggregated reservation statistics
+     */
     public List<ServiceReservationStats> countReservationsGroupedByService (Set<Long> restaurantIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -156,6 +211,5 @@ public class ReservationDao extends GenericDao<Reservation> {
         return results;
 
     }
-
 
 }

@@ -21,19 +21,83 @@ import java.io.IOException;
 import java.util.List;
 import java.time.LocalDate;
 
-// Core user flow component for customers to make reservations
+/**
+ * Servlet responsible for handling the customer reservation workflow.
+ *
+ * <p>This servlet supports both displaying available reservation options and
+ * progressing the user through the reservation process.</p>
+ *
+ * <p><strong>URL mapping:</strong> {@code /reservation}</p>
+ *
+ * <p><strong>Responsibilities:</strong></p>
+ * <ul>
+ *   <li>Load restaurant and service data</li>
+ *   <li>Display availability calendar and time slots</li>
+ *   <li>Handle user selection of a specific service instance</li>
+ *   <li>Forward users to the reservation details step</li>
+ * </ul>
+ *
+ * <p>This servlet works in conjunction with {@link AvailabilityService} for
+ * availability calculations and {@link ServiceTimeFormatter} for preparing
+ * display-friendly time values.</p>
+ *
+ * @author ceichhorst
+ */
 @WebServlet("/reservation")
 public class ReservationServlet extends HttpServlet {
 
+    /**
+     * DAO used to retrieve {@link ServiceInstance} data.
+     */
     private ServiceInstanceDao serviceInstanceDao;
+
+    /**
+     * Utility for formatting service times for display.
+     */
     private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
+    /**
+     * Initializes the servlet and its dependencies.
+     */
     @Override
     public void init() {
         serviceInstanceDao = new ServiceInstanceDao();
 
     }
 
+    /**
+     * Handles HTTP GET requests for displaying reservation availability.
+     *
+     * <p>This method performs the following steps:</p>
+     * <ol>
+     *   <li>Validates and parses the restaurant ID from request parameters</li>
+     *   <li>Retrieves the {@link Restaurant} and associated {@link ServiceInstance}s</li>
+     *   <li>Builds a calendar view of availability using {@link AvailabilityService}</li>
+     *   <li>If a date is selected, filters available time slots for that date</li>
+     *   <li>Formats service times for display</li>
+     *   <li>Stores data in request and session attributes for rendering</li>
+     * </ol>
+     *
+     * <p><strong>Request parameters:</strong></p>
+     * <ul>
+     *   <li>{@code restaurantId} (required): the target restaurant</li>
+     *   <li>{@code date} (optional): ISO-8601 date string (e.g., {@code yyyy-MM-dd})</li>
+     * </ul>
+     *
+     * <p><strong>Request attributes set:</strong></p>
+     * <ul>
+     *   <li>{@code restaurant}</li>
+     *   <li>{@code services}</li>
+     *   <li>{@code calendar}</li>
+     *   <li>{@code availableTimes} (if date selected)</li>
+     *   <li>{@code selectedDate} (if provided)</li>
+     * </ul>
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @throws ServletException if request forwarding fails
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -99,6 +163,39 @@ public class ReservationServlet extends HttpServlet {
                 .forward(request, response);
     }
 
+    /**
+     * Handles HTTP POST requests for selecting a specific reservation time.
+     *
+     * <p>This method processes the user's selection of a {@link ServiceInstance}
+     * and prepares data for the reservation details page.</p>
+     *
+     * <p>It performs the following steps:</p>
+     * <ol>
+     *   <li>Validates required input parameters</li>
+     *   <li>Retrieves the selected {@link ServiceInstance}</li>
+     *   <li>Prepares reservation summary data (date, time, party size)</li>
+     *   <li>Forwards the request to the reservation details page</li>
+     * </ol>
+     *
+     * <p><strong>Request parameters:</strong></p>
+     * <ul>
+     *   <li>{@code restaurantId} (required)</li>
+     *   <li>{@code serviceInstanceId} (required)</li>
+     *   <li>{@code partySize} (required)</li>
+     * </ul>
+     *
+     * <p><strong>Request attributes set:</strong></p>
+     * <ul>
+     *   <li>{@code restaurantId}</li>
+     *   <li>{@code reservationDate}</li>
+     *   <li>{@code reservationTime}</li>
+     *   <li>{@code partySize}</li>
+     * </ul>
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @throws ServletException if processing fails
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

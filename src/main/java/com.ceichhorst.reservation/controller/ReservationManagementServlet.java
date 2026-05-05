@@ -12,16 +12,64 @@ import java.io.IOException;
 import java.util.List;
 
 // Core admin component for admins to manage reservations on admin pages
+/**
+ * Servlet responsible for administrative management of customer reservations.
+ *
+ * <p>This servlet allows administrators to view all reservations and update
+ * their status (e.g., confirm or cancel bookings) through the admin interface.</p>
+ *
+ * <p><strong>Responsibilities:</strong></p>
+ * <ul>
+ *   <li>Validate administrator authentication session</li>
+ *   <li>Display all reservations in the system</li>
+ *   <li>Allow status updates on individual reservations</li>
+ *   <li>Persist changes to reservation state</li>
+ * </ul>
+ *
+ * <p><strong>Supported actions:</strong></p>
+ * <ul>
+ *   <li><strong>GET:</strong> Retrieve and display all reservations</li>
+ *   <li><strong>POST:</strong> Update reservation status (confirm or cancel)</li>
+ * </ul>
+ *
+ * <p>This servlet interacts directly with {@link ReservationDao} for data access
+ * and uses {@link ReservationStatus} to manage reservation state transitions.</p>
+ *
+ * @author ceichhorst
+ */
 @WebServlet("/admin/reservations")
 public class ReservationManagementServlet extends HttpServlet {
 
+    /**
+     * Data access object for managing {@link Reservation} entities.
+     */
     private ReservationDao reservationDao = new ReservationDao();
 
+    /**
+     * Handles HTTP GET requests to display all reservations.
+     *
+     * <p>This method performs the following steps:</p>
+     * <ol>
+     *   <li>Validates that the user is authenticated</li>
+     *   <li>Retrieves all reservations from the database</li>
+     *   <li>Forwards the data to the admin reservations view</li>
+     * </ol>
+     *
+     * <p><strong>Request attributes set:</strong></p>
+     * <ul>
+     *   <li>{@code reservations} → list of all {@link Reservation}</li>
+     * </ul>
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @throws ServletException if request forwarding fails
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Is it best to make the auth check a called method compared to duplicating code?
+        // TODO Is it best to make the auth check a called method compared to duplicating code?
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("userEmail") == null) {
@@ -37,6 +85,29 @@ public class ReservationManagementServlet extends HttpServlet {
                 .forward(request, response);
     }
 
+    /**
+     * Handles HTTP POST requests to update reservation status.
+     *
+     * <p>This method allows administrators to change the state of a reservation
+     * to either confirmed or cancelled.</p>
+     *
+     * <p><strong>Supported actions:</strong></p>
+     * <ul>
+     *   <li>{@code confirm} → sets status to {@link ReservationStatus#CONFIRMED}</li>
+     *   <li>{@code cancel} → sets status to {@link ReservationStatus#CANCELLED}</li>
+     * </ul>
+     *
+     * <p><strong>Request parameters:</strong></p>
+     * <ul>
+     *   <li>{@code id} → reservation ID</li>
+     *   <li>{@code action} → action to perform (confirm or cancel)</li>
+     * </ul>
+     *
+     * @param request the HTTP request containing reservation ID and action
+     * @param response the HTTP response
+     * @throws ServletException if processing fails
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

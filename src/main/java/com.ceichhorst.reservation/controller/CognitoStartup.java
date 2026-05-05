@@ -8,6 +8,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 
+/**
+ * Startup to load properties from cognito.proeprties in order to login via Cognito
+ */
 @WebServlet(name = "cognitoStartup", urlPatterns = {"/cognito-startup"}, loadOnStartup = 1)
 public class CognitoStartup extends HttpServlet implements PropertiesLoader {
     @Override

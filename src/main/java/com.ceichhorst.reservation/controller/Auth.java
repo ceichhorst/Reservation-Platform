@@ -110,8 +110,8 @@ public class Auth extends HttpServlet implements PropertiesLoader {
                     administrator.setRole(role);
                     administrator.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 
-                    // Make note of admin_restaurant join table
-                    // Consider implementing at login or manually assigned via 'Dyana administrators'
+                    // TODO Make note of admin_restaurant join table
+                    // TODO Consider implementing at login or manually assigned via 'Dyana administrators'
 
                     administratorDao.save(administrator);
                 }

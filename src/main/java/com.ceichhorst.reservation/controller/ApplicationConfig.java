@@ -9,6 +9,11 @@ import java.util.Set;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
+/**
+ * Application config for ReservationController API
+ *
+ * @author ceichhorst
+ */
 @ApplicationPath("/api")
 public class ApplicationConfig extends Application {
 

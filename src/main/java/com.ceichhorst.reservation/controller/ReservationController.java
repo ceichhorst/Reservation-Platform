@@ -13,7 +13,18 @@ import com.ceichhorst.reservation.entity.ReservationStatus;
 
 import java.util.List;
 
-// API / REST layer to access data
+// TODO originally plan to utilized this but shifted directions - is this even fully necessary anymore? Any use still?
+/**
+ * REST controller providing access to {@link Reservation} data.
+ *
+ * <p>This class exposes a read-only API for retrieving reservation information
+ * in JSON format. It supports fetching a single reservation by ID or querying
+ * reservations using optional filters.</p>
+ *
+ * <p>This controller delegates data access to {@link ReservationDao}.</p>
+ *
+ * @author ceichhorst
+ */
 @Path("/reservation")
 public class ReservationController {
 

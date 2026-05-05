@@ -87,7 +87,7 @@ Focus User Story: Administrative Reservation Oversight
 * \[X] Update application configuration for AWS database
 * \[X] Deploy initial version of application to AWS
 * \[X] Add deployed link to student indie project list
-* \[ ] Weekly Reflection
+* \[X] Weekly Reflection
 
 
 
@@ -103,10 +103,10 @@ Focus User Story: Admin Sign In \& Reservation Management
 
 * \[X] Complete authentication and authorization for administrators
 * \[X] Restrict administrative features to authenticated users [Only through the admin dashboard at the moment]
-* \[ ] Implement admin JSPs for viewing reservations by service
+* \[X] Implement admin JSPs for viewing reservations by service
 * \[X] Implement controller logic for admin workflows
-* \[ ] Validate authentication and authorization flows
-* \[ ] Weekly Reflection
+* \[X] Validate authentication and authorization flows
+* \[X] Weekly Reflection
 
 
 
@@ -118,8 +118,8 @@ Focus User Story: Admin Sign In \& Reservation Management
 * \[X] Verify AWS deployment stability
 * \[X] Confirm JSPs render live database data
 * \[X] Add deployed application link to GitHub and student repo
-* \[ ] Address any feedback from checkpoint review
-* \[ ] Weekly Reflection
+* \[X] Address any feedback from checkpoint review
+* \[X] Weekly Reflection
 
 
 
@@ -133,11 +133,11 @@ Focus User Story: Admin Sign In \& Reservation Management
 
 Focus User Story: Usability \& Accessibility Improvements
 
-* \[ ] Improve reservation form usability and clarity
+* \[X] Improve reservation form usability and clarity (continuously reviewed)
 * \[ ] Add clear sold-out and status messaging
 * \[ ] Improve error handling and validation messages
 * \[ ] Test application under simulated high-traffic conditions
-* \[ ] Refine UI layout for accessibility and readability
+* \[X] Refine UI layout for accessibility and readability (continuously)
 * \[ ] Weekly Reflection
 
 
@@ -148,7 +148,7 @@ Focus User Story: Usability \& Accessibility Improvements
 
 Focus User Story: External Service Integration
 
-* \[ ] Select external web service or public API
+* \[X] Select external web service or public API (Javamail - yet to be implemented)
 * \[ ] Implement Java-based service integration
 * \[ ] Add logging around external service calls
 * \[ ] Handle service failure scenarios gracefully
@@ -162,8 +162,8 @@ Focus User Story: External Service Integration
 
 
 * \[ ] Refactor code based on testing and feedback
-* \[ ] Improve documentation and JavaDoc
-* \[ ] Increase unit test coverage
+* \[X] Improve documentation and JavaDoc
+* \[X] Increase unit test coverage
 * \[ ] Review project against rubric for gaps
 * \[ ] Weekly Reflection
 
@@ -173,7 +173,7 @@ Focus User Story: External Service Integration
 
 
 
-* \[ ] Conduct peer design/code review
+* \[X] Conduct peer design/code review
 * \[ ] Incorporate peer and instructor feedback
 * \[ ] Improve concurrency handling if needed
 * \[ ] Finalize non-MVP features if time allows

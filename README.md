@@ -95,7 +95,7 @@ The value of this project lies in demonstrating how enterprise Java technologies
 
 * ORM Framework
 
-  * Hibernate (Version TBD)
+  * Hibernate (Version 6.4.0)
 
 * Dependency Management
 
@@ -128,7 +128,6 @@ The value of this project lies in demonstrating how enterprise Java technologies
     - Deadlock Detection and Retry Mechanisms
     - Java Concurrency Utilities (ExecutorService, Locks)
 
-* Project Lombok
 * Unit Testing
 
   * JUnit tests

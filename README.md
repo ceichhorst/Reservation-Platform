@@ -103,7 +103,7 @@ The value of this project lies in demonstrating how enterprise Java technologies
 
 * Web Services
 
-  * TBD
+  * [Javamail/STMP](https://products.fileformat.com/email/java/javamail/) (proposed - implementation TBD)
 
 * CSS
 
@@ -111,7 +111,7 @@ The value of this project lies in demonstrating how enterprise Java technologies
 
 * Data Validation
 
-  * Hibernate Validator?
+  * Hibernate Validator
 
 * Logging
 
@@ -119,11 +119,14 @@ The value of this project lies in demonstrating how enterprise Java technologies
 
 * Hosting
 
-  * AWS
+  * Localhost (will implement into AWS in the future)
 
 * Tech to explore for this app
 
-  * TBD
+  * Concurrency & Scalability (Exploration focused)
+    - Pessimistic and Optimistic Locking Strategies (PESSIMISTIC_WRITE currently implemented, @Version explored)
+    - Deadlock Detection and Retry Mechanisms
+    - Java Concurrency Utilities (ExecutorService, Locks)
 
 * Project Lombok
 * Unit Testing

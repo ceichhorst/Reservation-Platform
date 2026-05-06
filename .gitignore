@@ -52,3 +52,9 @@ fabric.properties
 cognito.properties
 jwks.json
 https-instance.config
+hibernate.cfg.xml
+log4j2.properties
+
+# class files I do not want shared
+src/main/java/com.ceichhorst.reservation/service/EmailService.java
+src/main/java/com.ceichhorst.reservation/controller/Auth.java

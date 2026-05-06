@@ -13,7 +13,7 @@ import java.util.Properties;
 public class EmailService {
 
     // TODO Note security with it - AWS would be better but this can serve purpose of project
-    private final String username = "placeholder@gmail.com"; // TODO EMAIL INFO TO BE ADDED
+    private final String username = "dyanasystems@gmail.com";
     private final String password = "placeholder"; // TODO EMAIL INFO TO BE ADDED
 
     private final Session session;

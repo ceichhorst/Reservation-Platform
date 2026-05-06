@@ -98,6 +98,19 @@ public class ReservationService {
             return ReservationResult.failure("That time slot is full.");
         }
 
+        // Send confirmation email after successful reservation confirmation
+        EmailService emailService = new EmailService();
+
+        emailService.sendReservationConfirmation(
+                email,
+                name,
+                dateStr,
+                timeStr,
+                partySize,
+                allergies,
+                note
+        );
+
         // Success
         return ReservationResult.success(reservation);
 

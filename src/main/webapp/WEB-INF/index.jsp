@@ -116,7 +116,7 @@
         </p>
     </section>
     <div class="container">
-        <hr>
+        <!-- <hr>
         <h2>Available Restaurants</h2>
 
         <table border="1">
@@ -130,23 +130,8 @@
                 <td>${restaurant.name}</td>
                 <td>${restaurant.schedulingType}</td>
             </tr>
-        </table>
+        </table> -->
         <br>
-        <h2>Upcoming Service Instances</h2>
-        <table border="1">
-            <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Capacity</th>
-            </tr>
-            <c:forEach var="service" items="${services}">
-                <tr>
-                    <td>${service.serviceDate}</td>
-                    <td>${service.serviceTime}</td>
-                    <td>${service.capacity}</td>
-                </tr>
-            </c:forEach>
-        </table>
         <c:if test="${not empty message}">
             <div style="color:red;"><strong>${message}</strong></div>
         </c:if>

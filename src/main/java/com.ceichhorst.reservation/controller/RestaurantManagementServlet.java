@@ -54,7 +54,7 @@ public class RestaurantManagementServlet extends HttpServlet {
         if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
             Long restaurantId = Long.parseLong(restaurantIdParam);
 
-            Restaurant selected = restaurantDao.getById(restaurantId);
+            Restaurant selected = restaurantDao.getByIdWithAdmins(restaurantId);
 
             if (selected != null) {
                 request.setAttribute("selectedRestaurant", selected);
@@ -62,7 +62,7 @@ public class RestaurantManagementServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/WEB-INF/admin/restaurants")
+        request.getRequestDispatcher("/WEB-INF/admin/restaurants.jsp")
                 .forward(request, response);
     }
 
@@ -136,6 +136,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                 case "removeAdmin": {
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
 
+                    // TODO Consider switching this method to an authorization service layer
                     serviceManager.authorizeAdminAccess(adminId, restaurantId);
 
                     Long removeAdminId = Long.parseLong(request.getParameter("adminId"));

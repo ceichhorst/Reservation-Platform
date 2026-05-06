@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Manage Services | Dyana</title>
+    <title>Manage Restaurants | Dyana</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/main.css' />">
@@ -48,21 +48,26 @@
                     <label>Name</label>
                     <input type="text" name="name" value="${selectedRestaurant.name}" required />
 
-                    <label>City</label>
-                    <input type="text" name="city" value="${selectedRestaurant.city}" required />
-
-                    <label>State</label>
-                    <input type="text" name="tate" value="${selectedRestaurant.state}" required />
+                    <div class="form-row">
+                        <div>
+                            <label>City</label>
+                            <input type="text" name="city" value="${selectedRestaurant.city}" required />
+                        </div>
+                        <div>
+                            <label>State</label>
+                            <input type="text" name="state" value="${selectedRestaurant.state}" required />
+                        </div>
+                    </div>
 
                     <label>Description</label>
-                    <textarea name="description" rows="3">${selectedRestaurant.description}"</textarea>
+                    <textarea name="description" rows="3">${selectedRestaurant.description}</textarea>
 
                     <label>How It Works</label>
-                    <textarea name="howItWorks" rows="3">${selectedRestaurant.howItWorks}"</textarea>
+                    <textarea name="howItWorks" rows="3">${selectedRestaurant.howItWorks}</textarea>
 
                     <label>
                         <input type="checkbox" name="requireAllergenInfo"
-                               <c:if test="${selectedRestuarant.requireAllergenInfo}">checked</c:if> />
+                               <c:if test="${selectedRestaurant.requireAllergenInfo}">checked</c:if> />
                         Require Allergen Info
                     </label>
 
@@ -76,7 +81,7 @@
                 <p><strong>Current Admins</strong></p>
                 <ul>
                     <c:forEach var="admin" items="${selectedRestaurant.administrators}">
-                        <li>${admin.email}</li>
+                        <li><span>${admin.email}</span></li>
                     </c:forEach>
                 </ul>
 

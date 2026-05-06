@@ -123,3 +123,86 @@
     line-height: 1.6;
     color: #333;
 }
+
+/* ================================
+   RESERVATION BAR IMPROVEMENTS
+   ================================ */
+
+.reservation-bar {
+    background: linear-gradient(135deg, #AAD1DF, #cfe7f1);
+    padding: 24px 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+/* Wrap both forms nicely */
+.reservation-bar form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 8px auto;
+    max-width: 1000px;
+}
+
+/* Inputs (selects) */
+.reservation-bar select {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    min-width: 160px;
+
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+/* Focus state */
+.reservation-bar select:focus {
+    outline: none;
+    border-color: #0077a0;
+    box-shadow: 0 0 0 2px rgba(0,119,160,0.15);
+}
+
+/* Fixed slot display */
+.fixed-slot {
+    background: #F1F5F9;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #334155;
+    border: 1px solid #E5E7EB;
+}
+
+/* CTA Button */
+.reservation-bar button {
+    background: linear-gradient(135deg, #0077a0, #2a7093);
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* Button hover */
+.reservation-bar button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #006387, #255d78);
+}
+
+/* Button active */
+.reservation-bar button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Improve spacing between the two forms */
+.reservation-bar form:first-child {
+    margin-bottom: 10px;
+}

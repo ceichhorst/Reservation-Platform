@@ -38,5 +38,6 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceTemplate.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ApplicationConfig.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/AdministratorDao.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/EmailService.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/Auth.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/auth/TokenResponse.java

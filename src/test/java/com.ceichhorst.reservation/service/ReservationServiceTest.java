@@ -10,6 +10,8 @@ import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import static org.mockito.Mockito.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,7 +25,20 @@ public class ReservationServiceTest {
     @BeforeAll
     void setup() {
         reservationDao = new ReservationDao();
-        reservationService = new ReservationService();
+
+        EmailService mockEmailService = mock(EmailService.class);
+
+        doNothing().when(mockEmailService).sendReservationConfirmation(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyInt(),
+                anyString(),
+                anyString()
+        );
+
+        reservationService = new ReservationService(mockEmailService);
 
     }
 

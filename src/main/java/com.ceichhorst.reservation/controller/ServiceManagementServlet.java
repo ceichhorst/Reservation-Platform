@@ -147,7 +147,7 @@ public class ServiceManagementServlet extends HttpServlet {
                     case "DATE":
                         if (filterDate != null && !filterDate.isEmpty()) {
                             LocalDate date = LocalDate.parse(filterDate);
-                            services.stream()
+                            services = services.stream()
                                     .filter(s -> s.getServiceDate().equals(date))
                                     .collect(Collectors.toList());
                         }
@@ -158,7 +158,7 @@ public class ServiceManagementServlet extends HttpServlet {
                             String[] parts = filterMonth.split("-");
                             int year = Integer.parseInt(parts[0]);
                             int month = Integer.parseInt(parts[1]);
-                            services.stream()
+                            services = services.stream()
                                     .filter(s ->
                                             s.getServiceDate().getYear() == year &&
                                             s.getServiceDate().getMonthValue() == month

@@ -6,6 +6,7 @@ import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ReservationService;
 import com.ceichhorst.reservation.service.ReservationResult;
+import com.ceichhorst.reservation.service.EmailService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -49,7 +50,7 @@ public class ConfirmationServlet extends HttpServlet{
     /**
      * Service responsible for reservation creation and business logic.
      */
-    private ReservationService reservationService = new ReservationService();
+    private ReservationService reservationService = new ReservationService(new EmailService());
 
     /**
      * Handles HTTP POST requests to finalize a reservation.

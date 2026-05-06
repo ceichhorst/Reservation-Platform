@@ -136,8 +136,8 @@ public class ServiceManagementServlet extends HttpServlet {
             // TODO should the filtering be a class and placed in the filter directory?
             // Filtering variables for Existing Services table
             String filterType = request.getParameter("filterType");
-            String filterDate = request.getParameter("filterDate");
-            String filterMonth = request.getParameter("filterMonth");
+            String filterDate = request.getParameter("date");
+            String filterMonth = request.getParameter("month");
 
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
 

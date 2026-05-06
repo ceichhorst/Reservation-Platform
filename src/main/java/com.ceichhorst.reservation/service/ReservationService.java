@@ -27,6 +27,11 @@ public class ReservationService {
 
     private ReservationDao reservationDao = new ReservationDao();
     private ServiceInstanceDao serviceInstanceDao = new ServiceInstanceDao();
+    private EmailService emailService;
+
+    public ReservationService(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     /**
      * Attempts to create a reservation for a given restaurant, date, and time.
@@ -99,7 +104,6 @@ public class ReservationService {
         }
 
         // Send confirmation email after successful reservation confirmation
-        EmailService emailService = new EmailService();
 
         emailService.sendReservationConfirmation(
                 email,

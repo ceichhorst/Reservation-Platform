@@ -84,6 +84,9 @@ The value of this project lies in demonstrating how enterprise Java technologies
 ### Project Technologies
 
 
+* Runtime / Deployment Environment
+
+  * Tomcat 10.1.54
 
 * Security/Authentication
 

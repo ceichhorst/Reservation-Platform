@@ -1,6 +1,8 @@
 package com.ceichhorst.reservation.service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Data Transfer Object (DTO) representing aggregated availability for a single day.
@@ -44,6 +46,11 @@ public class DayAvailability {
      * Total number of booked slots (sum of all reservation party sizes).
      */
     private int bookedSlots;
+
+    /**
+     * Pre-slot availability breakdown based on scheduling type / time
+     */
+    private List<CalendarTimeSlot> slots = new ArrayList<>();
 
     /**
      * Gets the date associated with this availability.
@@ -123,5 +130,13 @@ public class DayAvailability {
      */
     public void setBookedSlots(int bookedSlots) {
         this.bookedSlots = bookedSlots;
+    }
+
+    public List<CalendarTimeSlot> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(List<CalendarTimeSlot> slots) {
+        this.slots = slots;
     }
 }

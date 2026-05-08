@@ -128,11 +128,13 @@ public class HomeServlet extends HttpServlet {
 
             if (selectedDateParam != null && !selectedDateParam.isEmpty()) {
                 LocalDate selectedDate = LocalDate.parse(selectedDateParam);
+                int partySize = 1; // Default party size
 
                 availableTimes = availabilityService.getAvailableTimes(
                         restaurant,
                         services,
-                        selectedDate
+                        selectedDate,
+                        partySize
                 );
 
                 request.setAttribute("selectedDate", selectedDate);

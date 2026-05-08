@@ -68,11 +68,11 @@ public class Reservation {
     private String additionalComments;
 
     /**
-     * Current status of the reservation.
+     * Current status of the reservation. (Default is PENDING)
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private ReservationStatus status;
+    @Column(name = "status", nullable = false)
+    private ReservationStatus status = ReservationStatus.PENDING;
 
     // getters & setters =========================================================
 
@@ -122,6 +122,16 @@ public class Reservation {
      */
     public void setStatus(ReservationStatus status) {
         this.status = status;
+    }
+
+    /**
+     * Helper class to check active statuses that count towards open seats
+     */
+    public boolean isActive() {
+        if (status == null) {
+            return false;
+        }
+        return status == ReservationStatus.PENDING || status == ReservationStatus.CONFIRMED;
     }
 
     /**

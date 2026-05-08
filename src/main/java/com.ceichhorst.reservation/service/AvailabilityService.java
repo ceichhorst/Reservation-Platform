@@ -1,6 +1,7 @@
 package com.ceichhorst.reservation.service;
 
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.entity.SchedulingType;
 
@@ -53,7 +54,8 @@ public class AvailabilityService {
     public List<ServiceInstance> getAvailableTimes(
             Restaurant restaurant,
             List<ServiceInstance> services,
-            LocalDate serviceDate
+            LocalDate serviceDate,
+            int partySize
     ) {
         SchedulingType type = restaurant.getSchedulingType();
 
@@ -62,9 +64,13 @@ public class AvailabilityService {
                 .filter(s -> {
                     int booked = s.getReservations() == null ? 0 :
                             s.getReservations().stream()
-                            .mapToInt(r -> r.getPartySize())
+                            .filter(Reservation::isActive)
+                            .mapToInt(Reservation::getPartySize)
                             .sum();
-                    return booked < s.getCapacity();
+
+                    int remaining = s.getCapacity() - booked;
+
+                    return remaining >= partySize;
                 })
                 .sorted(Comparator.comparing(ServiceInstance::getServiceTime))
                 .collect(Collectors.toList());
@@ -128,7 +134,8 @@ public class AvailabilityService {
                 if (s.getReservations() != null) {
                     booked += s.getReservations()
                             .stream()
-                            .mapToInt(r -> r.getPartySize())
+                            .filter(Reservation::isActive)
+                            .mapToInt(Reservation::getPartySize)
                             .sum();
                 }
             }

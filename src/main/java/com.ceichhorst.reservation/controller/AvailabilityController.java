@@ -31,10 +31,11 @@ public class AvailabilityController {
     @GET
     public Response getAvailability(
             @QueryParam("restaurantId") Long restaurantId,
-            @QueryParam("date") String dateStr
+            @QueryParam("date") String dateStr,
+            @QueryParam("partySize") Integer partySize
     ) {
 
-        if (restaurantId == null || dateStr == null) {
+        if (restaurantId == null || dateStr == null || partySize == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"Missing parameters\"}")
                     .build();
@@ -52,7 +53,8 @@ public class AvailabilityController {
                     availabilityService.getAvailableTimes(
                             restaurant,
                             services,
-                            date
+                            date,
+                            partySize
                     );
 
             available = formatter.formatTimes(available);

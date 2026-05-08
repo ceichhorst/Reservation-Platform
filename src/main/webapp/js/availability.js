@@ -1,5 +1,6 @@
 const dateSelect = document.getElementById("dateSelect");
 const timeSelect = document.getElementById("timeSelect");
+const partySizeSelect = document.querySelector('select[name="partySize"]');
 
 const restaurantId = document.getElementById("restaurantId").value;
 
@@ -14,7 +15,7 @@ const loadTimes = async (date) => {
 
     try {
         const response = await fetch(
-            `${window.contextPath}/api/availability?restaurantId=${restaurantId}&date=${date}`
+            `${window.contextPath}/api/availability?restaurantId=${restaurantId}&date=${date}&partySize=${partySizeSelect.value}`
         );
 
         if (!response.ok) {
@@ -65,6 +66,12 @@ const loadTimes = async (date) => {
 
             timeSelect.appendChild(option);
         });
+
+        partySizeSelect.addEventListener("change", () => {
+            if (dateSelect.value) {
+                loadTimes(dateSelect.value);
+            }
+        })
 
     } catch (err) {
         console.error("Error loading times:", err);

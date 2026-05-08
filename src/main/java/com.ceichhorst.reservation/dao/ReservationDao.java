@@ -58,6 +58,7 @@ public class ReservationDao extends GenericDao<Reservation> {
 
         int currentBooked = service.getReservations()
             .stream()
+            .filter(Reservation::isActive)
             .mapToInt(Reservation::getPartySize)
                 .sum();
 
@@ -158,8 +159,19 @@ public class ReservationDao extends GenericDao<Reservation> {
         Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
         Join<ServiceInstance, Restaurant> restaurantJoin = serviceJoin.join("restaurant");
 
+        Predicate restaurantPredicate = restaurantJoin.get("id").in(restaurantIds);
+
+        Predicate activeReservationPredicate = root.get("status")
+                        .in(
+                                ReservationStatus.PENDING,
+                                ReservationStatus.CONFIRMED
+                        );
+
         cq.select(cb.count(root))
-                .where(restaurantJoin.get("id").in(restaurantIds));
+                .where(cb.and(
+                        restaurantPredicate,
+                        activeReservationPredicate
+                ));
 
         Long count = session.createQuery(cq).getSingleResult();
         session.close();
@@ -200,7 +212,19 @@ public class ReservationDao extends GenericDao<Reservation> {
                 cb.sum(root.get("partySize")).as(Long.class)
         ));
 
-        cq.where(restaurantJoin.get("id").in(restaurantIds));
+        Predicate restaurantPredicate = restaurantJoin.get("id").in(restaurantIds);
+
+        Predicate activeReservationPredicate = root.get("status")
+                .in(
+                        ReservationStatus.PENDING,
+                        ReservationStatus.CONFIRMED
+                );
+
+        cq.where(cb.and(
+                        restaurantPredicate,
+                        activeReservationPredicate
+                ));
+
         cq.groupBy(serviceJoin.get("serviceDate"));
         cq.orderBy(cb.asc(serviceJoin.get("serviceDate")));
 

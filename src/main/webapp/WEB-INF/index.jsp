@@ -33,9 +33,11 @@
                 <c:choose>
                     <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
                         <c:forEach var="day" items="${calendar}">
-                            <option value="${day.date}">
-                                ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
-                            </option>
+                            <c:if test="${day.available}">
+                                <option value="${day.date}">
+                                        ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
+                                </option>
+                            </c:if>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>

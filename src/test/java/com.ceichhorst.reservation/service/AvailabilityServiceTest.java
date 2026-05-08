@@ -4,6 +4,7 @@ import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.testutils.TestDatabase;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -89,9 +90,11 @@ public class AvailabilityServiceTest {
 
         Reservation r1 = new Reservation();
         r1.setPartySize(2);
+        r1.setStatus(ReservationStatus.CONFIRMED);
 
         Reservation r2 = new Reservation();
         r2.setPartySize(3);
+        r2.setStatus(ReservationStatus.CONFIRMED);
 
         reservations.add(r1);
         reservations.add(r2);
@@ -127,9 +130,11 @@ public class AvailabilityServiceTest {
 
         Reservation r1 = new Reservation();
         r1.setPartySize(3);
+        r1.setStatus(ReservationStatus.CONFIRMED);
 
         Reservation r2 = new Reservation();
         r2.setPartySize(2);
+        r2.setStatus(ReservationStatus.CONFIRMED);
 
         reservations.add(r1);
         reservations.add(r2);

@@ -30,7 +30,7 @@ public class ServiceInstance {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     /**
      * The restaurant that owns this service instance.
@@ -101,7 +101,7 @@ public class ServiceInstance {
      * Gets the unique identifier of the service instance.
      * @return the service instance ID
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -109,7 +109,7 @@ public class ServiceInstance {
      * Sets the unique identifier of the service instance
      * @param id the service instance ID
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

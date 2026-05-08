@@ -1,6 +1,9 @@
 package com.ceichhorst.reservation.dao;
 
 import com.ceichhorst.reservation.entity.Restaurant;
+import com.ceichhorst.reservation.util.HibernateUtil;
+
+import org.hibernate.Session;
 
 /**
  * Data Access Object (DAO) for {@link Restaurant} entities.
@@ -17,5 +20,15 @@ public class RestaurantDao extends GenericDao<Restaurant> {
      */
     public RestaurantDao() {
         super(Restaurant.class);
+    }
+
+    public Restaurant getByIdWithAdmins(Long id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Restaurant restaurant = session.get(Restaurant.class, id);
+            if (restaurant != null) {
+                restaurant.getAdministrators().size();
+            }
+            return restaurant;
+        }
     }
 }

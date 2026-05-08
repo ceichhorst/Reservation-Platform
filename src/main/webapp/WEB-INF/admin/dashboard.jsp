@@ -13,6 +13,7 @@
 <body>
     <jsp:include page="/WEB-INF/components/header.jsp" />
     <nav>
+        <a href="${pageContext.request.contextPath}/admin/restaurants">Manage Restaurants</a>
         <a href="${pageContext.request.contextPath}/admin/reservations">Manage Reservations</a>
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
@@ -39,26 +40,26 @@
             </tbody>
         </table>
         <div class="dashboard-cards">
-            <hr>
+            <!-- <hr>
             <h2>Quick Actions</h2>
             <div class="cta-buttons">
                 <a href="${pageContext.request.contextPath}/admin/reservations">View Reservations</a>
             </div>
             <hr>
             <h2>System Messages</h2>
-            <!-- Info Message -->
+
             <c:if test="${not empty message}">
                 <div class="message">
                     ${message}
                 </div>
             </c:if>
-            <!-- Error Message -->
+
             <c:if test="${not empty error}">
                 <div class="error">
                         ${error}
                 </div>
             </c:if>
-
+            -->
         </div>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />

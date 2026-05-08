@@ -52,7 +52,7 @@
                     A confirmation email has been sent to <strong>${email}</strong>.
                 </p>
                 <p>
-                    If you need to make changes to your reservation, please email ${restaurantEmail}.
+                    If you need to make changes to your reservation, please email <strong>${restaurantEmail}</strong>.
                 </p>
             </section>
             <!-- Actions -->

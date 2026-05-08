@@ -65,137 +65,6 @@ public class ReservationServlet extends HttpServlet {
 
     }
 
-    /**
-     * Handles HTTP GET requests for displaying reservation availability.
-     *
-     * <p>This method performs the following steps:</p>
-     * <ol>
-     *   <li>Validates and parses the restaurant ID from request parameters</li>
-     *   <li>Retrieves the {@link Restaurant} and associated {@link ServiceInstance}s</li>
-     *   <li>Builds a calendar view of availability using {@link AvailabilityService}</li>
-     *   <li>If a date is selected, filters available time slots for that date</li>
-     *   <li>Formats service times for display</li>
-     *   <li>Stores data in request and session attributes for rendering</li>
-     * </ol>
-     *
-     * <p><strong>Request parameters:</strong></p>
-     * <ul>
-     *   <li>{@code restaurantId} (required): the target restaurant</li>
-     *   <li>{@code date} (optional): ISO-8601 date string (e.g., {@code yyyy-MM-dd})</li>
-     * </ul>
-     *
-     * <p><strong>Request attributes set:</strong></p>
-     * <ul>
-     *   <li>{@code restaurant}</li>
-     *   <li>{@code services}</li>
-     *   <li>{@code calendar}</li>
-     *   <li>{@code availableTimes} (if date selected)</li>
-     *   <li>{@code selectedDate} (if provided)</li>
-     * </ul>
-     *
-     * @param request the HTTP request
-     * @param response the HTTP response
-     * @throws ServletException if request forwarding fails
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-        Restaurant sessionRestaurant = (Restaurant) session.getAttribute("restaurant");
-
-        String dateParam = request.getParameter("date");
-        String restaurantIdStr = request.getParameter("restaurantId");
-
-        if (restaurantIdStr == null || restaurantIdStr.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing restaurant id");
-            return;
-        }
-
-        Long restaurantId = Long.parseLong(restaurantIdStr);
-
-        try {
-            ServiceInstanceDao serviceDao = new ServiceInstanceDao();
-            RestaurantDao restaurantDao = new RestaurantDao();
-            AvailabilityService availabilityService = new AvailabilityService();
-
-            Restaurant restaurant = restaurantDao.getById(restaurantId);
-            List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
-            List<DayAvailability> calendar = availabilityService.buildCalendar(services);
-
-            if (sessionRestaurant == null || !sessionRestaurant.getId().equals(restaurantId)) {
-                session.setAttribute("restaurant", restaurant);
-            }
-
-            request.setAttribute("restaurant", restaurant);
-            request.setAttribute("services", services);
-            request.setAttribute("calendar", calendar);
-
-            if (dateParam != null && !dateParam.isEmpty()) {
-
-                request.setAttribute("selectedDate", dateParam);
-
-                try {
-                    LocalDate date = LocalDate.parse(dateParam);
-
-                    List<ServiceInstance> availableTimes =
-                            availabilityService.getAvailableTimes(
-                                    restaurant,
-                                    services,
-                                    date
-                            );
-
-                    availableTimes = formatter.formatTimes(availableTimes);
-                    request.setAttribute("availableTimes", availableTimes);
-
-                } catch (Exception e) {
-                    request.setAttribute("message", "Invalid date format.");
-                }
-            }
-
-        } catch (Exception e) {
-            request.setAttribute("message", "Error loading page data.");
-            e.printStackTrace();
-        }
-
-        request.getRequestDispatcher("/WEB-INF/index.jsp")
-                .forward(request, response);
-    }
-
-    /**
-     * Handles HTTP POST requests for selecting a specific reservation time.
-     *
-     * <p>This method processes the user's selection of a {@link ServiceInstance}
-     * and prepares data for the reservation details page.</p>
-     *
-     * <p>It performs the following steps:</p>
-     * <ol>
-     *   <li>Validates required input parameters</li>
-     *   <li>Retrieves the selected {@link ServiceInstance}</li>
-     *   <li>Prepares reservation summary data (date, time, party size)</li>
-     *   <li>Forwards the request to the reservation details page</li>
-     * </ol>
-     *
-     * <p><strong>Request parameters:</strong></p>
-     * <ul>
-     *   <li>{@code restaurantId} (required)</li>
-     *   <li>{@code serviceInstanceId} (required)</li>
-     *   <li>{@code partySize} (required)</li>
-     * </ul>
-     *
-     * <p><strong>Request attributes set:</strong></p>
-     * <ul>
-     *   <li>{@code restaurantId}</li>
-     *   <li>{@code reservationDate}</li>
-     *   <li>{@code reservationTime}</li>
-     *   <li>{@code partySize}</li>
-     * </ul>
-     * @param request the HTTP request
-     * @param response the HTTP response
-     * @throws ServletException if processing fails
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -221,6 +90,10 @@ public class ReservationServlet extends HttpServlet {
 
             ServiceInstance instance = serviceInstanceDao.getById(serviceInstanceId);
 
+            List<ServiceInstance> formatted = formatter.formatTimes(List.of(instance));
+
+            instance = formatted.get(0);
+
             if (instance == null) {
                 request.setAttribute("message", "Invalid service selection");
                 request.getRequestDispatcher("/WEB-INF/index.jsp")
@@ -229,6 +102,7 @@ public class ReservationServlet extends HttpServlet {
             }
 
             request.setAttribute("restaurantId", restaurantId);
+            request.setAttribute("serviceInstanceId", serviceInstanceId);
             request.setAttribute("reservationDate", instance.getServiceDate().toString());
             request.setAttribute("reservationTime", instance.getServiceTimeFormatted());
             request.setAttribute("partySize", partySize);

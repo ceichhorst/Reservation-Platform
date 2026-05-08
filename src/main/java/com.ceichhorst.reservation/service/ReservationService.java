@@ -7,6 +7,7 @@ import com.ceichhorst.reservation.entity.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -49,8 +50,7 @@ public class ReservationService {
      * reached, the operation will fail with an appropriate message.</p>
      *
      * @param restaurantId the ID of the restaurant
-     * @param dateStr the requested reservation date (ISO-8601 format, e.g., {@code yyyy-MM-dd})
-     * @param timeStr the requested reservation time (ISO-8601 format, e.g., {@code HH:mm})
+     * @param serviceInstanceId - the service instance id associated with the requested date and time
      * @param partySize the number of guests for the reservation
      * @param name the customer's name
      * @param email the customer's email address
@@ -61,8 +61,7 @@ public class ReservationService {
      */
     public ReservationResult createReservation (
             Long restaurantId,
-            String dateStr,
-            String timeStr,
+            Long serviceInstanceId,
             int partySize,
             String name,
             String email,
@@ -70,17 +69,7 @@ public class ReservationService {
             String note
     ) {
 
-        LocalDate date = LocalDate.parse(dateStr);
-        LocalTime time = LocalTime.parse(timeStr);
-
-        // Find service instance
-        List<ServiceInstance> services =
-                serviceInstanceDao.getServicesByRestaurantOnDate(restaurantId, date);
-
-        ServiceInstance selected = services.stream()
-                .filter(s -> s.getServiceTime().equals(time))
-                .findFirst()
-                .orElse(null);
+        ServiceInstance selected = serviceInstanceDao.getById(serviceInstanceId);
 
         if (selected == null) {
             return ReservationResult.failure("Invalid time selection");
@@ -104,12 +93,16 @@ public class ReservationService {
         }
 
         // Send confirmation email after successful reservation confirmation
+        String formattedTime = selected.getServiceTime()
+                        .format(DateTimeFormatter.ofPattern("h:mm a"));
+
+        String formattedDate = selected.getServiceDate().toString();
 
         emailService.sendReservationConfirmation(
                 email,
                 name,
-                dateStr,
-                timeStr,
+                formattedDate,
+                formattedTime,
                 partySize,
                 allergies,
                 note

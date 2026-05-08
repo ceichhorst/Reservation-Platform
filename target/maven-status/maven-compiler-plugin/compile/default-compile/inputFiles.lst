@@ -20,6 +20,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceTimeFormatter.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Reservation.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationController.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/RestaurantManagementServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/filter/AuthFilter.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationStatus.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/DayAvailability.java
@@ -40,4 +41,6 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/AdministratorDao.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/EmailService.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/Auth.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/AvailabilityController.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/auth/TokenResponse.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/AvailabilitySlot.java

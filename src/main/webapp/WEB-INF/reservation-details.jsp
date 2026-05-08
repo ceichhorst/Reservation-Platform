@@ -56,6 +56,7 @@
 
                 <!-- Hidden fields -->
                 <input type="hidden" name="restaurantId" value="${restaurantId}">
+                <input type="hidden" name="serviceInstanceId" value="${serviceInstanceId}">
                 <input type="hidden" name="reservationDate" value="${reservationDate}">
                 <input type="hidden" name="reservationTime" value="${reservationTime}">
                 <input type="hidden" name="partySize" value="${partySize}">

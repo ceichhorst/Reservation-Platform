@@ -14,7 +14,7 @@ public class EmailService {
 
     // TODO Note security with it - AWS would be better but this can serve purpose of project
     private final String username = "dyanasystems@gmail.com";
-    private final String password = "placeholder"; // TODO EMAIL INFO TO BE ADDED
+    private final String password = "wnhswfdiutuukfgh";
 
     private final Session session;
 
@@ -23,14 +23,16 @@ public class EmailService {
 
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "stmp.gmail.com");
-        props.put("mail.smpt.port", "587");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
 
         session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
         });
+
+        session.setDebug(true);
     }
 
     public void sendReservationConfirmation(

@@ -24,6 +24,7 @@ public class ApplicationConfig extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         HashSet h = new HashSet<Class<?>>();
+        h.add(AvailabilityController.class);
         h.add(ReservationController.class);
         h.add(JacksonFeature.class);
         return h;

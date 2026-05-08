@@ -83,3 +83,156 @@ button.danger {
     top: 0;
     background: white;
 }
+
+/* ================================
+   RESTAURANT MANAGEMENT PAGE
+   ================================ */
+
+/* Form layout improvements */
+.card form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+/* Labels */
+.card label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #011e41;
+    margin-bottom: 4px;
+}
+
+/* Inputs + textareas */
+.card input[type="text"],
+.card input[type="email"],
+.card textarea,
+.card select {
+    padding: 10px 12px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus state */
+.card input:focus,
+.card textarea:focus,
+.card select:focus {
+    outline: none;
+    border-color: #0077a0;
+    box-shadow: 0 0 0 2px rgba(0,119,160,0.15);
+}
+
+/* Textarea tweak */
+.card textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Checkbox alignment */
+.card input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+/* Buttons */
+.card button {
+    background-color: #0077a0;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    width: fit-content;
+}
+
+.card button:hover {
+    background-color: #2a7093;
+    transform: translateY(-1px);
+}
+
+/* Danger button (remove admin) */
+button.danger {
+    background-color: #dc3545;
+}
+
+button.danger:hover {
+    background-color: #b52a37;
+}
+
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 15px 0;
+}
+
+.card ul li {
+    background: #F1F5F9;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+/* Subtle email styling */
+.card ul li span {
+    color: #334155;
+}
+
+/* Section divider */
+.card h3 {
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row > div {
+    flex: 1;
+}
+
+select {
+    cursor: pointer;
+}
+
+/* ================================
+   DATE + TIME INPUT STYLING
+   ================================ */
+
+.card input[type="date"],
+.card input[type="time"],
+.card input[type="number"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+
+    background-color: #FFFFFF;
+    color: #111111;
+
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus state */
+.card input[type="date"]:focus,
+.card input[type="time"]:focus,
+.card input[type="number"]:focus {
+    outline: none;
+    border-color: #0077a0;
+    box-shadow: 0 0 0 2px rgba(0,119,160,0.15);
+}

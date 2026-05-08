@@ -20,70 +20,44 @@
 
     <!-- RESERVATION DATE & TIME SELECTOR -->
     <section class="reservation-bar">
+        <input type="hidden" id="restaurantId" value="${restaurant.id}" />
+        <input type="hidden" id="schedulingType" value="${schedulingType}" />
         <!-- DATE -->
-        <form action="${pageContext.request.contextPath}/reservation" method="get">
+        <form action="${pageContext.request.contextPath}/reservation" method="post">
 
             <input type="hidden" name="restaurantId" value="${restaurant.id}" />
+            <input type="hidden" name="date" value="${selectedDate}" />
 
-            <select name="date" onchange="this.form.submit()" required>
+            <select id="dateSelect" name="date" required>
                 <option value="">Select a Date</option>
-
                 <c:choose>
                     <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
                         <c:forEach var="day" items="${calendar}">
-                            <option value="${day.date}"
-                                    <c:if test="${day.date == selectedDate}">selected</c:if>>
-                                    ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
+                            <option value="${day.date}">
+                                ${day.date} (${day.totalSlots - day.bookedSlots} seats left)
                             </option>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="day" items="${calendar}">
-                            <option value="${day.date}"
-                                    <c:if test="${day.date == selectedDate}">selected</c:if>>
-                                    ${day.date}
+                            <option value="${day.date}">
+                                ${day.date}
                             </option>
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
             </select>
 
-        </form>
-        <!-- TIME -->
-        <form action="${pageContext.request.contextPath}/reservation" method="post">
+            <select id="timeSelect" name="serviceInstanceId" required>
+                <option value="">Select a Time</option>
+            </select>
 
-            <input type="hidden" name="restaurantId" value="${restaurant.id}" />
-            <input type="hidden" name="date" value="${selectedDate}" />
-
-            <c:choose>
-                <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
-                    <c:if test="${not empty availableTimes}">
-                        <div class="fixed-slot">
-                                ${availableTimes[0].serviceTimeFormatted} (assigned automatically)
-                        </div>
-                        <input type="hidden"
-                               name="serviceInstanceId"
-                               value="${availableTimes[0].id}" />
-                    </c:if>
-                </c:when>
-
-                <c:otherwise>
-                    <select name="serviceInstanceId" required>
-                        <option value="">Select a Time</option>
-                        <c:forEach var="slot" items="${availableTimes}">
-                            <option value="${slot.id}">
-                                ${slot.serviceTimeFormatted}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </c:otherwise>
-            </c:choose>
-
-            <!-- PARTY SIZE -->
             <select name="partySize" required>
                 <option value="">Party Size</option>
                 <c:forEach begin="1" end="10" var="i">
-                    <option value="${i}">${i}</option>
+                    <option value="${i}">
+                        ${i}
+                    </option>
                 </c:forEach>
             </select>
 
@@ -91,16 +65,7 @@
 
         </form>
     </section>
-    <!--
-    <section class="upcoming-dates">
-        <h2>Upcoming Service Dates</h2>
-        <ul>
-            <c:forEach var="service" items="${services}">
-                <li>${service.serviceDate}</li>
-            </c:forEach>
-        </ul>
-    </section>
-    -->
+
     <section class="mini-calendar">
         <h2>Availability Calendar</h2>
         <c:forEach var="day" items="${calendar}">
@@ -116,21 +81,6 @@
         </p>
     </section>
     <div class="container">
-        <!-- <hr>
-        <h2>Available Restaurants</h2>
-
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Scheduling Type</th>
-            </tr>
-            <tr>
-                <td>${restaurant.id}</td>
-                <td>${restaurant.name}</td>
-                <td>${restaurant.schedulingType}</td>
-            </tr>
-        </table> -->
         <br>
         <c:if test="${not empty message}">
             <div style="color:red;"><strong>${message}</strong></div>
@@ -140,5 +90,10 @@
         </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <script>
+        window.contextPath = '${pageContext.request.contextPath}';
+    </script>
+
+    <script src="<c:url value='/js/availability.js' />"></script>
 </body>
 </html>

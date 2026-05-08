@@ -15,6 +15,7 @@
     <jsp:include page="/WEB-INF/components/header.jsp" />
     <nav>
         <a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
+        <a href="${pageContext.request.contextPath}/admin/restaurants">Manage Restaurants</a>
         <a href="${pageContext.request.contextPath}/admin/reservations">Manage Reservations</a>
     </nav>
     <div class="container">

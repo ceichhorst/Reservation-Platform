@@ -125,6 +125,13 @@ public class Reservation {
     }
 
     /**
+     * Helper class to check active statuses that count towards open seats
+     */
+    public boolean isActive() {
+        return status == ReservationStatus.PENDING || status == ReservationStatus.CONFIRMED;
+    }
+
+    /**
      * Gets additional comments or special requests.
      * @return additional comments provided by the customer.
      */

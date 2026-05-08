@@ -58,6 +58,7 @@ public class ReservationDao extends GenericDao<Reservation> {
 
         int currentBooked = service.getReservations()
             .stream()
+            .filter(Reservation::isActive)
             .mapToInt(Reservation::getPartySize)
                 .sum();
 

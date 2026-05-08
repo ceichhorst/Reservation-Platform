@@ -68,11 +68,11 @@ public class Reservation {
     private String additionalComments;
 
     /**
-     * Current status of the reservation.
+     * Current status of the reservation. (Default is PENDING)
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private ReservationStatus status;
+    @Column(name = "status", nullable = false)
+    private ReservationStatus status = ReservationStatus.PENDING;
 
     // getters & setters =========================================================
 

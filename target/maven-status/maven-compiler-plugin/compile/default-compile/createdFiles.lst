@@ -36,8 +36,10 @@ com/ceichhorst/reservation/entity/Restaurant.class
 com/ceichhorst/reservation/service/AvailabilityService.class
 com/ceichhorst/reservation/controller/AppShutdownListener.class
 com/ceichhorst/reservation/service/ServiceTemplate.class
+com/ceichhorst/reservation/controller/AvailabilityController.class
 com/ceichhorst/reservation/service/ServiceManager$1.class
 com/ceichhorst/reservation/dao/RestaurantDao.class
+com/ceichhorst/reservation/service/AvailabilitySlot.class
 com/ceichhorst/reservation/controller/ServiceManagementServlet.class
 com/ceichhorst/reservation/controller/Auth.class
 com/ceichhorst/reservation/util/HibernateUtil.class

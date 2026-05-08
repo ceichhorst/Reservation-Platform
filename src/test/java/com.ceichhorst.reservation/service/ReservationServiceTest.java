@@ -65,8 +65,7 @@ public class ReservationServiceTest {
 
         ReservationResult result = reservationService.createReservation(
                 1L,
-                instance.getServiceDate().toString(),
-                instance.getServiceTime().toString(),
+                instance.getId(),
                 2,
                 "John Doe",
                 "john@email.com",

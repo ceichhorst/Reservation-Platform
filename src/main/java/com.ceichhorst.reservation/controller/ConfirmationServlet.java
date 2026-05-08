@@ -2,6 +2,7 @@ package com.ceichhorst.reservation.controller;
 
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
+import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ReservationService;
@@ -12,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Servlet responsible for confirming and finalizing customer reservations.
@@ -51,6 +54,7 @@ public class ConfirmationServlet extends HttpServlet{
      * Service responsible for reservation creation and business logic.
      */
     private ReservationService reservationService = new ReservationService(new EmailService());
+    private ServiceInstanceDao serviceInstanceDao = new ServiceInstanceDao();
 
     /**
      * Handles HTTP POST requests to finalize a reservation.
@@ -115,16 +119,16 @@ public class ConfirmationServlet extends HttpServlet{
         String name = request.getParameter("customerName");
         String email = request.getParameter("email");
         String dateStr = request.getParameter("reservationDate");
-        String timeStr = request.getParameter("reservationTime");
+        String serviceInstanceIdStr = request.getParameter("serviceInstanceId");
         String partySizeStr = request.getParameter("partySize");
         String restaurantIdStr = request.getParameter("restaurantId");
         String allergies = request.getParameter("guestAllergies");
         String note = request.getParameter("guestNotes");
 
         // Validation
-        if (name == null || email == null || dateStr == null || timeStr == null ||
+        if (name == null || email == null || dateStr == null || serviceInstanceIdStr == null ||
             partySizeStr == null || restaurantIdStr == null || name.isEmpty() ||
-            email.isEmpty() || dateStr.isEmpty() || timeStr.isEmpty() || partySizeStr.isEmpty() ||
+            email.isEmpty() || dateStr.isEmpty() || serviceInstanceIdStr.isEmpty() || partySizeStr.isEmpty() ||
             restaurantIdStr.isEmpty()) {
 
             request.setAttribute("message", "All required fields must be filled out.");
@@ -133,62 +137,71 @@ public class ConfirmationServlet extends HttpServlet{
             return;
         }
 
-        // Convert types
-        Long restaurantId;
-        int partySize;
-
         try {
-            partySize = Integer.parseInt(partySizeStr);
-            restaurantId = Long.parseLong(restaurantIdStr);
-        } catch (Exception e) {
-            request.setAttribute("message", "Invalid input values.");
-            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
-                    .forward(request, response);
-            return;
-        }
+            Long restaurantId = Long.parseLong(restaurantIdStr);
+            Long serviceInstanceId = Long.parseLong(serviceInstanceIdStr);
+            int partySize = Integer.parseInt(partySizeStr);
 
-        // Find matching service instance
-        ReservationResult result = reservationService.createReservation(
-                restaurantId,
-                dateStr,
-                timeStr,
-                partySize,
-                name,
-                email,
-                allergies,
-                note
-        );
+            ServiceInstance instance = serviceInstanceDao.getById(serviceInstanceId);
 
-        // Handle failure
-        if (!result.isSuccess()) {
-            request.setAttribute("message", result.getMessage());
-            // Preserve previously entered details
-            request.setAttribute("reservationDate", dateStr);
-            request.setAttribute("reservationTime", timeStr);
+            if (instance == null) {
+                request.setAttribute("message", "Invalid service selection.");
+                request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+                        .forward(request, response);
+                return;
+            }
+
+            // Find matching service instance
+            ReservationResult result = reservationService.createReservation(
+                    restaurantId,
+                    serviceInstanceId,
+                    partySize,
+                    name,
+                    email,
+                    allergies,
+                    note
+            );
+
+            // Handle failure
+            if (!result.isSuccess()) {
+                request.setAttribute("message", result.getMessage());
+                // Preserve previously entered details
+                request.setAttribute("serviceInstanceId", serviceInstanceId);
+                request.setAttribute("reservationDate", instance.getServiceDate().toString());
+                request.setAttribute("reservationTime", instance.getServiceTimeFormatted());
+                request.setAttribute("partySize", partySize);
+                request.setAttribute("restaurantId", restaurantId);
+
+                request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+                        .forward(request, response);
+                return;
+            }
+
+            String formattedTime = instance.getServiceTime()
+                    .format(DateTimeFormatter.ofPattern("h:mm a"));
+
+            // Create reservation
+            Reservation reservation = result.getReservation();
+            request.setAttribute("restaurantName", restaurant.getName());
+            request.setAttribute("restaurantEmail", restaurant.getEmail());
+            request.setAttribute("customerName", reservation.getCustomerName());
+            request.setAttribute("serviceInstanceId", serviceInstanceId);
+            request.setAttribute("reservationDate", instance.getServiceDate().toString());
+            request.setAttribute("reservationTime", formattedTime);
             request.setAttribute("partySize", partySize);
-            request.setAttribute("restaurantId", restaurantId);
+            request.setAttribute("confirmationId", reservation.getId());
 
-            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+            request.setAttribute("email", email);
+            request.setAttribute("guestAllergens", allergies);
+            request.setAttribute("guestComments", note);
+
+            request.setAttribute("restaurant", restaurant);
+
+            request.getRequestDispatcher("/WEB-INF/confirm-reservation.jsp")
                     .forward(request, response);
-            return;
+
+        } catch (Exception e) {
+            throw new ServletException("Error processing reservation", e);
         }
-
-        // Create reservation
-        Reservation reservation = result.getReservation();
-        request.setAttribute("customerName", reservation.getCustomerName());
-        request.setAttribute("reservationDate", dateStr);
-        request.setAttribute("reservationTime", timeStr);
-        request.setAttribute("partySize", partySize);
-        request.setAttribute("confirmationId", reservation.getId());
-
-        request.setAttribute("email", email);
-        request.setAttribute("guestAllergens", allergies);
-        request.setAttribute("guestComments", note);
-
-        request.setAttribute("restaurant", restaurant);
-
-        request.getRequestDispatcher("/WEB-INF/confirm-reservation.jsp")
-                .forward(request, response);
-
     }
 }

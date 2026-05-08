@@ -45,6 +45,11 @@ public class Restaurant {
     private String name;
 
     /**
+     * Email of the restaurant
+     */
+    private String email;
+
+    /**
      * Indicates whether restaurants require customers to provide allergen/dietary information
      * when making a reservation.
      */
@@ -132,6 +137,14 @@ public class Restaurant {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

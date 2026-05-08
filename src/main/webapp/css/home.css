@@ -129,40 +129,40 @@
    ================================ */
 
 .reservation-bar {
-    background: linear-gradient(135deg, #AAD1DF, #cfe7f1);
-    padding: 24px 0;
-    border-bottom: 1px solid #E5E7EB;
+    background: linear-gradient(135deg, #AAD1DF, #cfe7f1) !important;
+    padding: 24px 0 !important;
+    border-bottom: 1px solid #E5E7EB !important;
 }
 
 /* Wrap both forms nicely */
 .reservation-bar form {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 8px auto;
-    max-width: 1000px;
+    display: flex !important;
+    gap: 12px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    margin: 8px auto !important;
+    max-width: 1000px !important;
 }
 
 /* Inputs (selects) */
 .reservation-bar select {
-    padding: 12px 14px;
-    font-size: 0.95rem;
-    border: 1px solid #D1D5DB;
-    border-radius: 8px;
-    background-color: #FFFFFF;
-    min-width: 160px;
+    padding: 12px 14px !important;
+    font-size: 0.95rem !important;
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    background-color: #FFFFFF !important;
+    min-width: 160px !important;
 
-    transition: border 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
+    transition: border 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: pointer !important;
 }
 
 /* Focus state */
 .reservation-bar select:focus {
-    outline: none;
-    border-color: #0077a0;
-    box-shadow: 0 0 0 2px rgba(0,119,160,0.15);
+    outline: none !important;
+    border-color: #0077a0 !important;
+    box-shadow: 0 0 0 2px rgba(0,119,160,0.15) !important;
 }
 
 /* Fixed slot display */

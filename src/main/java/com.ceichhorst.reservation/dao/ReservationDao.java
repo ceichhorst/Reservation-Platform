@@ -159,8 +159,19 @@ public class ReservationDao extends GenericDao<Reservation> {
         Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
         Join<ServiceInstance, Restaurant> restaurantJoin = serviceJoin.join("restaurant");
 
+        Predicate restaurantPredicate = restaurantJoin.get("id").in(restaurantIds);
+
+        Predicate activeReservationPredicate = root.get("status")
+                        .in(
+                                ReservationStatus.PENDING,
+                                ReservationStatus.CONFIRMED
+                        );
+
         cq.select(cb.count(root))
-                .where(restaurantJoin.get("id").in(restaurantIds));
+                .where(cb.and(
+                        restaurantPredicate,
+                        activeReservationPredicate
+                ));
 
         Long count = session.createQuery(cq).getSingleResult();
         session.close();

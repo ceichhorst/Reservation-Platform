@@ -1,6 +1,7 @@
 package com.ceichhorst.reservation.service;
 
 import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.entity.SchedulingType;
 
@@ -62,7 +63,8 @@ public class AvailabilityService {
                 .filter(s -> {
                     int booked = s.getReservations() == null ? 0 :
                             s.getReservations().stream()
-                            .mapToInt(r -> r.getPartySize())
+                            .filter(Reservation::isActive)
+                            .mapToInt(Reservation::getPartySize)
                             .sum();
                     return booked < s.getCapacity();
                 })
@@ -128,7 +130,8 @@ public class AvailabilityService {
                 if (s.getReservations() != null) {
                     booked += s.getReservations()
                             .stream()
-                            .mapToInt(r -> r.getPartySize())
+                            .filter(Reservation::isActive)
+                            .mapToInt(Reservation::getPartySize)
                             .sum();
                 }
             }

@@ -212,7 +212,19 @@ public class ReservationDao extends GenericDao<Reservation> {
                 cb.sum(root.get("partySize")).as(Long.class)
         ));
 
-        cq.where(restaurantJoin.get("id").in(restaurantIds));
+        Predicate restaurantPredicate = restaurantJoin.get("id").in(restaurantIds);
+
+        Predicate activeReservationPredicate = root.get("status")
+                .in(
+                        ReservationStatus.PENDING,
+                        ReservationStatus.CONFIRMED
+                );
+
+        cq.where(cb.and(
+                        restaurantPredicate,
+                        activeReservationPredicate
+                ));
+
         cq.groupBy(serviceJoin.get("serviceDate"));
         cq.orderBy(cb.asc(serviceJoin.get("serviceDate")));
 

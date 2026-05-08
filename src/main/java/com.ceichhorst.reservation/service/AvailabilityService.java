@@ -54,7 +54,8 @@ public class AvailabilityService {
     public List<ServiceInstance> getAvailableTimes(
             Restaurant restaurant,
             List<ServiceInstance> services,
-            LocalDate serviceDate
+            LocalDate serviceDate,
+            int partySize
     ) {
         SchedulingType type = restaurant.getSchedulingType();
 
@@ -66,7 +67,10 @@ public class AvailabilityService {
                             .filter(Reservation::isActive)
                             .mapToInt(Reservation::getPartySize)
                             .sum();
-                    return booked < s.getCapacity();
+
+                    int remaining = s.getCapacity() - booked;
+
+                    return remaining >= partySize;
                 })
                 .sorted(Comparator.comparing(ServiceInstance::getServiceTime))
                 .collect(Collectors.toList());

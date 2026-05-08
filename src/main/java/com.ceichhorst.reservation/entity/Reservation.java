@@ -128,6 +128,9 @@ public class Reservation {
      * Helper class to check active statuses that count towards open seats
      */
     public boolean isActive() {
+        if (status == null) {
+            return false;
+        }
         return status == ReservationStatus.PENDING || status == ReservationStatus.CONFIRMED;
     }
 

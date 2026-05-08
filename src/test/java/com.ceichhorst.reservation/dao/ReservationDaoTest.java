@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceTemplate;
@@ -110,6 +111,7 @@ public class ReservationDaoTest {
         reservation.setCustomerName("Available Test");
         reservation.setEmail("test@email.com");
         reservation.setPartySize(4);
+        reservation.setStatus(ReservationStatus.CONFIRMED);
         reservation.setServiceInstance(service);
 
         boolean created = reservationDao.createReservationIfAvailable(reservation);
@@ -127,6 +129,7 @@ public class ReservationDaoTest {
         reservation1.setCustomerName("Full Test");
         reservation1.setEmail("full@email.com");
         reservation1.setPartySize(8);
+        reservation1.setStatus(ReservationStatus.CONFIRMED);
         reservation1.setServiceInstance(service);
 
         reservationDao.createReservationIfAvailable(reservation1);

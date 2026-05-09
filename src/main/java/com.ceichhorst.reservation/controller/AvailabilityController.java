@@ -50,6 +50,11 @@ public class AvailabilityController {
             Restaurant restaurant = restaurantDao.getById(restaurantId);
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
 
+            // Filter out hidden services
+            services = services.stream()
+                    .filter(ServiceInstance::getVisible)
+                    .collect(Collectors.toList());
+
             // Apply logic
             List<ServiceInstance> available =
                     availabilityService.getAvailableTimes(

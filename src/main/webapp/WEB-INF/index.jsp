@@ -91,13 +91,13 @@
                             <c:otherwise>
                                 <table class="slot-table">
                                     <tbody>
-                                    <c:set var="currnetHour" value="-1" />
+                                    <c:set var="currentHour" value="-1" />
                                     <c:forEach var="slot" items="${day.slots}">
                                     <c:if test="${slot.hour != currentHour}">
-                                    <c:if test="${currentHour != -1}">
-                                    <tr>
+                                        <c:if test="${currentHour != -1}">
+                                            </tr>
                                         </c:if>
-                                    <tr>
+                                        <tr>
                                         <c:set var="currentHour" value="${slot.hour}" />
                                         </c:if>
                                         <td class="slot-cell ${slot.full ? 'full' : 'available'}"
@@ -106,7 +106,7 @@
                                         </td>
                                         </c:forEach>
                                         <c:if test="${currentHour != -1}">
-                                    </tr>
+                                        </tr>
                                     </c:if>
                                     </tbody>
                                 </table>

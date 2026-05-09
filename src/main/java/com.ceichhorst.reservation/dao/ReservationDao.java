@@ -195,10 +195,15 @@ public class ReservationDao extends GenericDao<Reservation> {
                                 ReservationStatus.CONFIRMED
                         );
 
+        Predicate upcomingPredicate = cb.greaterThanOrEqualTo(
+                serviceJoin.get("serviceDate"), LocalDate.now()
+        );
+
         cq.select(cb.count(root))
                 .where(cb.and(
                         restaurantPredicate,
-                        activeReservationPredicate
+                        activeReservationPredicate,
+                        upcomingPredicate
                 ));
 
         Long count = session.createQuery(cq).getSingleResult();
@@ -248,9 +253,14 @@ public class ReservationDao extends GenericDao<Reservation> {
                         ReservationStatus.CONFIRMED
                 );
 
+        Predicate upcomingPredicate = cb.greaterThanOrEqualTo(
+                serviceJoin.get("serviceDate"), LocalDate.now()
+        );
+
         cq.where(cb.and(
                         restaurantPredicate,
-                        activeReservationPredicate
+                        activeReservationPredicate,
+                        upcomingPredicate
                 ));
 
         cq.groupBy(serviceJoin.get("serviceDate"));

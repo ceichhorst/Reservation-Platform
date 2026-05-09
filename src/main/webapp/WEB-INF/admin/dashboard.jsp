@@ -22,27 +22,43 @@
         <p class="welcome-sub">Logged in as ${userEmail}</p>
     </div>
     <div class="container">
-        <!-- Add admin profile section or simple 'Welcome $ { adminUser }' message -->
-        <h2>Overview</h2>
-        <!-- Don't need time listed on this table -->
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Service Date</th>
-                    <th>Total Reservations Confirmed</th>
-                    <th>Total Seats Booked</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="stat" items="${reservationStats}">
+        <c:if test="${not empty message}">
+            <div class="message">${message}</div>
+        </c:if>
+        <!-- Summary Card -->
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <div class="card-label">Active Upcoming Reservations</div>
+                <div class="card-value">${reservationCount}</div>
+            </div>
+        </div>
+        <h2>Upcoming Overview</h2>
+        <c:choose>
+            <c:when test="${empty reservationStats}">
+                <p>No upcoming reservations found.</p>
+            </c:when>
+            <c:otherwise>
+                <table class="dashboard-table">
+                    <thead>
                     <tr>
-                        <td>${stat.serviceDate}</td>
-                        <td>${stat.reservationCount}</td>
-                        <td>${stat.totalSeatsBooked}</td>
+                        <th>Service Date</th>
+                        <th>Total Reservations Confirmed</th>
+                        <th>Total Seats Booked</th>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="stat" items="${reservationStats}">
+                        <tr>
+                            <td>${stat.serviceDate}</td>
+                            <td>${stat.reservationCount}</td>
+                            <td>${stat.totalSeatsBooked}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:otherwise>
+        </c:choose>
+
         <div class="dashboard-cards">
             <!-- <hr>
             <h2>Quick Actions</h2>

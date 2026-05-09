@@ -4,12 +4,16 @@ import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.service.ServiceInstance;
 
+import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // Core admin component for admins to manage reservations on admin pages
 /**
@@ -77,9 +81,43 @@ public class ReservationManagementServlet extends HttpServlet {
             return;
         }
 
-        List<Reservation> reservations = reservationDao.getAll();
+        // Filter params
+        String idParam = request.getParameter("id");
+        String customerName = request.getParameter("customerName");
+        String email = request.getParameter("email");
+        String dateParam = request.getParameter("serviceDate");
+
+        Long id = null;
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try {
+                id = Long.parseLong(idParam.trim());
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Confirmation ID must be a number.");
+            }
+        }
+
+        LocalDate serviceDate = null;
+        if (dateParam != null && !dateParam.trim().isEmpty()) {
+            try {
+                serviceDate = LocalDate.parse(dateParam.trim());
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid date format.");
+            }
+        }
+
+        List<Reservation> reservations = reservationDao.findByFilter(id ,customerName, email, serviceDate);
+
+        ServiceTimeFormatter formatter = new ServiceTimeFormatter();
+        List<ServiceInstance> serviceInstances = reservations.stream()
+                        .map(Reservation::getServiceInstance)
+                                .collect(Collectors.toList());
+        formatter.formatTimes(serviceInstances);
 
         request.setAttribute("reservations", reservations);
+        request.setAttribute("filterId", idParam != null ? idParam : "");
+        request.setAttribute("filterCustomerName", customerName != null ? customerName : "");
+        request.setAttribute("filterEmail", email != null ? email : "");
+        request.setAttribute("filterDate", dateParam != null ? dateParam : "");
 
         request.getRequestDispatcher("/WEB-INF/admin/reservations.jsp")
                 .forward(request, response);

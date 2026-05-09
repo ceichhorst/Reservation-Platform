@@ -109,7 +109,7 @@ public class AvailabilityService {
      * @param services the list of service instances to aggregate
      * @return a list of {@link DayAvailability} objects representing daily availability
      */
-    public List<DayAvailability> buildCalendar(List<ServiceInstance> services) {
+    public List<DayAvailability> buildCalendar(List<ServiceInstance> services, SchedulingType schedulingType) {
         Map<LocalDate, List<ServiceInstance>> grouped = new TreeMap<>();
 
         for (ServiceInstance s : services) {
@@ -128,17 +128,36 @@ public class AvailabilityService {
             int total = 0;
             int booked = 0;
 
+            List<CalendarTimeSlot> slots = new ArrayList<>();
+
             for (ServiceInstance s : dayServices) {
                 total += s.getCapacity();
-
+                int slotBooked = 0;
                 if (s.getReservations() != null) {
-                    booked += s.getReservations()
+                    slotBooked += s.getReservations()
                             .stream()
                             .filter(Reservation::isActive)
                             .mapToInt(Reservation::getPartySize)
                             .sum();
                 }
+                booked += slotBooked;
+
+                // Build for non-DATE_ONLY types
+                if (schedulingType != SchedulingType.DATE_ONLY) {
+                    int remaining = s.getCapacity() - slotBooked;
+
+                    CalendarTimeSlot slot = new CalendarTimeSlot();
+                    slot.setServiceTime(s.getServiceTime());
+                    slot.setServiceTimeFormatted(s.getServiceTimeFormatted());
+                    slot.setRemainingSeats(remaining);
+                    slot.setFull(remaining <= 0);
+                    slots.add(slot);
+                }
             }
+
+            // Sort slots chronologically
+            slots.sort(Comparator.comparing(CalendarTimeSlot::getServiceTime,
+                    Comparator.nullsLast(Comparator.naturalOrder())));
 
             DayAvailability day = new DayAvailability();
             day.setDate(date);
@@ -146,6 +165,7 @@ public class AvailabilityService {
             day.setBookedSlots(booked);
             day.setFull(booked >= total);
             day.setAvailable(booked < total);
+            day.setSlots(slots);
 
             calendar.add(day);
 

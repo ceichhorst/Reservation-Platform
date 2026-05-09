@@ -17,6 +17,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Join;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.time.LocalDate;
 
@@ -79,28 +80,6 @@ public class ReservationDao extends GenericDao<Reservation> {
 
     }
 
-    // TODO Do I need this one?
-    /**
-     * Retrieves all reservations with the specified status.
-     * @param status the reservation status to filter by
-     * @return a list of matching reservations
-     */
-    List<Reservation> getByStatus(ReservationStatus status) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
-        Root<Reservation> root = cq.from(Reservation.class);
-
-        cq.select(root)
-                .where(cb.equal(root.get("status"), status));
-
-        List<Reservation> results = session.createQuery(cq).getResultList();
-        session.close();
-
-        return results;
-    }
-
     /**
      * Finds reservations by an exact match on customer name.
      * @param name the customer name to search for
@@ -141,6 +120,54 @@ public class ReservationDao extends GenericDao<Reservation> {
         session.close();
 
         return results;
+    }
+
+    /**
+     * Finds reservations by a filtered parameter
+     */
+    public List<Reservation> findByFilter(Long id, String customerName, String email, LocalDate serviceDate) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (id != null) {
+            predicates.add(cb.equal(root.get("id"), id));
+        }
+
+        if (customerName != null && customerName.trim().isEmpty()) {
+            predicates.add(cb.like(
+                    cb.lower(root.get("customerName")),
+                    "%" + customerName.trim().toLowerCase() + "%"
+            ));
+        }
+
+        if (email != null && email.trim().isEmpty()) {
+            predicates.add(cb.like(
+                    cb.lower(root.get("email")),
+                    "%" + email.trim().toLowerCase() + "%"
+            ));
+        }
+
+        if (serviceDate != null) {
+            Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
+            predicates.add(cb.equal(serviceJoin.get("serviceDate"), serviceDate));
+        }
+
+        if (!predicates.isEmpty()) {
+            cq.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
+        } else {
+            cq.select(root);
+        }
+
+        List<Reservation> results = session.createQuery(cq).getResultList();
+        session.close();
+
+        return results;
+
     }
 
     /**

@@ -35,11 +35,13 @@ public class AvailabilityController {
             @QueryParam("partySize") Integer partySize
     ) {
 
-        if (restaurantId == null || dateStr == null || partySize == null) {
+        if (restaurantId == null || dateStr == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"Missing parameters\"}")
                     .build();
         }
+
+        int defaultPartySize = (partySize != null && partySize > 0) ? partySize : 1;
 
         try {
             LocalDate date = LocalDate.parse(dateStr);
@@ -48,22 +50,34 @@ public class AvailabilityController {
             Restaurant restaurant = restaurantDao.getById(restaurantId);
             List<ServiceInstance> services = serviceDao.getByRestaurantId(restaurantId);
 
+            // Filter out hidden services
+            services = services.stream()
+                    .filter(ServiceInstance::getVisible)
+                    .collect(Collectors.toList());
+
             // Apply logic
             List<ServiceInstance> available =
                     availabilityService.getAvailableTimes(
                             restaurant,
                             services,
                             date,
-                            partySize
+                            defaultPartySize
                     );
 
             available = formatter.formatTimes(available);
 
             List<AvailabilitySlot> response = available.stream()
-                    .map(s -> new AvailabilitySlot(
-                            s.getId(),
-                            s.getServiceTimeFormatted()
-                    ))
+                    .map(s -> {
+                        int booked = s.getReservations() == null ? 0 :
+                                s.getReservations().stream()
+                                .filter(r -> r.getStatus() != null &&
+                                             (r.getStatus().name().equals("PENDING") ||
+                                             r.getStatus().name().equals("CONFIRMED")))
+                                .mapToInt(r -> r.getPartySize())
+                                .sum();
+                        int remaining = s.getCapacity() - booked;
+                        return new AvailabilitySlot(s.getId(), s.getServiceTimeFormatted(), remaining);
+                        })
                     .collect(Collectors.toList());
 
             return Response.ok(response).build();

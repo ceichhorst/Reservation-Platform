@@ -103,6 +103,79 @@
     border: 1px solid #e5e7eb;
 }
 
+.calendar-day {
+    margin-bottom: 16px;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.calendar-day-header {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.slot-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.slot-table th {
+    font-size: 0.75rem;
+    color: #888;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+.slot-cell {
+    text-align: center;
+    padding: 6px 4px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    width: 25%;
+}
+
+.slot-cell.available {
+    background-color: #e0f7ff;
+    color: #0077a0;
+    border: 1px solid #b6e6f5;
+}
+
+.slot-cell.full {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f5b5b5;
+}
+
+.slot-cell.empty {
+    background-color: transparent;
+}
+
+.slot {
+    font-size: 0.85rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.slot-available {
+    background-color: #e0f7ff;
+    color: #0077a0;
+    border: 1px solid #b6e6f5;
+}
+
+.slot-full {
+     background-color: #fee2e2;
+     color: #991b1b;
+     border: 1px solid #f5b5b5;
+}
+
+.sold-out-message {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #991b1b;
+    padding: 6px 4px;
+}
+
 /* ========== HOW IT WORKS ========== */
 .how-it-works {
     max-width: 900px;

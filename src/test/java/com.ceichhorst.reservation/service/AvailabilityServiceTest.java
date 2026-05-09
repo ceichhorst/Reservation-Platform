@@ -5,6 +5,7 @@ import com.ceichhorst.reservation.testutils.TestDatabase;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.entity.Restaurant;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -54,6 +55,7 @@ public class AvailabilityServiceTest {
 
         List<ServiceInstance> services = new ArrayList<>();
 
+        Restaurant restaurant = new Restaurant();
         ServiceInstance service = new ServiceInstance();
         service.setServiceDate(LocalDate.of(2026, 5, 1));
         service.setServiceTime(LocalTime.of(18, 0));
@@ -62,7 +64,7 @@ public class AvailabilityServiceTest {
 
         services.add(service);
 
-        List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+        List<DayAvailability> calendar = availabilityService.buildCalendar(services, restaurant.getSchedulingType());
 
         assertEquals(1, calendar.size());
 
@@ -81,6 +83,7 @@ public class AvailabilityServiceTest {
 
         List<ServiceInstance> services = new ArrayList<>();
 
+        Restaurant restaurant = new Restaurant();
         ServiceInstance service = new ServiceInstance();
         service.setServiceDate(LocalDate.of(2026, 5, 1));
         service.setServiceTime(LocalTime.of(18, 0));
@@ -103,7 +106,7 @@ public class AvailabilityServiceTest {
 
         services.add(service);
 
-        List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+        List<DayAvailability> calendar = availabilityService.buildCalendar(services, restaurant.getSchedulingType());
 
         assertEquals(1, calendar.size());
 
@@ -121,6 +124,7 @@ public class AvailabilityServiceTest {
 
         List<ServiceInstance> services = new ArrayList<>();
 
+        Restaurant restaurant = new Restaurant();
         ServiceInstance service = new ServiceInstance();
         service.setServiceDate(LocalDate.of(2026, 5, 1));
         service.setServiceTime(LocalTime.of(18, 0));
@@ -143,7 +147,7 @@ public class AvailabilityServiceTest {
 
         services.add(service);
 
-        List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+        List<DayAvailability> calendar = availabilityService.buildCalendar(services, restaurant.getSchedulingType());
 
         assertEquals(1, calendar.size());
 
@@ -160,6 +164,7 @@ public class AvailabilityServiceTest {
     void testBuildCalendar_multipleDatesGrouping() {
 
         List<ServiceInstance> services = new ArrayList<>();
+        Restaurant restaurant = new Restaurant();
 
         // Day 1
         ServiceInstance s1 = new ServiceInstance();
@@ -176,7 +181,7 @@ public class AvailabilityServiceTest {
         services.add(s1);
         services.add(s2);
 
-        List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+        List<DayAvailability> calendar = availabilityService.buildCalendar(services, restaurant.getSchedulingType());
 
         assertEquals(2, calendar.size());
 

@@ -33,6 +33,8 @@ public class ReservationServiceTest {
                 anyString(),
                 anyString(),
                 anyString(),
+                anyString(),
+                anyString(),
                 anyInt(),
                 anyString(),
                 anyString()

@@ -46,7 +46,7 @@ header {
     min-width: 0;
 }
 
-.logo-wrao {
+.logo-wrap {
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -61,6 +61,7 @@ header {
 .text_logo {
     height: 34px;
     width: auto;
+    margin-top: -5px;
 }
 
 .logo-link {

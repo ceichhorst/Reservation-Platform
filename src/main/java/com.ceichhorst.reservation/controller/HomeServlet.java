@@ -128,11 +128,13 @@ public class HomeServlet extends HttpServlet {
 
             if (selectedDateParam != null && !selectedDateParam.isEmpty()) {
                 LocalDate selectedDate = LocalDate.parse(selectedDateParam);
+                int partySize = 1; // Default party size
 
                 availableTimes = availabilityService.getAvailableTimes(
                         restaurant,
                         services,
-                        selectedDate
+                        selectedDate,
+                        partySize
                 );
 
                 request.setAttribute("selectedDate", selectedDate);
@@ -144,7 +146,7 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("availableTimes", availableTimes);
 
             // Build availability calendar
-            List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+            List<DayAvailability> calendar = availabilityService.buildCalendar(services, restaurant.getSchedulingType());
 
             request.setAttribute("restaurant", restaurant);
             request.getSession().setAttribute("restaurant", restaurant);

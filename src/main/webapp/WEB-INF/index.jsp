@@ -124,6 +124,7 @@
         </p>
     </section>
     <div class="container">
+        <p>Questions? Contact us at <strong>${restaurant.email}</strong></p>
         <br>
         <c:if test="${not empty message}">
             <div style="color:red;"><strong>${message}</strong></div>

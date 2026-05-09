@@ -28,6 +28,7 @@
         <c:if test="${not empty error}">
             <div class="error">${error}</div>
         </c:if>
+        <div class="scroll-container">
         <c:choose>
             <c:when test="${empty reservations}">
                 <p>No reservations found.</p>
@@ -80,9 +81,6 @@
                 </table>
             </c:otherwise>
         </c:choose>
-
-        <div class="cta-button">
-            <a href="${pageContext.request.contextPath}/admin/dashboard">Back to Dashboard</a>
         </div>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />

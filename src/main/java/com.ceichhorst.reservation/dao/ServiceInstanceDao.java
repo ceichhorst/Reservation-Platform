@@ -15,8 +15,6 @@ import org.hibernate.Session;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.hibernate.Hibernate;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,17 +76,12 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
             CriteriaQuery<ServiceInstance> cq = cb.createQuery(ServiceInstance.class);
             Root<ServiceInstance> root = cq.from(ServiceInstance.class);
 
+            root.fetch("reservations", JoinType.LEFT);
+
             // Filters for future dates
             cq.select(root)
-                    .where(cb.equal(root.get("restaurant").get("id"), restaurantId))
-                    .orderBy(
-                            cb.asc(root.get("serviceDate")),
-                            cb.asc(root.get("serviceTime"))
-                    );
-
-            List<ServiceInstance> results = session.createQuery(cq).getResultList();
-
-            results.forEach(s -> Hibernate.initialize(s.getReservations()));
+                    .distinct(true)
+                    .where(cb.equal(root.get("restaurant").get("id"), restaurantId));
 
             return session.createQuery(cq).getResultList();
         }

@@ -74,6 +74,19 @@ public class Reservation {
     @Column(name = "status", nullable = false)
     private ReservationStatus status = ReservationStatus.PENDING;
 
+    /**
+     * Version of the reservation
+     */
+    @Version
+    @Column(name = "version")
+    private int version;
+
+    /**
+     * ID of admin who last handled the reservation (for updates/cancellations)
+     */
+    @Column(name = "handled_by_admin_id")
+    private Long handledByAdminId;
+
     // getters & setters =========================================================
 
     /**
@@ -212,5 +225,21 @@ public class Reservation {
      */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public Long getHandledByAdminId() {
+        return handledByAdminId;
+    }
+
+    public void setHandledByAdminId(Long handledByAdminId) {
+        this.handledByAdminId = handledByAdminId;
     }
 }

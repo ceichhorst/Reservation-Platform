@@ -4,6 +4,8 @@ import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.dao.RestaurantDao;
+import com.ceichhorst.reservation.entity.Restaurant;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,6 +30,7 @@ public class ReservationService {
 
     private ReservationDao reservationDao = new ReservationDao();
     private ServiceInstanceDao serviceInstanceDao = new ServiceInstanceDao();
+    private RestaurantDao restaurantDao = new RestaurantDao();
     private EmailService emailService;
 
     public ReservationService(EmailService emailService) {
@@ -75,6 +78,12 @@ public class ReservationService {
             return ReservationResult.failure("Invalid time selection");
         }
 
+        Restaurant restaurant = restaurantDao.getById(restaurantId);
+
+        if (restaurant == null) {
+            return ReservationResult.failure("Invalid restaurant");
+        }
+
         // Build reservation
         Reservation reservation = new Reservation();
         reservation.setCustomerName(name);
@@ -101,6 +110,8 @@ public class ReservationService {
         emailService.sendReservationConfirmation(
                 email,
                 name,
+                restaurant.getName(),
+                restaurant.getEmail(),
                 formattedDate,
                 formattedTime,
                 partySize,

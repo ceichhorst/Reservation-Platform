@@ -38,6 +38,8 @@ public class EmailService {
     public void sendReservationConfirmation(
         String toEmail,
         String customerName,
+        String restaurantName,
+        String restaurantEmail,
         String date,
         String time,
         int partySize,
@@ -57,13 +59,14 @@ public class EmailService {
 
             String body =
                     "Hello " + customerName + ",\n\n" +
-                    "Your reservation is confirmed:\n" +
+                    "Your reservation at " + restaurantName + " is confirmed:\n" +
                     "Date: " + date + "\n" +
                     "Time: " + time + "\n" +
                     "Party Size: " + partySize + "\n" +
                     "\n" +
                     "Allergen Info: " + allergenInfo + "\n" +
                     "Comments: " + additionalComments + "\n\n" +
+                    "Questions? Contact us at " + restaurantEmail + "\n\n" +
                     "Thank you for booking with us!";
 
             message.setText(body);

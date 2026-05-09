@@ -10,6 +10,9 @@ import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -63,6 +66,11 @@ public class ReservationManagementServlet extends HttpServlet {
      * Formatting service time
      */
     private ServiceTimeFormatter formatter = new ServiceTimeFormatter();
+
+    /**
+     * Logger for logging error
+     */
+    private static final Logger logger = LogManager.getLogger(ReservationManagementServlet.class);
 
     /**
      * Handles HTTP GET requests to display all reservations.
@@ -193,25 +201,35 @@ public class ReservationManagementServlet extends HttpServlet {
 
         Reservation reservation = reservationDao.getById(reservationId);
 
-        if (reservation != null) {
+        if (reservation == null) {
             response.sendRedirect(request.getContextPath() + "/admin/reservations");
+            return;
         }
 
-        // Make the Optimistic Lock class, then update ResoDao, then continue here!!
         try {
             switch (action) {
                 case "confirm": {
                     reservation.setStatus(ReservationStatus.CONFIRMED);
                     reservation.setHandledByAdminId(admin.getId());
                     reservationDao.updateWithRetry(reservation);
-                    actionDao.record(reservation, admin, ReservationActionType.CONFIRMED);
+
+                    try {
+                        actionDao.record(reservation, admin, ReservationActionType.CONFIRMED);
+                    } catch (Exception auditEx) {
+                        logger.warn("Confirmation failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                    }
                     break;
                 }
                 case "cancel": {
                     reservation.setStatus(ReservationStatus.CANCELLED);
                     reservation.setHandledByAdminId(admin.getId());
                     reservationDao.updateWithRetry(reservation);
-                    actionDao.record(reservation, admin, ReservationActionType.CANCELLED);
+
+                    try {
+                        actionDao.record(reservation, admin, ReservationActionType.CANCELLED);
+                    } catch (Exception auditEx) {
+                        logger.warn("Cancellation failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                    }
                     break;
                 }
                 case "edit": {
@@ -222,7 +240,13 @@ public class ReservationManagementServlet extends HttpServlet {
                     reservation.setAdditionalComments(request.getParameter("additionalComments"));
                     reservation.setHandledByAdminId(admin.getId());
                     reservationDao.updateWithRetry(reservation);
-                    actionDao.record(reservation, admin, ReservationActionType.UPDATED);
+
+                    try {
+                        actionDao.record(reservation, admin, ReservationActionType.UPDATED);
+                    } catch (Exception auditEx) {
+                        logger.warn("Audit record failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                    }
+
                     break;
                 }
             }

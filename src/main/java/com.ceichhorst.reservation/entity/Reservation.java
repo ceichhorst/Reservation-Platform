@@ -79,7 +79,7 @@ public class Reservation {
      */
     @Version
     @Column(name = "version")
-    private int version;
+    private Integer version;
 
     /**
      * ID of admin who last handled the reservation (for updates/cancellations)

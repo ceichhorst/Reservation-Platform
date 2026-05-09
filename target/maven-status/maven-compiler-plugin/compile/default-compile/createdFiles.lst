@@ -2,10 +2,12 @@ com/ceichhorst/reservation/controller/AdminDashboardServlet.class
 com/ceichhorst/reservation/entity/Reservation.class
 com/ceichhorst/reservation/service/ServiceTimeFormatter.class
 com/ceichhorst/reservation/controller/Login.class
+com/ceichhorst/reservation/entity/ReservationActionType.class
 com/ceichhorst/reservation/service/ReservationService.class
 com/ceichhorst/reservation/auth/CognitoJWTParser.class
 com/ceichhorst/reservation/auth/CognitoTokenHeader.class
 com/ceichhorst/reservation/service/EmailService.class
+com/ceichhorst/reservation/util/OptimisticLockRetryExecutor.class
 com/ceichhorst/reservation/listener/ApplicationStartup.class
 com/ceichhorst/reservation/service/DayAvailability.class
 com/ceichhorst/reservation/auth/Keys.class
@@ -17,7 +19,9 @@ com/ceichhorst/reservation/entity/ReservationStatus.class
 com/ceichhorst/reservation/entity/SchedulingType.class
 com/ceichhorst/reservation/auth/KeysItem.class
 com/ceichhorst/reservation/controller/ConfirmationServlet.class
+com/ceichhorst/reservation/entity/ReservationAction.class
 com/ceichhorst/reservation/dao/ServiceInstanceDao.class
+com/ceichhorst/reservation/dao/ReservationActionDao.class
 com/ceichhorst/reservation/service/AvailabilityService$1.class
 com/ceichhorst/reservation/entity/Administrator.class
 com/ceichhorst/reservation/service/ReservationResult.class

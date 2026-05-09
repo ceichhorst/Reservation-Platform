@@ -18,7 +18,7 @@
         <a href="${pageContext.request.contextPath}/admin/restaurants">Manage Restaurants</a>
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
-    <div class="container">
+    <div class="reservation-table-container">
         <h2>Reservations</h2>
         <!-- INFO MESSAGE -->
         <c:if test="${not empty message}">
@@ -69,6 +69,10 @@
                             <th>Email</th>
                             <th>Service Date</th>
                             <th>Service Time</th>
+                            <th>Party Size</th>
+                            <th>Allergen Info</th>
+                            <th>Comments</th>
+                            <th>Last Handled By</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -81,6 +85,10 @@
                                 <td>${reservation.email}</td>
                                 <td>${reservation.serviceInstance.serviceDate}</td>
                                 <td>${reservation.serviceInstance.serviceTimeFormatted}</td>
+                                <td>${reservation.partySize}</td>
+                                <td>${not empty reservation.allergenInfo ? reservation.allergenInfo : '-'}</td>
+                                <td>${not empty reservation.additionalComments ? reservation.additionalComments : '-'}</td>
+                                <td>${not empty reservation.handledByAdminId ? reservation.handledByAdminId : '-'}</td>
                                 <td>
                                     <span class="status ${reservation.status}">
                                         ${reservation.status}

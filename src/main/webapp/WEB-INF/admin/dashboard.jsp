@@ -38,50 +38,80 @@
                 <p>No upcoming reservations found.</p>
             </c:when>
             <c:otherwise>
+                <c:set var="hasTimeSlots" value="false" />
+                <c:forEach var="r" items="${restaurantList}">
+                    <c:if test="${r.schedulingType == 'DATE_TIME' || r.schedulingType == 'FIXED_TIME_SLOTS'}">
+                        <c:set var="hasTimeSlots" value="true" />
+                    </c:if>
+                </c:forEach>
                 <table class="dashboard-table">
                     <thead>
                     <tr>
                         <th>Service Date</th>
                         <th>Total Reservations Confirmed</th>
                         <th>Total Seats Booked</th>
+                        <c:if test="${hasTimeSlots}">
+                            <th></th>
+                        </c:if>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="stat" items="${reservationStats}">
-                        <tr>
+                    <c:forEach var="stat" items="${reservationStats}" varStatus="loop">
+                        <tr class="stat-row">
                             <td>${stat.serviceDate}</td>
                             <td>${stat.reservationCount}</td>
                             <td>${stat.totalSeatsBooked}</td>
+                            <c:if test="${hasTimeSlots}">
+                                <td>
+                                    <button class="accordion-toggle"
+                                            onclick="toggleSlots('slots-${loop.index}', this)"
+                                            aria-expanded="false">
+                                        ▶
+                                    </button>
+                                </td>
+                            </c:if>
                         </tr>
+                        <%-- Slot breakdown row --%>
+                        <c:if test="${hasTimeSlots}">
+                            <tr id="slots-${loop.index}" class="slot-breakdown" style="display:none;">
+                                <td colspan="4">
+                                    <table class="slot-detail-table">
+                                        <thead>
+                                           <tr>
+                                               <th>Time</th>
+                                               <th>Reservations</th>
+                                               <th>Seats Booked</th>
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:set var="hasSlots" value="false" />
+                                            <c:forEach var="slot" items="${timeSlotStats}">
+                                                <c:if test="${slot.serviceDate == stat.serviceDate}">
+                                                    <c:set var="hasSlots" value="true" />
+                                                    <tr>
+                                                        <td>${slot.serviceTime}</td>
+                                                        <td>${slot.reservationCount}</td>
+                                                        <td>${slot.totalSeatsBooked}</td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:forEach>
+                                        <c:if test="${!hasSlots}">
+                                            <tr>
+                                                <td colspan="3">No slot data available</td>
+                                            </tr>
+                                        </c:if>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
                     </tbody>
                 </table>
             </c:otherwise>
         </c:choose>
-
-        <div class="dashboard-cards">
-            <!-- <hr>
-            <h2>Quick Actions</h2>
-            <div class="cta-buttons">
-                <a href="${pageContext.request.contextPath}/admin/reservations">View Reservations</a>
-            </div>
-            <hr>
-            <h2>System Messages</h2>
-
-            <c:if test="${not empty message}">
-                <div class="message">
-                    ${message}
-                </div>
-            </c:if>
-
-            <c:if test="${not empty error}">
-                <div class="error">
-                        ${error}
-                </div>
-            </c:if>
-            -->
-        </div>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <script src="<c:url value='/js/timeSlots.js' />"></script>
 </body>
 </html>

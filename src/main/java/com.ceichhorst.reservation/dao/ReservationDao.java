@@ -6,6 +6,7 @@ import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import com.ceichhorst.reservation.service.ServiceReservationStats;
+import com.ceichhorst.reservation.service.TimeSlotReservationStats;
 
 import com.ceichhorst.reservation.util.OptimisticLockRetryExecutor;
 import org.hibernate.Session;
@@ -139,14 +140,14 @@ public class ReservationDao extends GenericDao<Reservation> {
             predicates.add(cb.equal(root.get("id"), id));
         }
 
-        if (customerName != null && customerName.trim().isEmpty()) {
+        if (customerName != null && !customerName.trim().isEmpty()) {
             predicates.add(cb.like(
                     cb.lower(root.get("customerName")),
                     "%" + customerName.trim().toLowerCase() + "%"
             ));
         }
 
-        if (email != null && email.trim().isEmpty()) {
+        if (email != null && !email.trim().isEmpty()) {
             predicates.add(cb.like(
                     cb.lower(root.get("email")),
                     "%" + email.trim().toLowerCase() + "%"
@@ -214,6 +215,61 @@ public class ReservationDao extends GenericDao<Reservation> {
     }
 
     /**
+     * Aggregates reservation statistics grouped by time slots for given service dates.
+     * @param restaurantIds
+     * @return a list of aggregated reservation service time statistics
+     */
+    public List<TimeSlotReservationStats> countReservationsGroupedByTimeSlots (Set<Long> restaurantIds) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<TimeSlotReservationStats> cq = cb.createQuery(TimeSlotReservationStats.class);
+        Root<Reservation> root = cq.from(Reservation.class);
+
+        // Join: Reservation -> ServiceInstance -> Restaurant
+        Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
+        Join<ServiceInstance, Restaurant> restaurantJoin = serviceJoin.join("restaurant");
+
+        cq.select(cb.construct(
+                TimeSlotReservationStats.class,
+                serviceJoin.get("serviceDate"),
+                serviceJoin.get("serviceTime"),
+                cb.count(root),
+                cb.sum(root.get("partySize")).as(Long.class)
+        ));
+
+        Predicate restaurantPredicate = restaurantJoin.get("id").in(restaurantIds);
+
+        Predicate activeReservationPredicate = root.get("status")
+                .in(
+                        ReservationStatus.PENDING,
+                        ReservationStatus.CONFIRMED
+                );
+
+        Predicate upcomingPredicate = cb.greaterThanOrEqualTo(
+                serviceJoin.get("serviceDate"), LocalDate.now()
+        );
+
+        cq.where(cb.and(
+                        restaurantPredicate,
+                        activeReservationPredicate,
+                        upcomingPredicate
+                ));
+
+        cq.groupBy(serviceJoin.get("serviceDate"), serviceJoin.get("serviceTime"));
+        cq.orderBy(
+                cb.asc(serviceJoin.get("serviceDate")),
+                cb.asc(serviceJoin.get("serviceTime"))
+        );
+
+        List<TimeSlotReservationStats> results = session.createQuery(cq).getResultList();
+        session.close();
+
+        return results;
+
+    }
+
+    /**
      * Aggregates reservation statistics grouped by service date for given restaurants.
      * <p>This method returns a list of {@link ServiceReservationStats} projections,
      * each containing:</p>
@@ -225,7 +281,7 @@ public class ReservationDao extends GenericDao<Reservation> {
      *
      * <p>Results are grouped by {@code serviceDate} and ordered chronologically.</p>
      * @param restaurantIds the set of restaurant IDs to include
-     * @return a list of aggregated reservation statistics
+     * @return a list of aggregated reservation service date statistics
      */
     public List<ServiceReservationStats> countReservationsGroupedByService (Set<Long> restaurantIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -258,10 +314,10 @@ public class ReservationDao extends GenericDao<Reservation> {
         );
 
         cq.where(cb.and(
-                        restaurantPredicate,
-                        activeReservationPredicate,
-                        upcomingPredicate
-                ));
+                restaurantPredicate,
+                activeReservationPredicate,
+                upcomingPredicate
+        ));
 
         cq.groupBy(serviceJoin.get("serviceDate"));
         cq.orderBy(cb.asc(serviceJoin.get("serviceDate")));

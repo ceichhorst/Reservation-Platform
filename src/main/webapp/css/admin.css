@@ -199,6 +199,46 @@ button.danger {
     background-color: #f1f1f1;
 }
 
+/* Dashboard Time Slot Toggle for Upcoming Overview section */
+.accordion-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #0077a0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+.accordion-toggle:hover {
+    background: #e0f7ff;
+}
+
+.slot-breakdown td {
+    background: #F9FAFB;
+    padding: 0 12px 0 12px;
+}
+
+.slot-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.slot-detail-table th {
+    text-align: left;
+    padding: 6px 10px;
+    color: #6b7280;
+    font-weight: 600;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.slot-detail-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #f9fafb;
+}
 
 /* SERVICES TABLE SCROLL BOX */
 .scroll-container {

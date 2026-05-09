@@ -125,7 +125,7 @@ public class ReservationDao extends GenericDao<Reservation> {
     /**
      * Finds reservations by a filtered parameter
      */
-    public List<Reservation> findByFilter(Long id, String customerName, String email) {
+    public List<Reservation> findByFilter(Long id, String customerName, String email, LocalDate serviceDate) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -150,6 +150,11 @@ public class ReservationDao extends GenericDao<Reservation> {
                     cb.lower(root.get("email")),
                     "%" + email.trim().toLowerCase() + "%"
             ));
+        }
+
+        if (serviceDate != null) {
+            Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
+            predicates.add(cb.equal(serviceJoin.get("serviceDate"), serviceDate));
         }
 
         if (!predicates.isEmpty()) {

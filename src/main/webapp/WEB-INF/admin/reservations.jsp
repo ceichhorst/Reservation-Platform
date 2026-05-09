@@ -28,6 +28,33 @@
         <c:if test="${not empty error}">
             <div class="error">${error}</div>
         </c:if>
+        <form method="get" action="${pageContext.request.contextPath}/admin/reservations" class="filter-form">
+            <input
+                type="text"
+                name="id"
+                placeholder="Confirmation ID"
+                value="${filterId}"
+            />
+            <input
+                type="text"
+                name="customerName"
+                placeholder="Customer Name"
+                value="${filterCustomerName}"
+            />
+            <input
+                type="text"
+                name="email"
+                placeholder="Customer Email"
+                value="${filterEmail}"
+            />
+            <input
+                type="date"
+                name="serviceDate"
+                value="${filterDate}"
+            />
+            <button type="submit">Filter</button>
+            <a href="${pageContext.request.contextPath}/admin/reservations">Clear</a>
+        </form>
         <div class="scroll-container">
         <c:choose>
             <c:when test="${empty reservations}">
@@ -53,7 +80,7 @@
                                 <td>${reservation.customerName}</td>
                                 <td>${reservation.email}</td>
                                 <td>${reservation.serviceInstance.serviceDate}</td>
-                                <td>${reservation.serviceInstance.serviceTime}</td>
+                                <td>${reservation.serviceInstance.serviceTimeFormatted}</td>
                                 <td>
                                     <span class="status ${reservation.status}">
                                         ${reservation.status}

@@ -42,6 +42,42 @@ button.danger {
     color: white;
 }
 
+/* Reservation Filter Form */
+
+.filter-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-form input[type="text"] {
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 180px;
+}
+
+.filter-form button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.filter-form a {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.filter-form a:hover {
+    text-decoration: underline;
+}
+
 /* ADMIN DASHBOARD TABLE OVERVIEW */
 
 .dashboard-table {

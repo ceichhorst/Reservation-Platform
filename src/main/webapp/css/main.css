@@ -58,10 +58,10 @@ header {
     padding-right: 0.2rem;
 }
 
-.text-logo {
+.text_logo {
     height: 34px;
     width: auto;
-    margin-top: -5px !important;
+    margin-top: -5px;
 }
 
 .logo-link {

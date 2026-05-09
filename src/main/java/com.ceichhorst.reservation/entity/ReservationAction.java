@@ -63,11 +63,11 @@ public class ReservationAction {
         this.admin = admin;
     }
 
-    public ReservationAction getAction() {
+    public ReservationActionType getAction() {
         return action;
     }
 
-    public void setAction(ReservationAction action) {
+    public void setAction(ReservationActionType action) {
         this.action = action;
     }
 

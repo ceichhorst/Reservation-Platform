@@ -1,9 +1,9 @@
 package com.ceichhorst.reservation.controller;
 
+import com.ceichhorst.reservation.dao.ReservationActionDao;
 import com.ceichhorst.reservation.dao.ReservationDao;
-import com.ceichhorst.reservation.entity.Administrator;
-import com.ceichhorst.reservation.entity.Reservation;
-import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.dao.AdministratorDao;
+import com.ceichhorst.reservation.entity.*;
 import com.ceichhorst.reservation.service.ServiceInstance;
 
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
@@ -48,6 +48,21 @@ public class ReservationManagementServlet extends HttpServlet {
      * Data access object for managing {@link Reservation} entities.
      */
     private ReservationDao reservationDao = new ReservationDao();
+
+    /**
+     * Dao
+     */
+    private ReservationActionDao actionDao = new ReservationActionDao();
+
+    /**
+     * Dao
+     */
+    private AdministratorDao adminDao = new AdministratorDao();
+
+    /**
+     * Formatting service time
+     */
+    private ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
     /**
      * Handles HTTP GET requests to display all reservations.
@@ -107,11 +122,23 @@ public class ReservationManagementServlet extends HttpServlet {
 
         List<Reservation> reservations = reservationDao.findByFilter(id ,customerName, email, serviceDate);
 
-        ServiceTimeFormatter formatter = new ServiceTimeFormatter();
         List<ServiceInstance> serviceInstances = reservations.stream()
                         .map(Reservation::getServiceInstance)
                                 .collect(Collectors.toList());
         formatter.formatTimes(serviceInstances);
+
+        String editIdParam = request.getParameter("editId");
+        if (editIdParam != null && !editIdParam.trim().isEmpty()) {
+            try {
+                Long editId = Long.parseLong(editIdParam.trim());
+                Reservation editTarget = reservationDao.getById(editId);
+                if (editTarget != null) {
+                    request.setAttribute("editReservation", editTarget);
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid reservation ID for edit");
+            }
+        }
 
         request.setAttribute("reservations", reservations);
         request.setAttribute("filterId", idParam != null ? idParam : "");
@@ -157,18 +184,51 @@ public class ReservationManagementServlet extends HttpServlet {
             return;
         }
 
+        // Resolve acting admin from session
+        String userEmail = (String) session.getAttribute("userEmail");
+        Administrator admin = adminDao.getAdministratorByEmail(userEmail);
+
         Long reservationId = Long.parseLong(request.getParameter("id"));
         String action = request.getParameter("action");
 
         Reservation reservation = reservationDao.getById(reservationId);
 
         if (reservation != null) {
-            if ("confirm".equals(action)) {
-                reservation.setStatus(ReservationStatus.CONFIRMED);
-            } else if ("cancel".equals(action)) {
-                reservation.setStatus(ReservationStatus.CANCELLED);
+            response.sendRedirect(request.getContextPath() + "/admin/reservations");
+        }
+
+        // Make the Optimistic Lock class, then update ResoDao, then continue here!!
+        try {
+            switch (action) {
+                case "confirm": {
+                    reservation.setStatus(ReservationStatus.CONFIRMED);
+                    reservation.setHandledByAdminId(admin.getId());
+                    reservationDao.updateWithRetry(reservation);
+                    actionDao.record(reservation, admin, ReservationActionType.CONFIRMED);
+                    break;
+                }
+                case "cancel": {
+                    reservation.setStatus(ReservationStatus.CANCELLED);
+                    reservation.setHandledByAdminId(admin.getId());
+                    reservationDao.updateWithRetry(reservation);
+                    actionDao.record(reservation, admin, ReservationActionType.CANCELLED);
+                    break;
+                }
+                case "edit": {
+                    reservation.setCustomerName(request.getParameter("customerName"));
+                    reservation.setEmail(request.getParameter("email"));
+                    reservation.setPartySize(Integer.parseInt(request.getParameter("partySize")));
+                    reservation.setAllergenInfo(request.getParameter("allergenInfo"));
+                    reservation.setAdditionalComments(request.getParameter("additionalComments"));
+                    reservation.setHandledByAdminId(admin.getId());
+                    reservationDao.updateWithRetry(reservation);
+                    actionDao.record(reservation, admin, ReservationActionType.UPDATED);
+                    break;
+                }
             }
-            reservationDao.update(reservation);
+        } catch (RuntimeException e) {
+            request.getSession().setAttribute("error",
+                    "Update failed - the reservation may have been modified by another admin. Please try again.");
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/reservations");

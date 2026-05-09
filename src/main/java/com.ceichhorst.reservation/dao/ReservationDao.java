@@ -7,6 +7,7 @@ import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import com.ceichhorst.reservation.service.ServiceReservationStats;
 
+import com.ceichhorst.reservation.util.OptimisticLockRetryExecutor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.LockMode;
@@ -261,6 +262,34 @@ public class ReservationDao extends GenericDao<Reservation> {
 
         return results;
 
+    }
+
+    /**
+     * Updates a reservation's status with optimistic lock handling
+     * @param reservation
+     * @throws RuntimeException
+     */
+    public void updateWithRetry(Reservation reservation) {
+        OptimisticLockRetryExecutor executor = new OptimisticLockRetryExecutor(3);
+
+        try {
+            executor.execute(()-> {
+                Session session = HibernateUtil.getSessionFactory().openSession();
+                Transaction tx = session.beginTransaction();
+                try {
+                    session.merge(reservation);
+                    tx.commit();
+                    return null;
+                } catch (Exception e) {
+                    tx.rollback();
+                    throw e;
+                } finally {
+                    session.close();
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update reservation after retries", e);
+        }
     }
 
 }

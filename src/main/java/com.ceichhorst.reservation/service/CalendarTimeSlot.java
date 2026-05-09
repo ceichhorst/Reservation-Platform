@@ -22,12 +22,7 @@ public class CalendarTimeSlot {
     /**
      * Total capacity of the slot
      */
-    private int capacity;
-
-    /**
-     * Number of seats booked in teh slot
-     */
-    private int booked;
+    private int remainingSeats;
 
     /**
      * Whether the slot is full
@@ -58,20 +53,19 @@ public class CalendarTimeSlot {
         this.full = full;
     }
 
-    public int getBooked() {
-        return booked;
+    public int getRemainingSeats() {
+        return remainingSeats;
     }
 
-    public void setBooked(int booked) {
-        this.booked = booked;
+    public void setRemainingSeats(int remainingSeats) {
+        this.remainingSeats = remainingSeats;
     }
 
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    /**
+     * Helper method to get the hour of the service time
+     */
+    public int getHour() {
+        return serviceTime != null ? serviceTime.getHour() : -1;
     }
 
 }

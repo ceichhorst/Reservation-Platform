@@ -146,7 +146,7 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("availableTimes", availableTimes);
 
             // Build availability calendar
-            List<DayAvailability> calendar = availabilityService.buildCalendar(services);
+            List<DayAvailability> calendar = availabilityService.buildCalendar(services, restaurant.getSchedulingType());
 
             request.setAttribute("restaurant", restaurant);
             request.getSession().setAttribute("restaurant", restaurant);

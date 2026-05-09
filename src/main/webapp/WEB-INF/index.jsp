@@ -42,9 +42,11 @@
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="day" items="${calendar}">
-                            <option value="${day.date}">
-                                ${day.date}
-                            </option>
+                            <c:if test="${day.available}">
+                                <option value="${day.date}">
+                                        ${day.date}
+                                </option>
+                            </c:if>
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
@@ -70,11 +72,50 @@
 
     <section class="mini-calendar">
         <h2>Availability Calendar</h2>
-        <c:forEach var="day" items="${calendar}">
-            <div class="day ${day.available ? 'available' : 'full'}">
-                ${day.date}
-            </div>
-        </c:forEach>
+        <c:choose>
+            <c:when test="${restaurant.schedulingType == 'DATE_ONLY'}">
+                <c:forEach var="day" items="${calendar}">
+                    <div class="day ${day.available ? 'available' : 'full'}">
+                            ${day.date}
+                    </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="day" items="${calendar}">
+                    <div class="calendar-day ${day.available ? 'available' : 'full'}">
+                        <div class="calendar-day-header">${day.date}</div>
+                        <c:choose>
+                            <c:when test="${!day.available}">
+                                <div class="sold-out-message">Date Sold Out</div>
+                            </c:when>
+                            <c:otherwise>
+                                <table class="slot-table">
+                                    <tbody>
+                                    <c:set var="currnetHour" value="-1" />
+                                    <c:forEach var="slot" items="${day.slots}">
+                                    <c:if test="${slot.hour != currentHour}">
+                                    <c:if test="${currentHour != -1}">
+                                    <tr>
+                                        </c:if>
+                                    <tr>
+                                        <c:set var="currentHour" value="${slot.hour}" />
+                                        </c:if>
+                                        <td class="slot-cell ${slot.full ? 'full' : 'available'}"
+                                            title="${slot.remainingSeats} remaining">
+                                                ${slot.serviceTimeFormatted}
+                                        </td>
+                                        </c:forEach>
+                                        <c:if test="${currentHour != -1}">
+                                    </tr>
+                                    </c:if>
+                                    </tbody>
+                                </table>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
     </section>
     <section class="how-it-works">
         <h2>How It Works</h2>

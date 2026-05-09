@@ -134,7 +134,7 @@ public class AvailabilityService {
                 total += s.getCapacity();
                 int slotBooked = 0;
                 if (s.getReservations() != null) {
-                    booked += s.getReservations()
+                    slotBooked += s.getReservations()
                             .stream()
                             .filter(Reservation::isActive)
                             .mapToInt(Reservation::getPartySize)
@@ -144,12 +144,13 @@ public class AvailabilityService {
 
                 // Build for non-DATE_ONLY types
                 if (schedulingType != SchedulingType.DATE_ONLY) {
+                    int remaining = s.getCapacity() - slotBooked;
+
                     CalendarTimeSlot slot = new CalendarTimeSlot();
                     slot.setServiceTime(s.getServiceTime());
                     slot.setServiceTimeFormatted(s.getServiceTimeFormatted());
-                    slot.setCapacity(s.getCapacity());
-                    slot.setBooked(slotBooked);
-                    slot.setFull(slotBooked >= s.getCapacity());
+                    slot.setRemainingSeats(remaining);
+                    slot.setFull(remaining <= 0);
                     slots.add(slot);
                 }
             }

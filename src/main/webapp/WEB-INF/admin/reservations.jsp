@@ -101,8 +101,43 @@
                                             <button type="submit">Cancel</button>
                                         </form>
                                     </c:if>
+                                    <a href="${pageContext.request.contextPath}/admin/reservations?editId=${reservation.id}">
+                                        Edit
+                                    </a>
                                 </td>
                             </tr>
+                            <c:if test="${editReservation.id == reservation.id}">
+                                <tr>
+                                    <td colspan="7">
+                                        <form method="post" class="edit-form">
+                                            <input type="hidden" name="id" value="${editReservation.id}" />
+                                            <input type="hidden" name="action" value="edit" />
+                                                <div class="edit-form-grid">
+                                                    <label>Customer Name
+                                                        <input type="text" name="customerName"
+                                                               value="${editReservation.customerName}" required />
+                                                    </label>
+                                                    <label>Email
+                                                        <input type="email" name="email"
+                                                               value="${editReservation.email}" required />
+                                                    </label>
+                                                    <label>Party Size
+                                                        <input type="number" name="partySize" min="1" max="10"
+                                                               value="${editReservation.partySize}" required />
+                                                    </label>
+                                                    <label>Allergen Info
+                                                        <textarea name="allergenInfo">${editReservation.allergenInfo}</textarea>
+                                                    </label>
+                                                    <label>Additional Comments
+                                                        <textarea name="additionalComments">${editReservation.additionalComments}</textarea>
+                                                    </label>
+                                                </div>
+                                            <button type="submit">Save Changes</button>
+                                            <a href="${pageContext.request.contextPath}/admin/reservations">Cancel</a>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </c:if>
                         </c:forEach>
                     </tbody>
                 </table>

@@ -29,6 +29,7 @@
         <mapping class="com.ceichhorst.reservation.entity.Reservation"/>
         <mapping class="com.ceichhorst.reservation.entity.Restaurant"/>
         <mapping class="com.ceichhorst.reservation.entity.Administrator"/>
+        <mapping class="com.ceichhorst.reservation.entity.ReservationAction"/>
 
     </session-factory>
 </hibernate-configuration>

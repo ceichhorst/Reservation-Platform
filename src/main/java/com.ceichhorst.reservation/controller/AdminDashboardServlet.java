@@ -118,6 +118,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
         String userEmail = (String) session.getAttribute("userEmail");
         request.setAttribute("userEmail", userEmail);
+        request.setAttribute("username", session.getAttribute("username"));
 
         // Admin user check
         Long adminId = (Long) session.getAttribute("adminId");

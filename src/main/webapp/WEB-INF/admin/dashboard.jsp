@@ -17,6 +17,10 @@
         <a href="${pageContext.request.contextPath}/admin/reservations">Manage Reservations</a>
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
+    <div class="dashboard-welcome">
+        <h2>Welcome, ${not empty username ? username : userEmail}!</h2>
+        <p class="welcome-sub">Logged in as ${userEmail}</p>
+    </div>
     <div class="container">
         <!-- Add admin profile section or simple 'Welcome $ { adminUser }' message -->
         <h2>Overview</h2>

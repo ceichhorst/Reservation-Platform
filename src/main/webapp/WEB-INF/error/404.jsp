@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/main.css' />">
+    <link rel="stylesheet" href="<c:url value='/css/error.css' />">
     <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
@@ -17,7 +18,7 @@
         <p class="error-message">
             The page you are looking for doesn't exist or have been moved.
         </p>
-        <a href="${pageContext.request.contextPath}/" class="error-btn">Back to Home</a>
+        <a href="${pageContext.request.contextPath}/r/${restaurant.id}" class="error-btn">Back to Home</a>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
 </body>

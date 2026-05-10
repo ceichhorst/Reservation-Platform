@@ -2,6 +2,7 @@ package com.ceichhorst.reservation.service;
 
 import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * DTO representing aggregated reservation stats for a service date's time slot
@@ -10,8 +11,14 @@ import java.time.LocalDate;
  */
 public class TimeSlotReservationStats {
 
+    /**
+     * Formatter for time
+     */
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mm a");
+
     private LocalDate serviceDate;
     private LocalTime serviceTime;
+    private String serviceTimeFormatted;
     private Long reservationCount;
     private Long totalSeatsBooked;
 
@@ -19,6 +26,9 @@ public class TimeSlotReservationStats {
                                     Long reservationCount, Long totalSeatsBooked) {
         this.serviceDate = serviceDate;
         this.serviceTime = serviceTime;
+        this.serviceTimeFormatted = serviceTime != null
+                ? serviceTime.format(FORMATTER)
+                : "";
         this.reservationCount = reservationCount;
         this.totalSeatsBooked = totalSeatsBooked;
     }
@@ -37,6 +47,14 @@ public class TimeSlotReservationStats {
 
     public void setServiceTime(LocalTime serviceTime) {
         this.serviceTime = serviceTime;
+    }
+
+    public String getServiceTimeFormatted() {
+        return serviceTimeFormatted;
+    }
+
+    public void setServiceTimeFormatted(String serviceTimeFormatted) {
+        this.serviceTimeFormatted = serviceTimeFormatted;
     }
 
     public Long getReservationCount() {

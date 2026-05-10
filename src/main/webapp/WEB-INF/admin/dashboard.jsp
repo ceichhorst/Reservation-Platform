@@ -89,7 +89,7 @@
                                                 <c:if test="${slot.serviceDate == stat.serviceDate}">
                                                     <c:set var="hasSlots" value="true" />
                                                     <tr>
-                                                        <td>${slot.serviceTime}</td>
+                                                        <td>${slot.serviceTimeFormatted}</td>
                                                         <td>${slot.reservationCount}</td>
                                                         <td>${slot.totalSeatsBooked}</td>
                                                     </tr>

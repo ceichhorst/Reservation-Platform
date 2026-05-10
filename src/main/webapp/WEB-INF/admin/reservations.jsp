@@ -18,8 +18,28 @@
         <a href="${pageContext.request.contextPath}/admin/restaurants">Manage Restaurants</a>
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
+
     <div class="reservation-table-container">
         <h2>Reservations</h2>
+        <!-- Select Restaurant -->
+        <div class="card">
+            <h3>Select Restaurant</h3>
+            <form method="get" action="${pageContext.request.contextPath}/admin/reservations">
+                <select name="restaurantId" onchange="this.form.submit()">
+                    <option value="">-- Select Restaurant --</option>
+                    <c:forEach var="restaurant" items="${restaurants}">
+                        <option value="${restaurant.id}"
+                                <c:if test="${restaurant.id == selectedRestaurantId}">
+                                    selected="selected"
+                                </c:if>
+                        >
+                                ${restaurant.name}
+                        </option>
+                    </c:forEach>
+                </select>
+            </form>
+        </div>
+        <c:if test="${not empty selectedRestaurantId}">
         <%-- SUCCESS MESSAGE --%>
         <c:if test="${not empty sessionScope.successMessage}">
             <div class="message success-message">${sessionScope.successMessage}</div>
@@ -34,6 +54,7 @@
             <div class="error">${error}</div>
         </c:if>
         <form method="get" action="${pageContext.request.contextPath}/admin/reservations" class="filter-form">
+            <input type="hidden" name="restaurantId" value="${selectedRestaurantId}" />
             <input
                 type="text"
                 name="id"
@@ -58,7 +79,9 @@
                 value="${filterDate}"
             />
             <button type="submit">Filter</button>
-            <a href="${pageContext.request.contextPath}/admin/reservations">Clear</a>
+            <a href="${pageContext.request.contextPath}/admin/reservations?restaurantId=${selectedRestaurantId}">
+                Clear
+            </a>
         </form>
         <div class="scroll-container">
         <c:choose>
@@ -163,6 +186,7 @@
             </c:otherwise>
         </c:choose>
         </div>
+        </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
     <script src="<c:url value='/js/editToggle.js' />"></script>

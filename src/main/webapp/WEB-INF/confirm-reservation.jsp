@@ -37,14 +37,14 @@
                 <ul>
                     <li><strong>Name:</strong> ${customerName}</li>
                     <li><strong>Email:</strong> ${email}</li>
-                    <li><strong>Allergens:</strong>${guestAllergens}</li>
-                    <li><strong>Comment:</strong>${guestComments}</li>
+                    <li><strong>Allergens:</strong> ${guestAllergens}</li>
+                    <li><strong>Comment:</strong> ${guestComments}</li>
                 </ul>
             </section>
             <!-- Confirmation ID -->
             <section class="confirmation-meta">
                 <h2>Confirmation</h2>
-                <p><strong>Confirmation ID:</strong>${confirmationId}</p>
+                <p><strong>Confirmation ID: </strong>${confirmationId}</p>
             </section>
             <!-- Helper Footer -->
             <section class="confirmation-footer">

@@ -127,14 +127,20 @@ public class ReservationDao extends GenericDao<Reservation> {
     /**
      * Finds reservations by a filtered parameter
      */
-    public List<Reservation> findByFilter(Long id, String customerName, String email, LocalDate serviceDate) {
+    public List<Reservation> findByFilter(Long id, String customerName, String email,
+                                          LocalDate serviceDate, Set<Long> restaurantIds) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
         Root<Reservation> root = cq.from(Reservation.class);
 
+        Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
+        Join<ServiceInstance, Restaurant> restaurantJoin = serviceJoin.join("restaurant");
+
         List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(restaurantJoin.get("id").in(restaurantIds));
 
         if (id != null) {
             predicates.add(cb.equal(root.get("id"), id));
@@ -155,15 +161,10 @@ public class ReservationDao extends GenericDao<Reservation> {
         }
 
         if (serviceDate != null) {
-            Join<Reservation, ServiceInstance> serviceJoin = root.join("serviceInstance");
             predicates.add(cb.equal(serviceJoin.get("serviceDate"), serviceDate));
         }
 
-        if (!predicates.isEmpty()) {
-            cq.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
-        } else {
-            cq.select(root);
-        }
+        cq.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
 
         List<Reservation> results = session.createQuery(cq).getResultList();
         session.close();

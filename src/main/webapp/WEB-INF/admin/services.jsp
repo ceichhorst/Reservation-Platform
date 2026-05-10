@@ -146,16 +146,7 @@
                                     <tr>
                                         <td>${service.serviceDate}</td>
                                         <td>
-                                            <c:choose>
-                                                <c:when test="${scheduleType == 'DATE_TIME'}">
-                                                    ${service.serviceTimeFormatted}
-                                                    -
-                                                    ${service.endTimeFormatted}
-                                                </c:when>
-                                                <c:otherwise>
-                                                    ${service.serviceTimeFormatted}
-                                                </c:otherwise>
-                                            </c:choose>
+                                                ${service.serviceTimeFormatted}
                                         </td>
                                         <td>
                                                 ${service.capacity}

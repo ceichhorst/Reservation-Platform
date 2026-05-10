@@ -75,7 +75,7 @@
 
                 </form>
             </div>
-
+            <c:if test="${sessionScope.role == 'SUPER_ADMIN'}">
             <div class="card">
                 <h3>Manage Administrators</h3>
                 <p><strong>Current Admins</strong></p>
@@ -108,6 +108,7 @@
                     <button type="submit">Remove</button>
                 </form>
             </div>
+            </c:if>
         </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />

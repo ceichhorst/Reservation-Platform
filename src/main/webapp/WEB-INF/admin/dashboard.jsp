@@ -23,6 +23,17 @@
     </div>
     <div class="container">
         <c:if test="${not empty message}">
+            <c:choose>
+                <c:when test="${message == 'No restaurants assigned.'}">
+                    <div class="message">
+                        Your account has not been assigned a restaurant yet.
+                        Please contact your head administrator to get access.
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="message">${message}</div>
+                </c:otherwise>
+            </c:choose>
             <div class="message">${message}</div>
         </c:if>
         <!-- Summary Card -->

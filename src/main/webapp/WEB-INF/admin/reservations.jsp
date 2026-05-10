@@ -20,6 +20,11 @@
     </nav>
     <div class="reservation-table-container">
         <h2>Reservations</h2>
+        <%-- SUCCESS MESSAGE --%>
+        <c:if test="${not empty sessionScope.successMessage}">
+            <div class="message success-message">${sessionScope.successMessage}</div>
+            <c:remove var="successMessage" scope="session" />
+        </c:if>
         <!-- INFO MESSAGE -->
         <c:if test="${not empty message}">
             <div class="message">${message}</div>
@@ -109,43 +114,49 @@
                                             <button type="submit">Cancel</button>
                                         </form>
                                     </c:if>
-                                    <a href="${pageContext.request.contextPath}/admin/reservations?editId=${reservation.id}">
+                                    <%-- Edit button --%>
+                                    <button type="button"
+                                            class="edit-toggle-btn"
+                                            onclick="toggleEditForm(${reservation.id}, this)">
                                         Edit
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
-                            <c:if test="${editReservation.id == reservation.id}">
-                                <tr>
-                                    <td colspan="7">
-                                        <form method="post" class="edit-form">
-                                            <input type="hidden" name="id" value="${editReservation.id}" />
-                                            <input type="hidden" name="action" value="edit" />
-                                                <div class="edit-form-grid">
-                                                    <label>Customer Name
-                                                        <input type="text" name="customerName"
-                                                               value="${editReservation.customerName}" required />
-                                                    </label>
-                                                    <label>Email
-                                                        <input type="email" name="email"
-                                                               value="${editReservation.email}" required />
-                                                    </label>
-                                                    <label>Party Size
-                                                        <input type="number" name="partySize" min="1" max="10"
-                                                               value="${editReservation.partySize}" required />
-                                                    </label>
-                                                    <label>Allergen Info
-                                                        <textarea name="allergenInfo">${editReservation.allergenInfo}</textarea>
-                                                    </label>
-                                                    <label>Additional Comments
-                                                        <textarea name="additionalComments">${editReservation.additionalComments}</textarea>
-                                                    </label>
-                                                </div>
-                                            <button type="submit">Save Changes</button>
-                                            <a href="${pageContext.request.contextPath}/admin/reservations">Cancel</a>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:if>
+                            <%-- Inline Edit Form --%>
+                            <tr id="edit-row-${reservation.id}" class="edit-form-row" style="display:none;">
+                                <td colspan="11">
+                                    <form method="post" class="edit-form">
+                                        <input type="hidden" name="id" value="${reservation.id}" />
+                                        <input type="hidden" name="action" value="edit" />
+                                        <div class="edit-form-grid">
+                                            <label>Customer Name
+                                                <input type="text" name="customerName"
+                                                       value="${reservation.customerName}" required />
+                                            </label>
+                                            <label>Email
+                                                <input type="email" name="email"
+                                                       value="${reservation.email}" required />
+                                            </label>
+                                            <label>Party Size
+                                                <input type="number" name="partySize" min="1" max="10"
+                                                       value="${reservation.partySize}" required />
+                                            </label>
+                                            <label>Allergen Info
+                                                <textarea name="allergenInfo">${reservation.allergenInfo}</textarea>
+                                            </label>
+                                            <label>Additional Comments
+                                                <textarea name="additionalComments">${reservation.additionalComments}</textarea>
+                                            </label>
+                                        </div>
+                                        <button type="submit">Save Changes</button>
+                                        <button type="button"
+                                                onclick="toggleEditForm(${reservation.id}, null)">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+
                         </c:forEach>
                     </tbody>
                 </table>
@@ -154,5 +165,6 @@
         </div>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <script src="<c:url value='/js/editToggle.js' />"></script>
 </body>
 </html>

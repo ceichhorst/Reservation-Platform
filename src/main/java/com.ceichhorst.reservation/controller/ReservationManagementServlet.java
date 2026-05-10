@@ -134,7 +134,7 @@ public class ReservationManagementServlet extends HttpServlet {
                         .map(Reservation::getServiceInstance)
                                 .collect(Collectors.toList());
         formatter.formatTimes(serviceInstances);
-
+/**
         String editIdParam = request.getParameter("editId");
         if (editIdParam != null && !editIdParam.trim().isEmpty()) {
             try {
@@ -146,7 +146,7 @@ public class ReservationManagementServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 request.setAttribute("error", "Invalid reservation ID for edit");
             }
-        }
+        } */
 
         request.setAttribute("reservations", reservations);
         request.setAttribute("filterId", idParam != null ? idParam : "");
@@ -246,7 +246,7 @@ public class ReservationManagementServlet extends HttpServlet {
                     } catch (Exception auditEx) {
                         logger.warn("Audit record failed for reservation {}: {}", reservationId, auditEx.getMessage());
                     }
-
+                    request.getSession().setAttribute("successMessage", "Reservation updated successfully!");
                     break;
                 }
             }

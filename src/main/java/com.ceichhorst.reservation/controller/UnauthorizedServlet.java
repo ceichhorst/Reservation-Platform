@@ -12,11 +12,11 @@ import java.io.IOException;
  *
  * @author ceichhorst
  */
-@WebServlet("/unahtorized")
+@WebServlet("/unauthorized")
 public class UnauthorizedServlet extends HttpServlet {
 
     @Override
-    public void doget(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         request.getRequestDispatcher("/WEB-INF/error/unauthorized.jsp")

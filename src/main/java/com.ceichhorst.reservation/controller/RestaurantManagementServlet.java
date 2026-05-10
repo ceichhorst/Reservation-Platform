@@ -147,7 +147,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                     restaurant.getAdministrators().remove(adminToRemove);
                     adminToRemove.getRestaurants().remove(restaurant);
 
-                    restaurantDao.delete(restaurant);
+                    restaurantDao.update(restaurant);
                     break;
                 }
 

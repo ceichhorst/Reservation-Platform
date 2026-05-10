@@ -47,6 +47,11 @@ import java.time.LocalDate;
 public class ReservationServlet extends HttpServlet {
 
     /**
+     * DAO used to retrieve {@link Restaurant} data
+     */
+    private RestaurantDao restaurantDao;
+
+    /**
      * DAO used to retrieve {@link ServiceInstance} data.
      */
     private ServiceInstanceDao serviceInstanceDao;
@@ -61,6 +66,7 @@ public class ReservationServlet extends HttpServlet {
      */
     @Override
     public void init() {
+        restaurantDao = new RestaurantDao();
         serviceInstanceDao = new ServiceInstanceDao();
 
     }
@@ -88,6 +94,15 @@ public class ReservationServlet extends HttpServlet {
             Long serviceInstanceId = Long.parseLong(serviceInstanceIdStr);
             int partySize = Integer.parseInt(partySizeStr);
 
+            Restaurant restaurant = restaurantDao.getById(restaurantId);
+
+            if (restaurant == null) {
+                request.setAttribute("message", "Invalid restaurant");
+                request.getRequestDispatcher("/WEB-INF/index.jsp")
+                        .forward(request, response);
+                return;
+            }
+
             ServiceInstance instance = serviceInstanceDao.getById(serviceInstanceId);
 
             List<ServiceInstance> formatted = formatter.formatTimes(List.of(instance));
@@ -106,6 +121,7 @@ public class ReservationServlet extends HttpServlet {
             request.setAttribute("reservationDate", instance.getServiceDate().toString());
             request.setAttribute("reservationTime", instance.getServiceTimeFormatted());
             request.setAttribute("partySize", partySize);
+            request.setAttribute("requireAllergenInfo", restaurant.isRequireAllergenInfo());
 
             request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
                     .forward(request, response);

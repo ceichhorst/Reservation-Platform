@@ -125,6 +125,22 @@ public class ConfirmationServlet extends HttpServlet{
         String allergies = request.getParameter("guestAllergies");
         String note = request.getParameter("guestNotes");
 
+        // Allergen check if required by restaurant
+        if (restaurant.isRequireAllergenInfo()
+                && (allergies == null || allergies.trim().isEmpty())) {
+
+            request.setAttribute(
+                    "message",
+                    "Allergy/Dietary information is required."
+            );
+
+            request.setAttribute("requireAllergenInfo", restaurant.isRequireAllergenInfo());
+            request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
+                    .forward(request, response);
+
+            return;
+        }
+
         // Validation
         if (name == null || email == null || dateStr == null || serviceInstanceIdStr == null ||
             partySizeStr == null || restaurantIdStr == null || name.isEmpty() ||

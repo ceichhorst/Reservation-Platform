@@ -394,6 +394,10 @@ button.danger:hover {
     flex: 1;
 }
 
+.form-hint {
+    font-size: 14px !important;
+}
+
 select {
     cursor: pointer;
 }

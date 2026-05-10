@@ -2,8 +2,10 @@ package com.ceichhorst.reservation.dao;
 
 import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -128,6 +130,68 @@ public class AdministratorDao extends GenericDao<Administrator> {
                     .where(criteriaBuilder.equal(root.get("id"), adminId));
 
             return session.createQuery(criteriaQuery).getResultList();
+        }
+    }
+
+    /**
+     * Adds a restaurant association to an administrator
+     * @param adminId
+     * @param restaurantId
+     */
+    public void addRestaurantAssociation(Long adminId, Long restaurantId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+
+        try {
+            Administrator admin = session.get(Administrator.class, adminId);
+            Restaurant restaurant = session.get(Restaurant.class, restaurantId);
+
+            if (admin == null || restaurant == null) {
+                throw new IllegalArgumentException("Admin or restaurant not found");
+            }
+
+            Hibernate.initialize(admin.getRestaurants());
+
+            admin.getRestaurants().add(restaurant);
+
+            session.merge(admin);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw new RuntimeException("Failed to add restaurant association", e);
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     * Removes a restaurant association from an administrator
+     * @param adminId
+     * @param restaurantId
+     */
+    public void removeRestaurantAssociation(Long adminId, Long restaurantId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+
+        try {
+            Administrator admin = session.get(Administrator.class, adminId);
+            Restaurant restaurant = session.get(Restaurant.class, restaurantId);
+
+            if (admin == null || restaurant == null) {
+                throw new IllegalArgumentException("Admin or restaurant not found");
+            }
+
+            Hibernate.initialize(admin.getRestaurants());
+
+            admin.getRestaurants().remove(restaurant);
+
+            session.merge(admin);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw new RuntimeException("Failed to remove restaurant association", e);
+        } finally {
+            session.close();
         }
     }
 

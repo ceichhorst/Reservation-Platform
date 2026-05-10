@@ -81,7 +81,7 @@
                 <p><strong>Current Admins</strong></p>
                 <ul>
                     <c:forEach var="admin" items="${selectedRestaurant.administrators}">
-                        <li><span>${admin.email}</span></li>
+                        <li>Username: <strong>${admin.username}</strong> | Email: <span>${admin.email}</span></li>
                     </c:forEach>
                 </ul>
 
@@ -89,7 +89,11 @@
                     <input type="hidden" name="action" value="addAdmin">
                     <input type="hidden" name="restaurantId" value="${selectedRestaurant.id}">
 
-                    <label>Add Admin (Email)</label>
+                    <label>Add Admin</label>
+                    <p class="form-hint">
+                        Please provide an admin email to assign to
+                        <strong>${selectedRestaurant.name}</strong>
+                    </p>
                     <input type="email" name="adminEmail" required/>
 
                     <button type="submit">Add Admin</button>
@@ -102,7 +106,7 @@
                     <label>Remove Admin</label>
                     <select name="adminId">
                         <c:forEach var="admin" items="${selectedRestaurant.administrators}">
-                            <option value="${admin.id}">${admin.email}</option>
+                            <option value="${admin.id}">${admin.username} | ${admin.email}</option>
                         </c:forEach>
                     </select>
                     <button type="submit">Remove</button>

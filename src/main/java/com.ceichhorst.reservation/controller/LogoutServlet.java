@@ -41,32 +41,38 @@ public class LogoutServlet extends HttpServlet implements PropertiesLoader {
 
         HttpSession session = request.getSession(false);
 
-        Long restaurantId = null;
+        String postLogoutPath;
 
         if (session != null) {
-            restaurantId = (Long) session.getAttribute("lastRestaurantId");
+
+            Long restaurantId = (Long) session.getAttribute("lastRestaurantId");
+
+            if (restaurantId != null) {
+                postLogoutPath = "/r/" + restaurantId;
+            } else {
+                postLogoutPath = "/admin/dashboard";
+            }
+
             session.invalidate();
-        }
 
-        String redirectUri;
-
-        if (restaurantId != null) {
-            redirectUri = request.getContextPath() + "/logout-success";
-            request.getSession(true).setAttribute("postLogoutRedirect", "/r/" + restaurantId);
         } else {
-            redirectUri = request.getContextPath() + "/logout-success";
-            request.getSession(true).setAttribute("postLogoutRedirect", "/");
+            postLogoutPath = "/admin/dashboard";
         }
+
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("postLogoutPath", postLogoutPath);
+
+        String redirectUri = request.getContextPath() + "/logout-success";
 
         String redirectUrl = LOGOUT_URL
                 + "?client_id=" + CLIENT_ID
                 + "&logout_uri=" + URLEncoder.encode(
-                        request.getScheme() + "://" +
-                        request.getServerName() + ":" +
-                        request.getServerPort() +
-                        redirectUri,
-                        StandardCharsets.UTF_8
-                );
+                request.getScheme() + "://"
+                        + request.getServerName() + ":"
+                        + request.getServerPort()
+                        + redirectUri,
+                StandardCharsets.UTF_8
+        );
 
         response.sendRedirect(redirectUrl);
     }

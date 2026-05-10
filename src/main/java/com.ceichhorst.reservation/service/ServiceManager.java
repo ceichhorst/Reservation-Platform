@@ -126,7 +126,6 @@ public class ServiceManager {
                     serviceDao.save(service);
 
                     cursor = cursor.plusMinutes(15);
-                    break;
                 }
             }
         }

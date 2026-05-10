@@ -78,10 +78,21 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
 
             root.fetch("reservations", JoinType.LEFT);
 
-            // Filters for future dates
+            Predicate restaurantPredicate = cb.equal
+                    (root.get("restaurant").get("id"), restaurantId);
+
+            Predicate upcomingPredicate = cb.greaterThanOrEqualTo(
+                    root.get("serviceDate"), LocalDate.now()
+            );
+
+            // Filters out previous dates
             cq.select(root)
                     .distinct(true)
-                    .where(cb.equal(root.get("restaurant").get("id"), restaurantId));
+                    .where(cb.and(restaurantPredicate, upcomingPredicate))
+                    .orderBy(
+                            cb.asc(root.get("serviceDate")),
+                            cb.asc(root.get("serviceTime"))
+                    );
 
             return session.createQuery(cq).getResultList();
         }

@@ -236,7 +236,9 @@ public class Auth extends HttpServlet implements PropertiesLoader {
         String userEmail = jwt.getClaim("email").asString();
 
         String role = "USER";
-        if (groups != null && groups.contains("ADMIN")) {
+        if (groups != null && groups.contains("SUPER_ADMIN")) {
+            role = "ADMIN";
+        } else if (groups != null && groups.contains("ADMIN")) {
             role = "ADMIN";
         }
 

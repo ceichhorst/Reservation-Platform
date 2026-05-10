@@ -18,8 +18,33 @@
         <a href="${pageContext.request.contextPath}/admin/restaurants">Manage Restaurants</a>
         <a href="${pageContext.request.contextPath}/admin/services">Manage Services</a>
     </nav>
-    <div class="container">
+
+    <div class="reservation-table-container">
         <h2>Reservations</h2>
+        <!-- Select Restaurant -->
+        <div class="card">
+            <h3>Select Restaurant</h3>
+            <form method="get" action="${pageContext.request.contextPath}/admin/reservations">
+                <select name="restaurantId" onchange="this.form.submit()">
+                    <option value="">-- Select Restaurant --</option>
+                    <c:forEach var="restaurant" items="${restaurants}">
+                        <option value="${restaurant.id}"
+                                <c:if test="${restaurant.id == selectedRestaurantId}">
+                                    selected="selected"
+                                </c:if>
+                        >
+                                ${restaurant.name}
+                        </option>
+                    </c:forEach>
+                </select>
+            </form>
+        </div>
+        <c:if test="${not empty selectedRestaurantId}">
+        <%-- SUCCESS MESSAGE --%>
+        <c:if test="${not empty sessionScope.successMessage}">
+            <div class="message success-message">${sessionScope.successMessage}</div>
+            <c:remove var="successMessage" scope="session" />
+        </c:if>
         <!-- INFO MESSAGE -->
         <c:if test="${not empty message}">
             <div class="message">${message}</div>
@@ -29,6 +54,7 @@
             <div class="error">${error}</div>
         </c:if>
         <form method="get" action="${pageContext.request.contextPath}/admin/reservations" class="filter-form">
+            <input type="hidden" name="restaurantId" value="${selectedRestaurantId}" />
             <input
                 type="text"
                 name="id"
@@ -53,7 +79,9 @@
                 value="${filterDate}"
             />
             <button type="submit">Filter</button>
-            <a href="${pageContext.request.contextPath}/admin/reservations">Clear</a>
+            <a href="${pageContext.request.contextPath}/admin/reservations?restaurantId=${selectedRestaurantId}">
+                Clear
+            </a>
         </form>
         <div class="scroll-container">
         <c:choose>
@@ -69,6 +97,10 @@
                             <th>Email</th>
                             <th>Service Date</th>
                             <th>Service Time</th>
+                            <th>Party Size</th>
+                            <th>Allergen Info</th>
+                            <th>Comments</th>
+                            <th>Last Handled By</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -81,6 +113,10 @@
                                 <td>${reservation.email}</td>
                                 <td>${reservation.serviceInstance.serviceDate}</td>
                                 <td>${reservation.serviceInstance.serviceTimeFormatted}</td>
+                                <td>${reservation.partySize}</td>
+                                <td>${not empty reservation.allergenInfo ? reservation.allergenInfo : '-'}</td>
+                                <td>${not empty reservation.additionalComments ? reservation.additionalComments : '-'}</td>
+                                <td>${not empty reservation.handledByAdminId ? reservation.handledByAdminId : '-'}</td>
                                 <td>
                                     <span class="status ${reservation.status}">
                                         ${reservation.status}
@@ -101,15 +137,58 @@
                                             <button type="submit">Cancel</button>
                                         </form>
                                     </c:if>
+                                    <%-- Edit button --%>
+                                    <button type="button"
+                                            class="edit-toggle-btn"
+                                            onclick="toggleEditForm(${reservation.id}, this)">
+                                        Edit
+                                    </button>
                                 </td>
                             </tr>
+                            <%-- Inline Edit Form --%>
+                            <tr id="edit-row-${reservation.id}" class="edit-form-row" style="display:none;">
+                                <td colspan="11">
+                                    <form method="post" class="edit-form">
+                                        <input type="hidden" name="id" value="${reservation.id}" />
+                                        <input type="hidden" name="action" value="edit" />
+                                        <div class="edit-form-grid">
+                                            <label>Customer Name
+                                                <input type="text" name="customerName"
+                                                       value="${reservation.customerName}" required />
+                                            </label>
+                                            <label>Email
+                                                <input type="email" name="email"
+                                                       value="${reservation.email}" required />
+                                            </label>
+                                            <label>Party Size
+                                                <input type="number" name="partySize" min="1" max="10"
+                                                       value="${reservation.partySize}" required />
+                                            </label>
+                                            <label>Allergen Info
+                                                <textarea name="allergenInfo">${reservation.allergenInfo}</textarea>
+                                            </label>
+                                            <label>Additional Comments
+                                                <textarea name="additionalComments">${reservation.additionalComments}</textarea>
+                                            </label>
+                                        </div>
+                                        <button type="submit">Save Changes</button>
+                                        <button type="button"
+                                                onclick="toggleEditForm(${reservation.id}, null)">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+
                         </c:forEach>
                     </tbody>
                 </table>
             </c:otherwise>
         </c:choose>
         </div>
+        </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
+    <script src="<c:url value='/js/editToggle.js' />"></script>
 </body>
 </html>

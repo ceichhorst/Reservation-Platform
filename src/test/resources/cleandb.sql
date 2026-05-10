@@ -1,4 +1,5 @@
 -- Clean tables (order matters because of FK constraints)
+DELETE FROM reservation_action;
 DELETE FROM reservation;
 DELETE FROM service_instance;
 DELETE FROM service_template;
@@ -19,7 +20,8 @@ INSERT INTO reservation (
     customer_name,
     email,
     party_size,
-    status
+    status,
+    version
 )
 VALUES (
     1001,
@@ -27,5 +29,6 @@ VALUES (
     'Seed User',
     'seed@email.com',
     2,
-    'CONFIRMED'
+    'CONFIRMED',
+    0
 );

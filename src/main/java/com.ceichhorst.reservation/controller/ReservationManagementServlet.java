@@ -1,18 +1,23 @@
 package com.ceichhorst.reservation.controller;
 
+import com.ceichhorst.reservation.dao.ReservationActionDao;
 import com.ceichhorst.reservation.dao.ReservationDao;
-import com.ceichhorst.reservation.entity.Administrator;
-import com.ceichhorst.reservation.entity.Reservation;
-import com.ceichhorst.reservation.entity.ReservationStatus;
+import com.ceichhorst.reservation.dao.AdministratorDao;
+import com.ceichhorst.reservation.entity.*;
 import com.ceichhorst.reservation.service.ServiceInstance;
 
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 // Core admin component for admins to manage reservations on admin pages
@@ -50,6 +55,26 @@ public class ReservationManagementServlet extends HttpServlet {
     private ReservationDao reservationDao = new ReservationDao();
 
     /**
+     * Dao
+     */
+    private ReservationActionDao actionDao = new ReservationActionDao();
+
+    /**
+     * Dao
+     */
+    private AdministratorDao adminDao = new AdministratorDao();
+
+    /**
+     * Formatting service time
+     */
+    private ServiceTimeFormatter formatter = new ServiceTimeFormatter();
+
+    /**
+     * Logger for logging error
+     */
+    private static final Logger logger = LogManager.getLogger(ReservationManagementServlet.class);
+
+    /**
      * Handles HTTP GET requests to display all reservations.
      *
      * <p>This method performs the following steps:</p>
@@ -81,46 +106,93 @@ public class ReservationManagementServlet extends HttpServlet {
             return;
         }
 
-        // Filter params
-        String idParam = request.getParameter("id");
-        String customerName = request.getParameter("customerName");
-        String email = request.getParameter("email");
-        String dateParam = request.getParameter("serviceDate");
+        Long adminId = (Long) session.getAttribute("adminId");
 
-        Long id = null;
-        if (idParam != null && !idParam.trim().isEmpty()) {
-            try {
-                id = Long.parseLong(idParam.trim());
-            } catch (NumberFormatException e) {
-                request.setAttribute("error", "Confirmation ID must be a number.");
-            }
+        if (adminId == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
         }
 
-        LocalDate serviceDate = null;
-        if (dateParam != null && !dateParam.trim().isEmpty()) {
-            try {
-                serviceDate = LocalDate.parse(dateParam.trim());
-            } catch (NumberFormatException e) {
-                request.setAttribute("error", "Invalid date format.");
-            }
+        // Load restaurants for this admin
+        List<Restaurant> restaurants = adminDao.getRestaurantByAdminId(adminId);
+        Set<Long> restaurantIds = adminDao.getRestaurantIds(adminId);
+        request.setAttribute("restaurants", restaurants);
+
+        // If no restaurants assigned
+        if (restaurantIds.isEmpty()) {
+            request.setAttribute("message", "You have not been assigned to any restaurants yet.");
+            request.getRequestDispatcher("/WEB-INF/admin/reservations.jsp")
+                    .forward(request, response);
+            return;
         }
 
-        List<Reservation> reservations = reservationDao.findByFilter(id ,customerName, email, serviceDate);
+        // Handle selected restaurant
+        String restaurantIdParam = request.getParameter("restaurantId");
+        Long selectedRestaurantId = null;
 
-        ServiceTimeFormatter formatter = new ServiceTimeFormatter();
-        List<ServiceInstance> serviceInstances = reservations.stream()
+        if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
+            try {
+                selectedRestaurantId = Long.parseLong(restaurantIdParam);
+                if (!restaurantIds.contains(selectedRestaurantId)) {
+                    request.setAttribute("error", "You do not have access to that restaurant.");
+                    selectedRestaurantId = null;
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid restuarant selection");
+            }
+
+            request.setAttribute("selectedRestaurantId", selectedRestaurantId);
+
+            if (selectedRestaurantId != null) {
+
+                Set<Long> scopedIds = new HashSet<>();
+                scopedIds.add(selectedRestaurantId);
+
+                // Filter params
+                String idParam = request.getParameter("id");
+                String customerName = request.getParameter("customerName");
+                String email = request.getParameter("email");
+                String dateParam = request.getParameter("serviceDate");
+
+                Long id = null;
+                if (idParam != null && !idParam.trim().isEmpty()) {
+                    try {
+                        id = Long.parseLong(idParam.trim());
+                    } catch (NumberFormatException e) {
+                        request.setAttribute("error", "Confirmation ID must be a number.");
+                    }
+                }
+
+                LocalDate serviceDate = null;
+                if (dateParam != null && !dateParam.trim().isEmpty()) {
+                    try {
+                        serviceDate = LocalDate.parse(dateParam.trim());
+                    } catch (NumberFormatException e) {
+                        request.setAttribute("error", "Invalid date format.");
+                    }
+                }
+
+                List<Reservation> reservations = reservationDao.findByFilter(
+                        id, customerName, email, serviceDate, scopedIds);
+
+                List<ServiceInstance> serviceInstances = reservations.stream()
                         .map(Reservation::getServiceInstance)
-                                .collect(Collectors.toList());
-        formatter.formatTimes(serviceInstances);
+                        .collect(Collectors.toList());
+                formatter.formatTimes(serviceInstances);
 
-        request.setAttribute("reservations", reservations);
-        request.setAttribute("filterId", idParam != null ? idParam : "");
-        request.setAttribute("filterCustomerName", customerName != null ? customerName : "");
-        request.setAttribute("filterEmail", email != null ? email : "");
-        request.setAttribute("filterDate", dateParam != null ? dateParam : "");
+                request.setAttribute("reservations", reservations);
+                request.setAttribute("filterId", idParam != null ? idParam : "");
+                request.setAttribute("filterCustomerName", customerName != null ? customerName : "");
+                request.setAttribute("filterEmail", email != null ? email : "");
+                request.setAttribute("filterDate", dateParam != null ? dateParam : "");
+
+            }
+
+        }
 
         request.getRequestDispatcher("/WEB-INF/admin/reservations.jsp")
                 .forward(request, response);
+
     }
 
     /**
@@ -157,20 +229,74 @@ public class ReservationManagementServlet extends HttpServlet {
             return;
         }
 
+        // Resolve acting admin from session
+        String userEmail = (String) session.getAttribute("userEmail");
+        Administrator admin = adminDao.getAdministratorByEmail(userEmail);
+
         Long reservationId = Long.parseLong(request.getParameter("id"));
         String action = request.getParameter("action");
 
         Reservation reservation = reservationDao.getById(reservationId);
 
-        if (reservation != null) {
-            if ("confirm".equals(action)) {
-                reservation.setStatus(ReservationStatus.CONFIRMED);
-            } else if ("cancel".equals(action)) {
-                reservation.setStatus(ReservationStatus.CANCELLED);
-            }
-            reservationDao.update(reservation);
+        if (reservation == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/reservations");
+            return;
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/reservations");
+        try {
+            switch (action) {
+                case "confirm": {
+                    reservation.setStatus(ReservationStatus.CONFIRMED);
+                    reservation.setHandledByAdminId(admin.getId());
+                    reservationDao.updateWithRetry(reservation);
+
+                    try {
+                        actionDao.record(reservation, admin, ReservationActionType.CONFIRMED);
+                    } catch (Exception auditEx) {
+                        logger.warn("Confirmation failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                    }
+                    break;
+                }
+                case "cancel": {
+                    reservation.setStatus(ReservationStatus.CANCELLED);
+                    reservation.setHandledByAdminId(admin.getId());
+                    reservationDao.updateWithRetry(reservation);
+
+                    try {
+                        actionDao.record(reservation, admin, ReservationActionType.CANCELLED);
+                    } catch (Exception auditEx) {
+                        logger.warn("Cancellation failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                    }
+                    break;
+                }
+                case "edit": {
+                    reservation.setCustomerName(request.getParameter("customerName"));
+                    reservation.setEmail(request.getParameter("email"));
+                    reservation.setPartySize(Integer.parseInt(request.getParameter("partySize")));
+                    reservation.setAllergenInfo(request.getParameter("allergenInfo"));
+                    reservation.setAdditionalComments(request.getParameter("additionalComments"));
+                    reservation.setHandledByAdminId(admin.getId());
+                    reservationDao.updateWithRetry(reservation);
+
+                    try {
+                        actionDao.record(reservation, admin, ReservationActionType.UPDATED);
+                    } catch (Exception auditEx) {
+                        logger.warn("Audit record failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                    }
+                    request.getSession().setAttribute("successMessage", "Reservation updated successfully!");
+                    break;
+                }
+            }
+        } catch (RuntimeException e) {
+            request.getSession().setAttribute("error",
+                    "Update failed - the reservation may have been modified by another admin. Please try again.");
+        }
+
+        String restaurantIdParam = request.getParameter("restaurantId");
+        String redirectUrl = request.getContextPath() + "/admin/reservation";
+        if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
+            redirectUrl += "?restaurantId=" + restaurantIdParam;
+        }
+        response.sendRedirect(redirectUrl);
     }
 }

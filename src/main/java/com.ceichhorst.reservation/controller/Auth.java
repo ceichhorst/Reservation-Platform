@@ -122,6 +122,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
 
                 HttpSession session = req.getSession();
                 session.setAttribute("adminId", administrator.getId());
+                session.setAttribute("username", administrator.getUsername());
                 session.setAttribute("userEmail", userEmail);
                 session.setAttribute("role", role);
 

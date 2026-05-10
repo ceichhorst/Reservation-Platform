@@ -2,6 +2,18 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    min-width: 1100px;
+}
+
+.reservation-table-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    overflow-x: auto;
 }
 
 .reservation-table th,
@@ -42,6 +54,16 @@ button.danger {
     color: white;
 }
 
+.success-message {
+    background-color: #dcfc37;
+    color: #166534;
+    border: 1px solid #86efac;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
 /* Reservation Filter Form */
 
 .filter-form {
@@ -78,7 +100,102 @@ button.danger {
     text-decoration: underline;
 }
 
+/* Reservation Edit Form */
+
+.edit-form {
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+.edit-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.edit-form-grid label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    gap: 4px;
+}
+
+.edit-form-grid input,
+.edit-form-grid textarea {
+    padding: 6px 8px;
+    border: 1px solid #D1D5DB;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.edit-toggle-btn {
+    background: none;
+    border: 1px solid #0077a0;
+    color: #0077a0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.edit-toggle-btn:hover {
+    background: #e0f7ff;
+}
+
 /* ADMIN DASHBOARD TABLE OVERVIEW */
+
+.dashboard-welcome {
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto 0;
+    padding: 20px 20px 0;
+}
+
+.dashboard-welcome h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #011e41;
+}
+
+.welcome-sub {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.dashboard-cards {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.dashboard-card {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 16px 24px;
+    min-width: 200px;
+}
+
+.card-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0369A1;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #011e41;
+    margin-top: 4px;
+}
 
 .dashboard-table {
     width: 100%;
@@ -106,6 +223,46 @@ button.danger {
     background-color: #f1f1f1;
 }
 
+/* Dashboard Time Slot Toggle for Upcoming Overview section */
+.accordion-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #0077a0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+.accordion-toggle:hover {
+    background: #e0f7ff;
+}
+
+.slot-breakdown td {
+    background: #F9FAFB;
+    padding: 0 12px 0 12px;
+}
+
+.slot-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.slot-detail-table th {
+    text-align: left;
+    padding: 6px 10px;
+    color: #6b7280;
+    font-weight: 600;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.slot-detail-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #f9fafb;
+}
 
 /* SERVICES TABLE SCROLL BOX */
 .scroll-container {

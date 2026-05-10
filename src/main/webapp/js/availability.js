@@ -106,7 +106,8 @@ const loadTimes = async (date) => {
 
             option.value = slot.id;
 
-            option.textContent = slot.serviceTimeFormatted;
+            option.textContent = `${slot.serviceTimeFormatted} 
+                (${slot.remainingSeats} seat${slot.remainingSeats === 1 ? '' : 's'} left)`;
             option.dataset.remainingSeats = slot.remainingSeats;
             timeSelect.appendChild(option);
         });

@@ -23,7 +23,7 @@ public class ServiceManagerTest {
     @BeforeAll
     void setup() throws Exception {
         SessionFactory sessionFactory = new Configuration()
-                .configure("hibernate-test-cfg.xml")
+                .configure("hibernate-test.cfg.xml")
                 .buildSessionFactory();
         HibernateUtil.setSessionFactory(sessionFactory);
         serviceManager = new ServiceManager();
@@ -39,13 +39,13 @@ public class ServiceManagerTest {
     void testAddService_dateOnly_createsSingleService() {
         serviceManager.addService(
                 1L, 1L,
-                LocalDate.now().plusDays(1),
+                LocalDate.now().plusDays(30),
                 LocalTime.MIDNIGHT, null, 20
         );
 
         List<ServiceInstance> services = serviceDao.getByRestaurantId(1L);
         assertTrue(services.stream()
-                .anyMatch(s -> s.getServiceDate().equals(LocalDate.now().plusDays(1))));
+                .anyMatch(s -> s.getServiceDate().equals(LocalDate.now().plusDays(30))));
     }
 
     @Test
@@ -54,11 +54,11 @@ public class ServiceManagerTest {
         LocalTime start = LocalTime.of(16, 0);
         LocalTime end = LocalTime.of(17,0);
 
-        serviceManager.addService(1L, 1L, LocalDate.now().plusDays(2), start, end, 10);
+        serviceManager.addService(1L, 1L, LocalDate.now().plusDays(31), start, end, 10);
 
         List<ServiceInstance> services = serviceDao.getByRestaurantId(1L);
         long slotsForDate = services.stream()
-                .filter(s -> s.getServiceDate().equals(LocalDate.now().plusDays(2)))
+                .filter(s -> s.getServiceDate().equals(LocalDate.now().plusDays(31)))
                 .count();
 
         assertEquals(4, slotsForDate);
@@ -69,7 +69,7 @@ public class ServiceManagerTest {
         assertThrows(IllegalArgumentException.class, () ->
                 serviceManager.addService(
                         999L, 1L,
-                        LocalDate.now().plusDays(1),
+                        LocalDate.now().plusDays(30),
                         LocalTime.MIDNIGHT, null, 20
                 )
         );
@@ -77,10 +77,18 @@ public class ServiceManagerTest {
 
     @Test
     void testDeleteService_withNoReservations_succeeds() {
-        List<ServiceInstance> services = serviceDao.getByRestaurantId(1L);
-        assertFalse(services.isEmpty());
+        serviceManager.addService(
+                1L, 1L,
+                LocalDate.now().plusDays(60),
+                LocalTime.of(20, 0), null, 5
+        );
 
-        ServiceInstance target = services.get(0);
+        List<ServiceInstance> services = serviceDao.getByRestaurantId(1L);
+        ServiceInstance target = services.stream()
+                        .filter(s -> s.getServiceDate().equals(LocalDate.now().plusDays(60)))
+                        .findFirst()
+                        .orElseThrow();
+
         serviceManager.deleteService(1L, target.getId());
 
         ServiceInstance deleted = serviceDao.getById(target.getId());
@@ -119,7 +127,7 @@ public class ServiceManagerTest {
         assertDoesNotThrow(() ->
                 serviceManager.addService(
                         1L, 1L,
-                        LocalDate.now().plusDays(3),
+                        LocalDate.now().plusDays(30),
                         LocalTime.of(19, 0), null, 15
                 )
         );

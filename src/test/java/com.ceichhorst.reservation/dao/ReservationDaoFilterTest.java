@@ -29,7 +29,7 @@ public class ReservationDaoFilterTest {
     @BeforeAll
     void setup() throws Exception {
         SessionFactory sessionFactory = new Configuration()
-                .configure("hibernate-test-cfg.xml")
+                .configure("hibernate-test.cfg.xml")
                 .buildSessionFactory();
         HibernateUtil.setSessionFactory(sessionFactory);
         reservationDao = new ReservationDao();
@@ -51,10 +51,10 @@ public class ReservationDaoFilterTest {
     @Test
     void testFindByFilter_byId_returnsCorrectReservation() {
         List<Reservation> results = reservationDao.findByFilter(
-                1001L, null, null, null, Set.of(1L)
+                2000L, null, null, null, Set.of(1L)
         );
         assertEquals(1, results.size());
-        assertEquals(1001L, results.get(0).getId());
+        assertEquals(2000L, results.get(0).getId());
     }
 
     @Test

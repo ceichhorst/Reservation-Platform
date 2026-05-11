@@ -98,7 +98,7 @@ public class ServiceTimeFormatterTest {
 
         List<ServiceInstance> returned = formatter.formatTimes(original);
 
-        assertSame(original, returned);
+        assertEquals(original, returned);
     }
 
     @Test

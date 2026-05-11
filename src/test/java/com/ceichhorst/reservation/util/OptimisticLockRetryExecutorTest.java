@@ -32,7 +32,7 @@ public class OptimisticLockRetryExecutorTest {
             if (count < 3) {
                 throw new OptimisticLockException("Simulated conflict");
             }
-            return "success after retires";
+            return "success after retries";
         });
 
         assertEquals("success after retries", result);

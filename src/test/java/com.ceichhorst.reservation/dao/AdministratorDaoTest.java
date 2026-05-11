@@ -21,7 +21,7 @@ public class AdministratorDaoTest {
     @BeforeAll
     void setup() throws Exception {
         SessionFactory sessionFactory = new Configuration()
-                .configure("hibernate-test-cfg.xml")
+                .configure("hibernate-test.cfg.xml")
                 .buildSessionFactory();
         HibernateUtil.setSessionFactory(sessionFactory);
         adminDao = new AdministratorDao();

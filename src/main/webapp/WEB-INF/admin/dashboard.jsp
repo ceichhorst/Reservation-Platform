@@ -34,8 +34,25 @@
                     <div class="message">${message}</div>
                 </c:otherwise>
             </c:choose>
-            <div class="message">${message}</div>
         </c:if>
+        <div class="card">
+            <h3>Select Restaurant</h3>
+            <form method="get" action="${pageContext.request.contextPath}/admin/dashboard">
+                <select name="restaurantId" onchange="this.form.submit()">
+                <option value="">-- Select Restaurant --</option>
+                    <c:forEach var="restaurant" items="${restaurantList}">
+                        <option value="${restaurant.id}"
+                        <c:if test="${restaurant.id == selectedRestaurantId}">
+                            selected="selected"
+                        </c:if>
+                        >
+                        ${restaurant.name}
+                        </option>
+                    </c:forEach>
+                </select>
+            </form>
+        </div>
+        <c:if test="${not empty selectedRestaurantId}">
         <!-- Summary Card -->
         <div class="dashboard-cards">
             <div class="dashboard-card">
@@ -49,6 +66,7 @@
                 <p>No upcoming reservations found.</p>
             </c:when>
             <c:otherwise>
+                <%-- maybe place select restaurant feature here? --%>
                 <c:set var="hasTimeSlots" value="false" />
                 <c:forEach var="r" items="${restaurantList}">
                     <c:if test="${r.schedulingType == 'DATE_TIME' || r.schedulingType == 'FIXED_TIME_SLOTS'}">
@@ -121,6 +139,7 @@
                 </table>
             </c:otherwise>
         </c:choose>
+        </c:if>
     </div>
     <jsp:include page="/WEB-INF/components/footer.jsp" />
     <script src="<c:url value='/js/timeSlots.js' />"></script>

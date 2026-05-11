@@ -16,7 +16,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Set;
 import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
@@ -138,6 +138,8 @@ public class AdminDashboardServlet extends HttpServlet {
 
         // Check if restaurants are available to admin
         Set<Long> restaurantIds = adminDao.getRestaurantIds(adminId);
+        List<Restaurant> restaurantList = adminDao.getRestaurantByAdminId(adminId);
+        request.setAttribute("restaurantList", restaurantList);
 
         if (restaurantIds.isEmpty()) {
             request.setAttribute("message", "No restaurants assigned.");
@@ -146,18 +148,38 @@ public class AdminDashboardServlet extends HttpServlet {
             return;
         }
 
-        List<ServiceInstance> services = serviceDao.getServicesByRestaurants(restaurantIds);
-        Long reservationCount = reservationDao.countReservationsByService(restaurantIds);
-        List<ServiceReservationStats> reservationStats = reservationDao.countReservationsGroupedByService(restaurantIds);
-        List<TimeSlotReservationStats> timeSlotStats = reservationDao.countReservationsGroupedByTimeSlots(restaurantIds);
-        List<Restaurant> restaurants = adminDao.getRestaurantByAdminId(adminId);
+        String restaurantIdParam = request.getParameter("restaurantId");
+        Long selectedRestaurantId = null;
 
-        request.setAttribute("restaurants", restaurantIds);
-        request.setAttribute("services", services);
-        request.setAttribute("reservationCount", reservationCount);
-        request.setAttribute("reservationStats", reservationStats);
-        request.setAttribute("timeSlotStats", timeSlotStats);
-        request.setAttribute("restaurantList", restaurants);
+        if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
+            try {
+                selectedRestaurantId = Long.parseLong(restaurantIdParam);
+                if (!restaurantIds.contains(selectedRestaurantId)) {
+                    request.setAttribute("error", "You do not have access to that restaurant.");
+                    selectedRestaurantId = null;
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid restaurant selection.");
+            }
+        }
+
+        request.setAttribute("selectedRestaurantId", selectedRestaurantId);
+
+        if (selectedRestaurantId != null) {
+            Set<Long> scopedIds = new HashSet<>();
+            scopedIds.add(selectedRestaurantId);
+
+            List<ServiceInstance> services = serviceDao.getServicesByRestaurants(scopedIds);
+            Long reservationCount = reservationDao.countReservationsByService(scopedIds);
+            List<ServiceReservationStats> reservationStats = reservationDao.countReservationsGroupedByService(scopedIds);
+            List<TimeSlotReservationStats> timeSlotStats = reservationDao.countReservationsGroupedByTimeSlots(scopedIds);
+
+            request.setAttribute("services", services);
+            request.setAttribute("reservationCount", reservationCount);
+            request.setAttribute("reservationStats", reservationStats);
+            request.setAttribute("timeSlotStats", timeSlotStats);
+
+        }
 
         request.getRequestDispatcher("/WEB-INF/admin/dashboard.jsp")
                 .forward(request, response);

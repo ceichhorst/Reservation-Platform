@@ -138,7 +138,7 @@ public class ReservationManagementServlet extends HttpServlet {
                     selectedRestaurantId = null;
                 }
             } catch (NumberFormatException e) {
-                request.setAttribute("error", "Invalid restuarant selection");
+                request.setAttribute("error", "Invalid restaurant selection");
             }
 
             request.setAttribute("selectedRestaurantId", selectedRestaurantId);

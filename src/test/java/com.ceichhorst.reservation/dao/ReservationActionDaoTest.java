@@ -66,7 +66,7 @@ public class ReservationActionDaoTest {
 
         assertEquals(
                 2000L,
-                ReservationActionType.CONFIRMED
+                action.getReservation().getId()
         );
 
         assertEquals(

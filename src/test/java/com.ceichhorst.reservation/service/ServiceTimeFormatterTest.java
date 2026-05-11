@@ -62,7 +62,7 @@ public class ServiceTimeFormatterTest {
         formatter.formatTimes(services);
 
         assertNull(service.getServiceTimeFormatted());
-        assertNull(service.getEndTimeFormatted())
+        assertNull(service.getEndTimeFormatted());
     }
 
     @Test

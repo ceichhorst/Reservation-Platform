@@ -159,7 +159,7 @@ Est. Time - 4 hours
 
 ### Week 13
 
-4/26/26 - Came across a hiccup this week - something caused my project to not push to my GitHub repo. I kept getting critical fatal errors when trying to  This week really focused on refining reservation workflows, improving business logic separation, and continuing to evolve the application the best that I can with what I have learned and am continuing to learn about in the class and through my own research.
+4/26/26 - This week really focused on refining reservation workflows, improving business logic separation, and continuing to evolve the application the best that I can with what I have learned and am continuing to learn about in the class and through my own research.
 
 One portion I felt was important during this time was implementing service layers, ReservationService, ReservationResult, DayAvailability, and AvailabilityService - up until now, reservation validation and transactional logic were spread across servlet and DAO methods, which seemed to have some errors being encountered come up along the way. Creating these layers I feel helped centralize reservation-specific business logic and better separated responsibilities between presentation layer, business, layer, and persistence layer.
 

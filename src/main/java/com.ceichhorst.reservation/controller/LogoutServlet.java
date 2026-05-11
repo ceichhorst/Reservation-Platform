@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -19,6 +21,8 @@ import java.nio.charset.StandardCharsets;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet implements PropertiesLoader {
 
+    private static final Logger logger = LogManager.getLogger(LogoutServlet.class);
+
     private Properties properties;
     private String CLIENT_ID;
     private String LOGOUT_URL;
@@ -29,7 +33,9 @@ public class LogoutServlet extends HttpServlet implements PropertiesLoader {
             properties = loadProperties("/cognito.properties");
             CLIENT_ID = properties.getProperty("client.id");
             LOGOUT_URL = properties.getProperty("logoutURL");
+            logger.info("Cognito Properties loaded successfully during logout.");
         } catch (Exception e) {
+            logger.error("Unable to load Cognito Properties", e);
             throw new ServletException("Unable to load Cognito Properties", e);
         }
 

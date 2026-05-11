@@ -12,6 +12,8 @@ import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import jakarta.servlet.ServletException;
@@ -61,6 +63,8 @@ public class ReservationServlet extends HttpServlet {
      */
     private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
+    private static final Logger logger = LogManager.getLogger(ReservationServlet.class);
+
     /**
      * Initializes the servlet and its dependencies.
      */
@@ -82,7 +86,7 @@ public class ReservationServlet extends HttpServlet {
         if (restaurantIdStr == null || restaurantIdStr.isEmpty()
                 || serviceInstanceIdStr == null || serviceInstanceIdStr.isEmpty()
                 || partySizeStr == null || partySizeStr.isEmpty()) {
-
+            logger.error("Missing required fiels");
             request.setAttribute("message", "Missing required fields");
             request.getRequestDispatcher("/WEB-INF/index.jsp")
                     .forward(request, response);
@@ -97,6 +101,7 @@ public class ReservationServlet extends HttpServlet {
             Restaurant restaurant = restaurantDao.getById(restaurantId);
 
             if (restaurant == null) {
+                logger.error("Invalid restaurant");
                 request.setAttribute("message", "Invalid restaurant");
                 request.getRequestDispatcher("/WEB-INF/index.jsp")
                         .forward(request, response);
@@ -110,6 +115,7 @@ public class ReservationServlet extends HttpServlet {
             instance = formatted.get(0);
 
             if (instance == null) {
+                logger.error("Invalid service selection");
                 request.setAttribute("message", "Invalid service selection");
                 request.getRequestDispatcher("/WEB-INF/index.jsp")
                         .forward(request, response);
@@ -127,6 +133,7 @@ public class ReservationServlet extends HttpServlet {
                     .forward(request, response);
 
         } catch (Exception e) {
+            logger.error("Error processing reservation", e);
             throw new ServletException("Error processing reservation", e);
         }
     }

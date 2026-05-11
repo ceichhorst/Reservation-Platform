@@ -12,6 +12,8 @@ import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -65,6 +67,7 @@ public class ServiceManagementServlet extends HttpServlet {
      */
     private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
+    private static final Logger logger = LogManager.getLogger(ServiceManagementServlet.class);
 
     /**
      * Handles HTTP GET requests to display and filter service instances.
@@ -133,7 +136,7 @@ public class ServiceManagementServlet extends HttpServlet {
         if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
             final Long restaurantId = Long.parseLong(restaurantIdParam);
 
-            // TODO should the filtering be a class and placed in the filter directory?
+            // TODO should the filtering be a separate class or DTO?
             // Filtering variables for Existing Services table
             String filterType = request.getParameter("filterType");
             String filterDate = request.getParameter("date");
@@ -233,6 +236,7 @@ public class ServiceManagementServlet extends HttpServlet {
                     int capacity = Integer.parseInt(request.getParameter("capacity"));
 
                     serviceManager.addService(adminId, restaurantId, date, time, endTime, capacity);
+                    logger.info("Service date successfully added");
                     break;
                 }
 
@@ -246,6 +250,7 @@ public class ServiceManagementServlet extends HttpServlet {
                     }
 
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
+                    logger.info("Service date(s) successfully deleted");
                     break;
                 }
 
@@ -253,6 +258,7 @@ public class ServiceManagementServlet extends HttpServlet {
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     String schedulingType = request.getParameter("scheduleType");
                     serviceManager.updateSchedulingType(adminId, restaurantId, schedulingType);
+                    logger.info("Service type fo restaurant successfully updated");
                     break;
                 }
 
@@ -266,11 +272,13 @@ public class ServiceManagementServlet extends HttpServlet {
                     }
 
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
+                    logger.info("Service date visibility successfully toggled");
                     break;
                 }
             }
 
         } catch (RuntimeException e) {
+            logger.error("Error occurred during action");
             request.getSession().setAttribute("error", e.getMessage());
         }
 

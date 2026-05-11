@@ -12,7 +12,8 @@ import java.util.Properties;
  */
 public class EmailService {
 
-    // TODO Note security with it - AWS would be better but this can serve purpose of project
+    // TODO AWS would be better for this email functionality and security purposes
+    // TODO Move these creds into a proeprties file
     private final String username = "dyanasystems@gmail.com";
     private final String password = "wnhswfdiutuukfgh";
 

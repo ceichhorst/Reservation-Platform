@@ -111,6 +111,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                     restaurant.setRequireAllergenInfo(requireAllergenInfo);
 
                     restaurantDao.update(restaurant);
+                    logger.info("Restaurant info successfully updated");
                     break;
                 }
 
@@ -128,6 +129,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                     }
 
                     adminDao.addRestaurantAssociation(newAdmin.getId(), restaurantId);
+                    logger.info("Admin successully assigned to restaurant");
                     break;
 
                 }
@@ -141,10 +143,11 @@ public class RestaurantManagementServlet extends HttpServlet {
                     Long removeAdminId = Long.parseLong(request.getParameter("adminId"));
 
                     adminDao.removeRestaurantAssociation(removeAdminId, restaurantId);
+                    logger.info("Admin assignment successfully removed from restaurant");
                     break;
                 }
 
-                // TODO should this be handled by the platform's company and not an admin?
+                // TODO should this be handled by the platform's company and not an admin? - not used
                 case "createRestaurant": {
 
                     if (!"SUPER_ADMIN".equals(role)) {
@@ -172,6 +175,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                 }
             }
         } catch (RuntimeException e) {
+            logger.error("Error while performing action", e);
             request.getSession().setAttribute("error", e.getMessage());
         }
 

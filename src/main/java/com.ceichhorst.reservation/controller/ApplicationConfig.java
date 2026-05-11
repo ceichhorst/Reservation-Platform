@@ -1,5 +1,7 @@
 package com.ceichhorst.reservation.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import jakarta.ws.rs.ApplicationPath;
@@ -17,8 +19,10 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 @ApplicationPath("/api")
 public class ApplicationConfig extends Application {
 
+    private static final Logger logger = LogManager.getLogger(ApplicationConfig.class);
+
     public ApplicationConfig() {
-        System.out.println("ApplicationConfig loaded");
+        logger.info("ApplicationConfig loaded");
     }
 
     @Override

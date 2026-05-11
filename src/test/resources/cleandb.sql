@@ -3,7 +3,6 @@ DELETE FROM reservation_action;
 DELETE FROM reservation;
 DELETE FROM admin_restaurant;
 DELETE FROM service_instance;
-DELETE FROM service_template;
 DELETE FROM administrator;
 DELETE FROM restaurant;
 

@@ -4,7 +4,7 @@ import com.ceichhorst.reservation.dao.ReservationActionDao;
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.ceichhorst.reservation.entity.*;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import jakarta.servlet.ServletException;

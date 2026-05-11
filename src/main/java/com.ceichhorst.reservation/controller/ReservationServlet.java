@@ -1,27 +1,20 @@
 package com.ceichhorst.reservation.controller;
 
-import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
-import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.dao.RestaurantDao;
 import com.ceichhorst.reservation.service.AvailabilityService;
-import com.ceichhorst.reservation.service.DayAvailability;
-import com.ceichhorst.reservation.service.ReservationService;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
-import com.ceichhorst.reservation.util.HibernateUtil;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
-import java.time.LocalDate;
 
 /**
  * Servlet responsible for handling the customer reservation workflow.

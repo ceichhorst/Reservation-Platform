@@ -1,22 +1,13 @@
 package com.ceichhorst.reservation.dao;
 
-import java.io.InputStream;
-import java.util.Properties;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
-import com.ceichhorst.reservation.service.ServiceInstance;
-import com.ceichhorst.reservation.entity.Restaurant;
-import com.ceichhorst.reservation.service.ServiceTemplate;
-import com.ceichhorst.reservation.entity.SchedulingType;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import com.ceichhorst.reservation.testutils.TestDatabase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import org.junit.jupiter.api.*;

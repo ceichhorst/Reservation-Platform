@@ -6,11 +6,11 @@ import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.dao.RestaurantDao;
 import com.ceichhorst.reservation.entity.Restaurant;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * Service layer responsible for handling reservation creation workflows.

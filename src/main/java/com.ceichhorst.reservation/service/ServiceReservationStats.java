@@ -1,5 +1,7 @@
 package com.ceichhorst.reservation.service;
 
+import com.ceichhorst.reservation.entity.ServiceInstance;
+
 import java.time.LocalDate;
 
 /**

@@ -1,7 +1,6 @@
 package com.ceichhorst.reservation.dao;
 
-import com.ceichhorst.reservation.entity.Restaurant;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
 import jakarta.persistence.criteria.CriteriaBuilder;

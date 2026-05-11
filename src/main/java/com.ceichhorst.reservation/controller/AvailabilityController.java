@@ -5,7 +5,7 @@ import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.service.AvailabilityService;
 import com.ceichhorst.reservation.service.AvailabilitySlot;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 
 import jakarta.ws.rs.GET;

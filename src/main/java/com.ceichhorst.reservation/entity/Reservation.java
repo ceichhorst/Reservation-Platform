@@ -1,10 +1,7 @@
 package com.ceichhorst.reservation.entity;
 
 import jakarta.persistence.*;
-import com.ceichhorst.reservation.service.ServiceInstance;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import java.util.List;
 
 /**
  * Entity representing a reservation made by a customer for a specific {@link ServiceInstance}.

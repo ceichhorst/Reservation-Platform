@@ -1,8 +1,7 @@
 package com.ceichhorst.reservation.service;
 
-import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.testutils.TestDatabase;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.entity.Restaurant;

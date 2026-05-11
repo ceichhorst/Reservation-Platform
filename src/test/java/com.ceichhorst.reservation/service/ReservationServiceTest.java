@@ -3,6 +3,7 @@ package com.ceichhorst.reservation.service;
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.entity.Reservation;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.testutils.TestDatabase;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import org.hibernate.SessionFactory;
@@ -13,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ReservationServiceTest {

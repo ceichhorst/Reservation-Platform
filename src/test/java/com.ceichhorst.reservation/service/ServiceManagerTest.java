@@ -1,6 +1,6 @@
 package com.ceichhorst.reservation.service;
 
-import com.ceichhorst.reservation.entity.SchedulingType;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.testutils.TestDatabase;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;

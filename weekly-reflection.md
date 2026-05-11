@@ -113,29 +113,63 @@ Something I thought I had more control of last week that I didn't mention but en
 
 With having to go back to Week 5 for previous parts, I thought it would be worth reviewing Week 7 again to make sure I aimed to stick closely to what was taught to us. The Cognito implementation I used follows very closely to the exercise previously done, including most of the classes used for it to ensure a strong and consistent workflow. One hiccup along the way included incorrect annotation of @WebServlet in a Login servlet I utilizied - it was originally '/logIn' when other files/JSPs has '/login' used, something I missed and found out way past than I should've noticed. Changes in it, alongside Auth, and AdminDashboardServlet ensured I had reliable user routing and session handling in the application.
 
-While still in early stages of what the platform will turn into, this is an important step in incorporating secuirty measures and authentication as a means to make a more roubst application.
+While still in early stages of what the platform will turn into, this is an important step in incorporating security measures and authentication as a means to make a more robust application.
 
 Est. Time Worked - 5-6 hours
 
 
 ### Week 10
 
+4/5/26 - For this week, I chose to focus further on the design aspect of the program - up until this point. my focus on centered heavily on persistence, authentication, and backend functionality. I still had been working with a very rough layout/design of the home page and felt getting down the overall idea of the user experience and structure would be crucial to work on further. The importance of usability and presentation really do help make the system feel much more complete and intuitive to users than what I originally had.
 
+I spent a considerable amount of time restructuring the home page layout, adding a main CSS file to be used across all pages, and adding reusable JSP components like a head and footer. This in turn helped me plot out how to design and keep a flow going into the reservation-details.jsp and the confirm-reservation.jsp. Seeing visually how the information between servlets/views were being passed after working these up really made the platform feel like an actual web program was coming together.
+
+While working on the design/layout aspects more during this time, I did put time into plotting out how I felt it would be best to have aid in handling reservations. I worked up a ReservationController and custom filter methods, as a means to help assist the admin side of the platform in case admins needed to edit/handle reservations made in the system for their associated restaurant. This feels like a strong route to go about with this, but I am keeping my options open.
+
+Est. Time Worked - 5-6 Hours
 
 
 ### Week 11
 
+4/12/26 - It's interesting to see how workflow can be affected/changed/etc when working on more than one project during a certain period (currently working between a Team Project for a Vintage Arcade Finder API and my indie project Reservation Platform). It helps working with a team where tasks can be delegated, but it can become an exercise in time management very quickly.
 
+Nevertheless, one of my main goals during this week was to refactor my GenericDao into a much more maintainable and usable class. I had previously added an abstract class (GenericDaoImpl) to help implement the GenericDao, but after reviewing feedback from my instructor during the last checkpoint, I see that I was making things much more complex than needed to be. Refactoring it to keep it simple (like how we learned in class) I feel helped lean the program towards utilizing explicit behavior more so and helping queries stay local - I ended up learning a bit about Predicate (https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Predicate.html) during some research further on GenericDaos and feel this is something that will become handy down the road.
+
+Working on the GenericDao had me refactored and rethink elements in the DAOs I currently had as well. For example, in ReservationDao, I originally had it call in Reservation variable but felt it better to call a Reservation object instead, making it much more maintainable for future development.
+
+I also continued developing the main user side servlet (ReservationServlet) to keep the flow going for the program. I wanted to give a good starting point for it, as I am sure this will likely expand down the road (more variables, filtering, validation, etc), so working on this helped make a strong foundation from where to go for future servlets.
+
+Balancing between this work alongside the Team Project helped make me think about how to approach things in the future for this platform - there still is a ways to go but it'll get to that point it needs to sooner than later I feel!
+
+Est. Time Worked - 5-6 Hours
 
 
 ### Week 12
 
+4/19/26 - The workload this week was relatively minimal compared to previous weeks due to the time commitment put into ensuring the Team Project adhere to its criteria and was submitted before the deadline hit. Some work was still made during this time though.
 
+With thinking about the main user side reservation process primarily recently, I wanted to ensure I added elements that were meant for the back-end/admin side more. This included adding an AuthFilter class to check if an admin is logged in when trying to view authorized pages, and adding a LogoutServlet and adding properties to the cognito.properties file so logout is handled accordingly. I referenced much from the Auth class added but wanted to make sure I had a better understanding of those elements, including the java.net package (https://docs.oracle.com/javase/8/docs/api/java/net/package-summary.html) - understanding elements that helped handle networking processes really had me think about how such could be scaled up down the line for more complex systems.
+
+One thing I will note is I came across a hiccup this week - my IntelliJ project was not able to push to my GitHub repo for some reason. I kept coming getting fatal error message popping up when trying to to a 'git push'. I delved further onto GitHub community pages, and it seems what I encountered indicated the connection to my repo and IntelliJ project was broken somehow. I was not able to find out what caused it but it was recommended to make a backup copy and then connect that one to the repo - the process thankfully didn't take too long but it was such an odd thing to occur. I wonder if the issues I've been experiencing with the disk space pileups had any factor towards this.
+
+With getting more time back to focus on the for the coming weeks, this feels like things are going to pick up here much more very soon.
+
+Est. Time - 4 hours
 
 
 ### Week 13
 
+4/26/26 - Came across a hiccup this week - something caused my project to not push to my GitHub repo. I kept getting critical fatal errors when trying to  This week really focused on refining reservation workflows, improving business logic separation, and continuing to evolve the application the best that I can with what I have learned and am continuing to learn about in the class and through my own research.
 
+One portion I felt was important during this time was implementing service layers, ReservationService, ReservationResult, DayAvailability, and AvailabilityService - up until now, reservation validation and transactional logic were spread across servlet and DAO methods, which seemed to have some errors being encountered come up along the way. Creating these layers I feel helped centralize reservation-specific business logic and better separated responsibilities between presentation layer, business, layer, and persistence layer.
+
+For DayAvailability and AvaiabilityService, these helped shape the availability calendar I implemented on the home page of the platform, as a way for users to quickly view what is available and what is full (ie. total seats vs booked seats for a service date). For ReservationService and ReservationResult, these were implemented to add in creating and confirming the reservation instead of placing all that logic into the ReservationServlet and ConfirmationServlet. This would then allow easier scalability if there are any needs to provide further functionality down the road. For example, I know I am wanting to still see if there is a way to provide a confirmation email to those who successfully submit and confirm a reservation, which the ReservationService class could help implement if a usable method is worth implementing. There were some back and forth moments on the best way to ensure things were working properly that took a considerable amount of time but getting to assess the practices done and refactor when necessary to improve the program was beneficial during this week for me.
+
+With my focus on concurrency during this project, a question that comes to mind for me during all this is how can I best ensure I am implementing elements that handle concurrency properly in this. I've delved into PESSIMISTIC_WRITE already, but have researched further on retry mechanisms (information on 'Retry': https://docs.oracle.com/middleware/1213/core/ASWSJ/oracle/webservices/annotations/async/Retry.html), deadlock detection, and other Java concurrency-focused utilities (ExecutorService, Lock) (https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html). This is something I am continuing to research further about at this point before I start implementing elements further.
+
+It feels great to see more come together for this and am looking forward to where more of it will go.
+
+Est. Time - 10 hours
 
 
 ### Week 14
@@ -149,8 +183,5 @@ Est. Time Worked - 5-6 hours
 
 
 ### Week 16
-
-
-
 
 

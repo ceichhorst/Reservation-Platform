@@ -84,7 +84,7 @@ public class ServiceManagerTest {
         serviceManager.deleteService(1L, target.getId());
 
         ServiceInstance deleted = serviceDao.getById(target.getId());
-        assertNull();
+        assertNull(deleted);
     }
 
     @Test

@@ -134,11 +134,8 @@ Focus User Story: Admin Sign In \& Reservation Management
 Focus User Story: Usability \& Accessibility Improvements
 
 * \[X] Improve reservation form usability and clarity (continuously reviewed)
-* \[ ] Add clear sold-out and status messaging
-* \[ ] Improve error handling and validation messages
-* \[ ] Test application under simulated high-traffic conditions
 * \[X] Refine UI layout for accessibility and readability (continuously)
-* \[ ] Weekly Reflection
+* \[X] Weekly Reflection
 
 
 
@@ -148,12 +145,11 @@ Focus User Story: Usability \& Accessibility Improvements
 
 Focus User Story: External Service Integration
 
-* \[X] Select external web service or public API (Javamail - yet to be implemented)
-* \[ ] Implement Java-based service integration
-* \[ ] Add logging around external service calls
-* \[ ] Handle service failure scenarios gracefully
-* \[ ] Add unit tests where applicable
-* \[ ] Weekly Reflection
+* \[X] Select external web service or public API (Javamail)
+* \[X] Refactor GenericDao implementation
+* \[X] Expand data/servlet handling for reservation process
+* \[X] Add unit tests where applicable
+* \[X] Weekly Reflection
 
 
 
@@ -161,23 +157,22 @@ Focus User Story: External Service Integration
 
 
 
-* \[ ] Refactor code based on testing and feedback
+* \[X] Refactor code based on testing and feedback
 * \[X] Improve documentation and JavaDoc
 * \[X] Increase unit test coverage
-* \[ ] Review project against rubric for gaps
-* \[ ] Weekly Reflection
+* \[X] Implement admin authentication check (AuthFilter)
+* \[X] Weekly Reflection
 
 
 
 ### Week 13
 
 
-
-* \[X] Conduct peer design/code review
+* \[X] Implement service layers/DTOs to centralize logic
 * \[ ] Incorporate peer and instructor feedback
-* \[ ] Improve concurrency handling if needed
+* \[X] Continue research and developing plan for proper implementation of concurrency handling if needed
 * \[ ] Finalize non-MVP features if time allows
-* \[ ] Weekly Reflection
+* \[X] Weekly Reflection
 
 
 
@@ -196,12 +191,13 @@ Focus User Story: External Service Integration
 ### Week 15
 
 
-
+* \[X] Conduct peer design/code review
 * \[ ] Implement feedback from Week 14 review
 * \[ ] Finalize documentation (README, architecture explanation, etc)
 * \[ ] Record video demonstration
 * \[ ] Add video link to GitHub README
 * \[ ] Perform code quality and cleanup pass
+* \[ ] Finalize Unit Tests/Handling
 * \[ ] Weekly Reflection
 
 

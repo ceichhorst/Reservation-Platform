@@ -9,6 +9,8 @@ import com.ceichhorst.reservation.service.ServiceManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
  */
 @WebServlet("/admin/restaurants")
 public class RestaurantManagementServlet extends HttpServlet {
+
+    private static final Logger logger = LogManager.getLogger(RestaurantManagementServlet.class);
 
     private RestaurantDao restaurantDao = new RestaurantDao();
     private AdministratorDao adminDao = new AdministratorDao();
@@ -107,6 +111,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                     restaurant.setRequireAllergenInfo(requireAllergenInfo);
 
                     restaurantDao.update(restaurant);
+                    logger.info("Restaurant info successfully updated");
                     break;
                 }
 
@@ -123,12 +128,8 @@ public class RestaurantManagementServlet extends HttpServlet {
                         throw new RuntimeException("Admin not found with that email.");
                     }
 
-                    Restaurant restaurant = restaurantDao.getById(restaurantId);
-
-                    restaurant.getAdministrators().add(newAdmin);
-                    newAdmin.getRestaurants().add(restaurant);
-
-                    restaurantDao.save(restaurant);
+                    adminDao.addRestaurantAssociation(newAdmin.getId(), restaurantId);
+                    logger.info("Admin successully assigned to restaurant");
                     break;
 
                 }
@@ -141,16 +142,12 @@ public class RestaurantManagementServlet extends HttpServlet {
 
                     Long removeAdminId = Long.parseLong(request.getParameter("adminId"));
 
-                    Administrator adminToRemove = adminDao.getById(removeAdminId);
-                    Restaurant restaurant = restaurantDao.getById(restaurantId);
-
-                    restaurant.getAdministrators().remove(adminToRemove);
-                    adminToRemove.getRestaurants().remove(restaurant);
-
-                    restaurantDao.delete(restaurant);
+                    adminDao.removeRestaurantAssociation(removeAdminId, restaurantId);
+                    logger.info("Admin assignment successfully removed from restaurant");
                     break;
                 }
 
+                // TODO should this be handled by the platform's company and not an admin? - not used
                 case "createRestaurant": {
 
                     if (!"SUPER_ADMIN".equals(role)) {
@@ -178,6 +175,7 @@ public class RestaurantManagementServlet extends HttpServlet {
                 }
             }
         } catch (RuntimeException e) {
+            logger.error("Error while performing action", e);
             request.getSession().setAttribute("error", e.getMessage());
         }
 

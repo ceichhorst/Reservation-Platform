@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -19,6 +21,8 @@ import java.nio.charset.StandardCharsets;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet implements PropertiesLoader {
 
+    private static final Logger logger = LogManager.getLogger(LogoutServlet.class);
+
     private Properties properties;
     private String CLIENT_ID;
     private String LOGOUT_URL;
@@ -29,7 +33,9 @@ public class LogoutServlet extends HttpServlet implements PropertiesLoader {
             properties = loadProperties("/cognito.properties");
             CLIENT_ID = properties.getProperty("client.id");
             LOGOUT_URL = properties.getProperty("logoutURL");
+            logger.info("Cognito Properties loaded successfully during logout.");
         } catch (Exception e) {
+            logger.error("Unable to load Cognito Properties", e);
             throw new ServletException("Unable to load Cognito Properties", e);
         }
 
@@ -41,32 +47,38 @@ public class LogoutServlet extends HttpServlet implements PropertiesLoader {
 
         HttpSession session = request.getSession(false);
 
-        Long restaurantId = null;
+        String postLogoutPath;
 
         if (session != null) {
-            restaurantId = (Long) session.getAttribute("lastRestaurantId");
+
+            Long restaurantId = (Long) session.getAttribute("lastRestaurantId");
+
+            if (restaurantId != null) {
+                postLogoutPath = "/r/" + restaurantId;
+            } else {
+                postLogoutPath = "/admin/dashboard";
+            }
+
             session.invalidate();
-        }
 
-        String redirectUri;
-
-        if (restaurantId != null) {
-            redirectUri = request.getContextPath() + "/logout-success";
-            request.getSession(true).setAttribute("postLogoutRedirect", "/r/" + restaurantId);
         } else {
-            redirectUri = request.getContextPath() + "/logout-success";
-            request.getSession(true).setAttribute("postLogoutRedirect", "/");
+            postLogoutPath = "/admin/dashboard";
         }
+
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("postLogoutPath", postLogoutPath);
+
+        String redirectUri = request.getContextPath() + "/logout-success";
 
         String redirectUrl = LOGOUT_URL
                 + "?client_id=" + CLIENT_ID
                 + "&logout_uri=" + URLEncoder.encode(
-                        request.getScheme() + "://" +
-                        request.getServerName() + ":" +
-                        request.getServerPort() +
-                        redirectUri,
-                        StandardCharsets.UTF_8
-                );
+                request.getScheme() + "://"
+                        + request.getServerName() + ":"
+                        + request.getServerPort()
+                        + redirectUri,
+                StandardCharsets.UTF_8
+        );
 
         response.sendRedirect(redirectUrl);
     }

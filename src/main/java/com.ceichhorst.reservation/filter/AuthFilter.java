@@ -36,8 +36,8 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (!"ADMIN".equals(role)) {
-            res.sendError(HttpServletResponse.SC_FORBIDDEN);
+        if (!"ADMIN".equals(role) && !"SUPER_ADMIN".equals(role)) {
+            res.sendRedirect(req.getContextPath() + "/unauthorized");
             return;
         }
 

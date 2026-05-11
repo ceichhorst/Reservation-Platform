@@ -121,6 +121,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
                 administratorDao.update(administrator);
 
                 HttpSession session = req.getSession();
+                session.setMaxInactiveInterval(60 * 60); // controls session time length before expiring
                 session.setAttribute("adminId", administrator.getId());
                 session.setAttribute("username", administrator.getUsername());
                 session.setAttribute("userEmail", userEmail);
@@ -236,7 +237,9 @@ public class Auth extends HttpServlet implements PropertiesLoader {
         String userEmail = jwt.getClaim("email").asString();
 
         String role = "USER";
-        if (groups != null && groups.contains("ADMIN")) {
+        if (groups != null && groups.contains("SUPER_ADMIN")) {
+            role = "SUPER_ADMIN";
+        } else if (groups != null && groups.contains("ADMIN")) {
             role = "ADMIN";
         }
 

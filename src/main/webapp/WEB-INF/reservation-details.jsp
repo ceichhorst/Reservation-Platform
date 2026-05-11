@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/main.css' />">
-
+    <link rel="stylesheet" href="<c:url value='/css/reservation-details.css' />">
     <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
@@ -32,19 +32,26 @@
                   class="details-form">
                 <div class="form-group">
                     <label for="customerName">Name</label>
-                    <input type="text" id="customerName" name="customerName" required>
+                    <span class="required-indicator">*</span>
+                    <input type="text" id="customerName" name="customerName" required aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <span class="required-indicator">*</span>
+                    <input type="email" id="email" name="email" required aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="guestAllergies">Allergies/Dietary Restrictions</label>
+                    <c:if test="${requireAllergenInfo}">
+                        <span class="required-indicator" aria-hidden="true">*</span>
+                    </c:if>
                     <input type="text"
                            id="guestAllergies"
                            name="guestAllergies"
                            placeholder="If none, please enter 'N/A'"
-                           required>
+                           <c:if test="${requireAllergenInfo}">
+                               required aria-required="true"
+                           </c:if>>
                 </div>
                 <div class="form-group">
                     <label for="guestNotes">Comments/Special Requests</label>

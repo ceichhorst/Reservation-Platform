@@ -104,9 +104,6 @@ public class HomeServlet extends HttpServlet {
         }
         request.getSession().setAttribute("lastRestaurantId", restaurantId);
 
-        // TODO is this needed anymore?
-        String page = (parts.length > 2) ? parts[2] : "home";
-
         List<ServiceInstance> services = null;
         Restaurant restaurant = null;
 

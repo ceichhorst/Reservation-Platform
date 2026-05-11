@@ -35,6 +35,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/ServiceTimeFormatter.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationController.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/RestaurantManagementServlet.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/UnauthorizedServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationAction.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/ReservationStatus.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/service/DayAvailability.java

@@ -134,11 +134,13 @@ public class ReservationManagementServlet extends HttpServlet {
             try {
                 selectedRestaurantId = Long.parseLong(restaurantIdParam);
                 if (!restaurantIds.contains(selectedRestaurantId)) {
+                    logger.error("Admin does not have access to the restaurant.");
                     request.setAttribute("error", "You do not have access to that restaurant.");
                     selectedRestaurantId = null;
                 }
             } catch (NumberFormatException e) {
-                request.setAttribute("error", "Invalid restuarant selection");
+                logger.error("Invalid restaurant selection.");
+                request.setAttribute("error", "Invalid restaurant selection");
             }
 
             request.setAttribute("selectedRestaurantId", selectedRestaurantId);
@@ -159,6 +161,7 @@ public class ReservationManagementServlet extends HttpServlet {
                     try {
                         id = Long.parseLong(idParam.trim());
                     } catch (NumberFormatException e) {
+                        logger.error("Confirmation ID must be a number.");
                         request.setAttribute("error", "Confirmation ID must be a number.");
                     }
                 }
@@ -168,6 +171,7 @@ public class ReservationManagementServlet extends HttpServlet {
                     try {
                         serviceDate = LocalDate.parse(dateParam.trim());
                     } catch (NumberFormatException e) {
+                        logger.error("Invalid date format");
                         request.setAttribute("error", "Invalid date format.");
                     }
                 }

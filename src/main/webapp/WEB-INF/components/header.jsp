@@ -29,7 +29,7 @@
                         </a>
                     </c:when>
                     <c:otherwise>
-                        <c:if test="${role eq 'ADMIN'}">
+                        <c:if test="${role eq 'ADMIN' or role eq 'SUPER_ADMIN'}">
                             <a href="${pageContext.request.contextPath}/admin/dashboard"
                                class="admin-link">
                                 Dashboard

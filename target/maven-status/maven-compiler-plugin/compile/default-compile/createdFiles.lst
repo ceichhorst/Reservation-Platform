@@ -19,6 +19,7 @@ com/ceichhorst/reservation/entity/ReservationStatus.class
 com/ceichhorst/reservation/entity/SchedulingType.class
 com/ceichhorst/reservation/service/TimeSlotReservationStats.class
 com/ceichhorst/reservation/auth/KeysItem.class
+com/ceichhorst/reservation/controller/UnauthorizedServlet.class
 com/ceichhorst/reservation/controller/ConfirmationServlet.class
 com/ceichhorst/reservation/entity/ReservationAction.class
 com/ceichhorst/reservation/dao/ServiceInstanceDao.class

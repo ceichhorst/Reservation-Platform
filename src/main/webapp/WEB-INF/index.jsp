@@ -120,7 +120,7 @@
     <section class="how-it-works">
         <h2>How It Works</h2>
         <p>
-            ${restaurant.howItWorks};
+            ${restaurant.howItWorks}
         </p>
     </section>
     <div class="container">

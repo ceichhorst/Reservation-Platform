@@ -54,6 +54,7 @@ jwks.json
 https-instance.config
 hibernate.cfg.xml
 log4j2.properties
+email.properties
 
 # class files I do not want shared
 src/main/java/com.ceichhorst.reservation/service/EmailService.java

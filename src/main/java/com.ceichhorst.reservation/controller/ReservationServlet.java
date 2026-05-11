@@ -12,6 +12,8 @@ import com.ceichhorst.reservation.service.ServiceInstance;
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import com.ceichhorst.reservation.util.HibernateUtil;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import jakarta.servlet.ServletException;
@@ -47,6 +49,11 @@ import java.time.LocalDate;
 public class ReservationServlet extends HttpServlet {
 
     /**
+     * DAO used to retrieve {@link Restaurant} data
+     */
+    private RestaurantDao restaurantDao;
+
+    /**
      * DAO used to retrieve {@link ServiceInstance} data.
      */
     private ServiceInstanceDao serviceInstanceDao;
@@ -56,11 +63,14 @@ public class ReservationServlet extends HttpServlet {
      */
     private final ServiceTimeFormatter formatter = new ServiceTimeFormatter();
 
+    private static final Logger logger = LogManager.getLogger(ReservationServlet.class);
+
     /**
      * Initializes the servlet and its dependencies.
      */
     @Override
     public void init() {
+        restaurantDao = new RestaurantDao();
         serviceInstanceDao = new ServiceInstanceDao();
 
     }
@@ -76,7 +86,7 @@ public class ReservationServlet extends HttpServlet {
         if (restaurantIdStr == null || restaurantIdStr.isEmpty()
                 || serviceInstanceIdStr == null || serviceInstanceIdStr.isEmpty()
                 || partySizeStr == null || partySizeStr.isEmpty()) {
-
+            logger.error("Missing required fiels");
             request.setAttribute("message", "Missing required fields");
             request.getRequestDispatcher("/WEB-INF/index.jsp")
                     .forward(request, response);
@@ -88,6 +98,16 @@ public class ReservationServlet extends HttpServlet {
             Long serviceInstanceId = Long.parseLong(serviceInstanceIdStr);
             int partySize = Integer.parseInt(partySizeStr);
 
+            Restaurant restaurant = restaurantDao.getById(restaurantId);
+
+            if (restaurant == null) {
+                logger.error("Invalid restaurant");
+                request.setAttribute("message", "Invalid restaurant");
+                request.getRequestDispatcher("/WEB-INF/index.jsp")
+                        .forward(request, response);
+                return;
+            }
+
             ServiceInstance instance = serviceInstanceDao.getById(serviceInstanceId);
 
             List<ServiceInstance> formatted = formatter.formatTimes(List.of(instance));
@@ -95,6 +115,7 @@ public class ReservationServlet extends HttpServlet {
             instance = formatted.get(0);
 
             if (instance == null) {
+                logger.error("Invalid service selection");
                 request.setAttribute("message", "Invalid service selection");
                 request.getRequestDispatcher("/WEB-INF/index.jsp")
                         .forward(request, response);
@@ -106,11 +127,13 @@ public class ReservationServlet extends HttpServlet {
             request.setAttribute("reservationDate", instance.getServiceDate().toString());
             request.setAttribute("reservationTime", instance.getServiceTimeFormatted());
             request.setAttribute("partySize", partySize);
+            request.setAttribute("requireAllergenInfo", restaurant.isRequireAllergenInfo());
 
             request.getRequestDispatcher("/WEB-INF/reservation-details.jsp")
                     .forward(request, response);
 
         } catch (Exception e) {
+            logger.error("Error processing reservation", e);
             throw new ServletException("Error processing reservation", e);
         }
     }

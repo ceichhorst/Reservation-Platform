@@ -1,6 +1,6 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ page session="true" %>
-<c:set var="redirect" value="${sessionScope.postLogoutRedirect}" />
+<c:set var="redirect" value="${sessionScope.postLogoutPath}" />
 <c:if test="${empty redirect}">
     <c:set var="redirect" value="/" />
 </c:if>

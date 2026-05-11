@@ -53,7 +53,7 @@ public class ReservationDaoTest {
     @Test
     void testSaveReservation() {
         Session session = sessionFactory.openSession();
-        ServiceInstance service = session.get(ServiceInstance.class, 1);
+        ServiceInstance service = session.get(ServiceInstance.class, 1000L);
         session.close();
 
         Reservation reservation = new Reservation();
@@ -69,7 +69,7 @@ public class ReservationDaoTest {
 
     @Test
     void testGetById() {
-        Reservation fetched = reservationDao.getById(1001L);
+        Reservation fetched = reservationDao.getById(2000L);
 
         assertNotNull(fetched);
         assertEquals("Seed User", fetched.getCustomerName());
@@ -77,25 +77,25 @@ public class ReservationDaoTest {
 
     @Test
     void testDeleteReservation() {
-        Reservation reservation = reservationDao.getById(1001L);
+        Reservation reservation = reservationDao.getById(2000L);
         assertNotNull(reservation);
 
         reservationDao.delete(reservation);
 
-        Reservation deleted = reservationDao.getById(1001L);
+        Reservation deleted = reservationDao.getById(2000L);
         assertNull(deleted);
     }
 
     @Test
     void testUpdateReservation() {
-        Reservation reservation = reservationDao.getById(1001L);
+        Reservation reservation = reservationDao.getById(2000L);
 
         reservation.setCustomerName("Updated Name");
         reservation.setPartySize(4);
 
         reservationDao.update(reservation);
 
-        Reservation updated = reservationDao.getById(1001L);
+        Reservation updated = reservationDao.getById(2000L);
         assertEquals("Updated Name", updated.getCustomerName());
         assertEquals(4, updated.getPartySize());
 
@@ -104,7 +104,7 @@ public class ReservationDaoTest {
     @Test
     void testCreateReservationIfAvailable() {
         Session session = sessionFactory.openSession();
-        ServiceInstance service = session.get(ServiceInstance.class, 1);
+        ServiceInstance service = session.get(ServiceInstance.class, 1000L);
         session.close();
 
         Reservation reservation = new Reservation();
@@ -122,7 +122,7 @@ public class ReservationDaoTest {
     @Test
     void testCreateReservationIfAvailable_failure() {
         Session session = sessionFactory.openSession();
-        ServiceInstance service = session.get(ServiceInstance.class, 1);
+        ServiceInstance service = session.get(ServiceInstance.class, 1000L);
         session.close();
 
         Reservation reservation1 = new Reservation();

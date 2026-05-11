@@ -10,10 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ServiceDaoTest {
+public class ServiceInstanceDaoTest {
 
     private ServiceInstanceDao serviceDao;
 
@@ -51,6 +50,14 @@ public class ServiceDaoTest {
                                 !service.getServiceDate().isBefore(LocalDate.now()))
         );
 
+    }
+
+    @Test
+    void testHasReservations_returnsTrueWhenReservationsExist() {
+
+        boolean result = serviceDao.hasReservations(1000L);
+
+        assertTrue(result);
     }
 
 }

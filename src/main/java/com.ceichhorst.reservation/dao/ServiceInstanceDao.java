@@ -41,29 +41,6 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
         super(ServiceInstance.class);
     }
 
-    // TODO do I really need this method?
-    /**
-     * Retrieves all upcoming service instances from today onward.
-     * @return a list of upcoming service instances
-     */
-    public List<ServiceInstance> getUpcomingServices() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb =session.getCriteriaBuilder();
-            CriteriaQuery<ServiceInstance> cq = cb.createQuery(ServiceInstance.class);
-            Root<ServiceInstance> root = cq.from(ServiceInstance.class);
-
-            // Filters for future dates
-            cq.select(root)
-                    .where(cb.greaterThanOrEqualTo(root.get("serviceDate"), LocalDate.now()))
-                    .orderBy(
-                            cb.asc(root.get("serviceDate")),
-                            cb.asc(root.get("serviceTime"))
-                    );
-
-            return session.createQuery(cq).getResultList();
-        }
-    }
-
     /**
      * Retrieves all service instances for a given restaurant.
      * @param restaurantId the ID of the restaurant
@@ -92,27 +69,6 @@ public class ServiceInstanceDao extends GenericDao<ServiceInstance>{
                             cb.asc(root.get("serviceDate")),
                             cb.asc(root.get("serviceTime"))
                     );
-
-            return session.createQuery(cq).getResultList();
-        }
-    }
-
-    // TODO do I need this method? - think about 'future' filtering here
-    /**
-     * Retrieves all service instances for a specific date.
-     * @param date the service date to filter by
-     * @return a list of service instances occurring on the specified date
-     */
-    public List<ServiceInstance> getByDate(LocalDate date) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder cb =session.getCriteriaBuilder();
-            CriteriaQuery<ServiceInstance> cq = cb.createQuery(ServiceInstance.class);
-            Root<ServiceInstance> root = cq.from(ServiceInstance.class);
-
-            // Filters for future dates
-            cq.select(root)
-                    .where(cb.equal(root.get("serviceDate"), date))
-                    .orderBy(cb.asc(root.get("serviceTime")));
 
             return session.createQuery(cq).getResultList();
         }

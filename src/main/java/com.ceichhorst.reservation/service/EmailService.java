@@ -3,6 +3,8 @@ package com.ceichhorst.reservation.service;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -12,22 +14,40 @@ import java.util.Properties;
  */
 public class EmailService {
 
-    // TODO AWS would be better for this email functionality and security purposes
-    // TODO Move these creds into a proeprties file
-    private final String username = "dyanasystems@gmail.com";
-    private final String password = "wnhswfdiutuukfgh";
+    private final String username;
+    private final String password;
 
     private final Session session;
 
     public EmailService() {
+        Properties config = new Properties();
+
+        try (InputStream input =
+                getClass().getClassLoader()
+                                .getResourceAsStream("email.properties")) {
+
+            if (input == null) {
+                throw new RuntimeException("email.properties not found");
+            }
+
+            config.load(input);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load email properties", e);
+        }
+
+        username = config.getProperty("mail.username");
+        password = config.getProperty("mail.password");
+
         Properties props = new Properties();
 
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth",config.getProperty("mail.smtp.auth"));
+        props.put("mail.smtp.starttls.enable", config.getProperty("mail.smtp.starttls.enable"));
+        props.put("mail.smtp.host", config.getProperty("mail.smtp.host"));
+        props.put("mail.smtp.port", config.getProperty("mail.smtp.port"));
 
         session = Session.getInstance(props, new Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }

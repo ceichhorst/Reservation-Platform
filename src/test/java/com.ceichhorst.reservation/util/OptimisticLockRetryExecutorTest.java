@@ -64,7 +64,7 @@ public class OptimisticLockRetryExecutorTest {
     }
 
     @Test
-    void testExecute_returnsNullSuccessFully() throws Exception {
+    void testExecute_returnsNullSuccessfully() throws Exception {
         OptimisticLockRetryExecutor executor = new OptimisticLockRetryExecutor(3);
 
         Object result = executor.execute(() -> null);

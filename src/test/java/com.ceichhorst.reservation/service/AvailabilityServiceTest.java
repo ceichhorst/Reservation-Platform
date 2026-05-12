@@ -1,52 +1,24 @@
 package com.ceichhorst.reservation.service;
 
-import com.ceichhorst.reservation.testutils.TestDatabase;
-import com.ceichhorst.reservation.entity.ServiceInstance;
-import com.ceichhorst.reservation.entity.Reservation;
-import com.ceichhorst.reservation.entity.ReservationStatus;
-import com.ceichhorst.reservation.entity.Restaurant;
+import com.ceichhorst.reservation.entity.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ceichhorst.reservation.util.HibernateUtil;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AvailabilityServiceTest {
 
-    private SessionFactory sessionFactory;
     private AvailabilityService availabilityService;
 
     @BeforeAll
     void setup() {
         availabilityService = new AvailabilityService();
-    }
-
-    @BeforeAll
-    void setupSessionFactory() throws Exception {
-        sessionFactory = new Configuration()
-                .configure("hibernate-test.cfg.xml")
-                .buildSessionFactory();
-        HibernateUtil.setSessionFactory(sessionFactory);
-
-    }
-
-    @BeforeEach
-    void cleanDatabase() {
-        TestDatabase.runSQL("cleandb.sql");
-    }
-
-    @AfterAll
-    void tearDown() {
-        if (sessionFactory != null) {
-            sessionFactory.close();
-        }
     }
 
     @Test
@@ -187,5 +159,187 @@ public class AvailabilityServiceTest {
         assertEquals(LocalDate.of(2026, 5, 1), calendar.get(0).getDate());
         assertEquals(LocalDate.of(2026, 5, 4), calendar.get(1).getDate());
 
+    }
+
+    @Test
+    void testGetAvailableTimes_dateOnly_returnsSingleResults() {
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setSchedulingType(SchedulingType.DATE_ONLY);
+
+        List<ServiceInstance> services = new ArrayList<>();
+
+        ServiceInstance s1 = new ServiceInstance();
+        s1.setServiceDate(LocalDate.of(2026, 5, 1));
+        s1.setServiceTime(LocalTime.of(17, 0));
+        s1.setCapacity(10);
+        s1.setReservations(new ArrayList<>());
+
+        ServiceInstance s2 = new ServiceInstance();
+        s2.setServiceDate(LocalDate.of(2026, 5, 1));
+        s2.setServiceTime(LocalTime.of(18, 0));
+        s2.setCapacity(10);
+        s2.setReservations(new ArrayList<>());
+
+        services.add(s1);
+        services.add(s2);
+
+        List<ServiceInstance> result =
+                availabilityService.getAvailableTimes(
+                        restaurant,
+                        services,
+                        LocalDate.of(2026, 5, 1),
+                        2
+                );
+
+        assertEquals(1, result.size());
+        assertEquals(LocalTime.of(17, 0), result.get(0).getServiceTime());
+    }
+
+    @Test
+    void testGetAvailableTimes_fixedTimeSlots_returnsAllAvailable() {
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setSchedulingType(SchedulingType.FIXED_TIME_SLOTS);
+
+        List<ServiceInstance> services = new ArrayList<>();
+
+        ServiceInstance s1 = new ServiceInstance();
+        s1.setServiceDate(LocalDate.of(2026, 5, 1));
+        s1.setServiceTime(LocalTime.of(17, 0));
+        s1.setCapacity(10);
+        s1.setReservations(new ArrayList<>());
+
+        ServiceInstance s2 = new ServiceInstance();
+        s2.setServiceDate(LocalDate.of(2026, 5, 1));
+        s2.setServiceTime(LocalTime.of(18, 0));
+        s2.setCapacity(10);
+        s2.setReservations(new ArrayList<>());
+
+        services.add(s1);
+        services.add(s2);
+
+        List<ServiceInstance> result =
+                availabilityService.getAvailableTimes(
+                        restaurant,
+                        services,
+                        LocalDate.of(2026, 5, 1),
+                        2
+                );
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testGetAvailableTimes_dateTime_returnsSingleResults() {
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setSchedulingType(SchedulingType.DATE_TIME);
+
+        List<ServiceInstance> services = new ArrayList<>();
+
+        ServiceInstance s1 = new ServiceInstance();
+        s1.setServiceDate(LocalDate.of(2026, 5, 1));
+        s1.setServiceTime(LocalTime.of(17, 0));
+        s1.setCapacity(10);
+        s1.setReservations(new ArrayList<>());
+
+        ServiceInstance s2 = new ServiceInstance();
+        s2.setServiceDate(LocalDate.of(2026, 5, 1));
+        s2.setServiceTime(LocalTime.of(18, 0));
+        s2.setCapacity(10);
+        s2.setReservations(new ArrayList<>());
+
+        services.add(s1);
+        services.add(s2);
+
+        List<ServiceInstance> result =
+                availabilityService.getAvailableTimes(
+                        restaurant,
+                        services,
+                        LocalDate.of(2026, 5, 1),
+                        2
+                );
+
+        assertEquals(2, result.size());
+
+    }
+
+    @Test
+    void testGetAvailableTimes_filtersOutFullServices() {
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setSchedulingType(SchedulingType.FIXED_TIME_SLOTS);
+
+        List<ServiceInstance> services = new ArrayList<>();
+
+        ServiceInstance available = new ServiceInstance();
+        available.setServiceDate(LocalDate.of(2026, 5, 1));
+        available.setServiceTime(LocalTime.of(17, 0));
+        available.setCapacity(10);
+        available.setReservations(new ArrayList<>());
+
+        ServiceInstance full = new ServiceInstance();
+        full.setServiceDate(LocalDate.of(2026, 5, 1));
+        full.setServiceTime(LocalTime.of(18, 0));
+        full.setCapacity(4);
+
+        Reservation reservation = new Reservation();
+        reservation.setPartySize(4);
+        reservation.setStatus(ReservationStatus.CONFIRMED);
+
+        List<Reservation> reservations = new ArrayList<>();
+        reservations.add(reservation);
+
+        full.setReservations(reservations);
+
+        services.add(available);
+        services.add(full);
+
+        List<ServiceInstance> result =
+                availabilityService.getAvailableTimes(
+                        restaurant,
+                        services,
+                        LocalDate.of(2026, 5, 1),
+                        2
+                );
+
+        assertEquals(1, result.size());
+        assertEquals(LocalTime.of(17, 0), result.get(0).getServiceTime());
+    }
+
+    @Test
+    void testGetAvailableTimes_filtersByPartySize() {
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setSchedulingType(SchedulingType.FIXED_TIME_SLOTS);
+
+        List<ServiceInstance> services = new ArrayList<>();
+
+        ServiceInstance service = new ServiceInstance();
+        service.setServiceDate(LocalDate.of(2026, 5, 1));
+        service.setServiceTime(LocalTime.of(18, 0));
+        service.setCapacity(4);
+
+        Reservation reservation = new Reservation();
+        reservation.setPartySize(2);
+        reservation.setStatus(ReservationStatus.CONFIRMED);
+
+        List<Reservation> reservations = new ArrayList<>();
+        reservations.add(reservation);
+
+        service.setReservations(reservations);
+
+        services.add(service);
+
+        List<ServiceInstance> result =
+                availabilityService.getAvailableTimes(
+                        restaurant,
+                        services,
+                        LocalDate.of(2026, 5, 1),
+                        3
+                );
+
+        assertTrue(result.isEmpty());
     }
 }

@@ -40,6 +40,20 @@
         </div>
 
         <c:if test="${not empty selectedRestaurantId}">
+        <%-- SUCCESS MESSAGE --%>
+        <c:if test="${not empty sessionScope.successMessage}">
+            <div class="message success-message">${sessionScope.successMessage}</div>
+            <c:remove var="successMessage" scope="session" />
+        </c:if>
+        <%-- INFO MESSAGE --%>
+        <c:if test="${not empty message}">
+            <div class="message">${message}</div>
+        </c:if>
+        <%-- ERROR MESSAGE --%>
+        <c:if test="${not empty error}">
+            <div class="error">${error}</div>
+            <c:remove var="error" scope="session" />
+        </c:if>
             <div class="card">
                 <h3>Edit Restaurant Details</h3>
                 <form method="post" action="${pageContext.request.contextPath}/admin/restaurants">

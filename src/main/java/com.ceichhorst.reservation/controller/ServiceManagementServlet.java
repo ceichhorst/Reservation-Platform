@@ -248,6 +248,7 @@ public class ServiceManagementServlet extends HttpServlet {
 
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     logger.info("Service date(s) successfully deleted");
+                    request.getSession().setAttribute("successMessage", "Service date(s) deleted successfully!");
                     break;
                 }
 
@@ -256,6 +257,7 @@ public class ServiceManagementServlet extends HttpServlet {
                     String schedulingType = request.getParameter("scheduleType");
                     serviceManager.updateSchedulingType(adminId, restaurantId, schedulingType);
                     logger.info("Service type fo restaurant successfully updated");
+                    request.getSession().setAttribute("successMessage", "Service date updated successfully!");
                     break;
                 }
 
@@ -270,6 +272,7 @@ public class ServiceManagementServlet extends HttpServlet {
 
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
                     logger.info("Service date visibility successfully toggled");
+                    request.getSession().setAttribute("successMessage", "Service date visibility toggled successfully!");
                     break;
                 }
             }

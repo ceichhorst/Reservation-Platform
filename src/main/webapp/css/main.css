@@ -303,6 +303,18 @@ footer {
     border-radius: 6px;
 }
 
+.label-row {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.required-indicator {
+    color: #c0392b;
+    margin-left: 0.25rem;
+    font-weight: 700;
+}
+
 .confirm-button, .button-primary {
     background-color: #011e41;;
     color: #FAFAFA;

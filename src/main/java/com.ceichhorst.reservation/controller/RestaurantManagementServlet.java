@@ -113,6 +113,7 @@ public class RestaurantManagementServlet extends HttpServlet {
 
                     restaurantDao.update(restaurant);
                     logger.info("Restaurant info successfully updated");
+                    request.getSession().setAttribute("successMessage", "Restaurant updated successfully!");
                     break;
                 }
 
@@ -130,7 +131,8 @@ public class RestaurantManagementServlet extends HttpServlet {
                     }
 
                     adminDao.addRestaurantAssociation(newAdmin.getId(), restaurantId);
-                    logger.info("Admin successully assigned to restaurant");
+                    logger.info("Admin successfully assigned to restaurant");
+                    request.getSession().setAttribute("successMessage", "Admin added successfully!");
                     break;
 
                 }
@@ -144,6 +146,7 @@ public class RestaurantManagementServlet extends HttpServlet {
 
                     adminDao.removeRestaurantAssociation(removeAdminId, restaurantId);
                     logger.info("Admin assignment successfully removed from restaurant");
+                    request.getSession().setAttribute("successMessage", "Admin removed successfully!");
                     break;
                 }
 

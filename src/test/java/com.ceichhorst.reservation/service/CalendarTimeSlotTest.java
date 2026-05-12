@@ -30,7 +30,7 @@ public class CalendarTimeSlotTest {
     }
 
     @Test
-    void testIsNotNull_whenSeatsRemain() {
+    void testIsNotFull_whenSeatsRemain() {
         CalendarTimeSlot slot = new CalendarTimeSlot();
         slot.setRemainingSeats(5);
         slot.setFull(false);

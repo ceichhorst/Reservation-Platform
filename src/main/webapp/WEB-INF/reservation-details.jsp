@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/main.css' />">
-    <link rel="stylesheet" href="<c:url value='/css/reservation-details.css' />">
     <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
@@ -32,20 +31,26 @@
                   method="POST"
                   class="details-form">
                 <div class="form-group">
-                    <label for="customerName">Name</label>
-                    <span class="required-indicator">*</span>
+                    <div class="label-row">
+                        <label for="customerName">Name</label>
+                        <span class="required-indicator">*</span>
+                    </div>
                     <input type="text" id="customerName" name="customerName" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <span class="required-indicator">*</span>
+                    <div class="label-row">
+                        <label for="email">Email</label>
+                        <span class="required-indicator">*</span>
+                    </div>
                     <input type="email" id="email" name="email" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="guestAllergies">Allergies/Dietary Restrictions</label>
-                    <c:if test="${requireAllergenInfo}">
-                        <span class="required-indicator" aria-hidden="true">*</span>
-                    </c:if>
+                    <div class="label-row">
+                        <label for="guestAllergies">Allergies/Dietary Restrictions</label>
+                        <c:if test="${requireAllergenInfo}">
+                            <span class="required-indicator" aria-hidden="true">*</span>
+                        </c:if>
+                    </div>
                     <input type="text"
                            id="guestAllergies"
                            name="guestAllergies"

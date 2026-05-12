@@ -45,13 +45,14 @@
             <div class="message success-message">${sessionScope.successMessage}</div>
             <c:remove var="successMessage" scope="session" />
         </c:if>
-        <!-- INFO MESSAGE -->
+        <%-- INFO MESSAGE --%>
         <c:if test="${not empty message}">
             <div class="message">${message}</div>
         </c:if>
-        <!-- ERROR MESSAGE -->
+        <%-- ERROR MESSAGE --%>
         <c:if test="${not empty error}">
             <div class="error">${error}</div>
+            <c:remove var="error" scope="session" />
         </c:if>
         <form method="get" action="${pageContext.request.contextPath}/admin/reservations" class="filter-form">
             <input type="hidden" name="restaurantId" value="${selectedRestaurantId}" />

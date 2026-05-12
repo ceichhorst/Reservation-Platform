@@ -156,8 +156,8 @@ public class Auth extends HttpServlet implements PropertiesLoader {
         response = client.send(authRequest, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            System.out.println("STATUS: " + response.statusCode());
-            System.out.println("ERROR BODY: " + response.body());
+            logger.info("STATUS: " + response.statusCode());
+            logger.info("ERROR BODY: " + response.body());
 
             throw new IOException("Failed to get token from Cognito");
         }
@@ -178,7 +178,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
      * Get values out of the header to verify the token is legit. If it is legit, get the claims from it, such
      * as username.
      * @param tokenResponse
-     * @return
+     * @return the resulting user once validated
      * @throws IOException
      */
     private Map<String, String> validate(TokenResponse tokenResponse) throws IOException, ServletException {
@@ -187,7 +187,6 @@ public class Auth extends HttpServlet implements PropertiesLoader {
 
         // Header should have kid and alg- https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html
         String keyId = tokenHeader.getKid();
-        String alg = tokenHeader.getAlg();
 
         /**
          * Search the KeysItem list from jwks.getKeys() [Keys class] for the one 'kid' that matches
@@ -240,11 +239,11 @@ public class Auth extends HttpServlet implements PropertiesLoader {
             role = "ADMIN";
         }
 
+        logger.debug("here's the username: " + userName);
         logger.debug("here's the userEmail: " + userEmail);
         logger.debug("here's the role: " + role);
         logger.debug("here are all the available claims: " + jwt.getClaims());
 
-        // keeping it simple and just returning the userEmail
         Map<String, String> result = new HashMap();
         result.put("username", userName);
         result.put("email", userEmail);

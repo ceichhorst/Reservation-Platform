@@ -73,10 +73,18 @@ const loadTimes = async (date) => {
                 const option = document.createElement("option");
                 option.value = slot.id;
                 option.textContent = `${slot.serviceTimeFormatted} (assigned automatically)`;
-                option.selected = true;
+
                 timeSelect.appendChild(option);
 
                 timeSelect.disabled = true;
+
+                const hiddenInput = document.getElementById("hiddenServiceInstanceId");
+
+                if (hiddenInput) {
+                    hiddenInput.value = slot.id;
+                    console.log("Hidden service instance set.", hiddenInput.value);
+                }
+
                 updatePartySizeOptions(slot.remainingSeats);
             } else {
                 const option = document.createElement("option");
@@ -84,6 +92,7 @@ const loadTimes = async (date) => {
                 option.textContent = "No availability";
                 timeSelect.appendChild(option);
                 timeSelect.disabled = true
+                document.getElementById("hiddenServiceInstanceId").value = "";
                 restorePartySizeOptions();
             }
 
@@ -91,40 +100,42 @@ const loadTimes = async (date) => {
         }
 
         // Other scheduling types
-        timeSelect.disabled = false;
+        if (schedulingType === "DATE_TIME" || schedulingType === "FIXED_TIME_SLOTS") {
+            timeSelect.disabled = false;
 
-        const defaultOption = document.createElement("option");
+            const defaultOption = document.createElement("option");
 
-        defaultOption.value = "";
-        defaultOption.textContent = "Select a Time";
+            defaultOption.value = "";
+            defaultOption.textContent = "Select a Time";
 
-        timeSelect.appendChild(defaultOption);
+            timeSelect.appendChild(defaultOption);
 
-        data.forEach(slot => {
+            data.forEach(slot => {
 
-            const option = document.createElement("option");
+                const option = document.createElement("option");
 
-            option.value = slot.id;
+                option.value = slot.id;
 
-            option.textContent = `${slot.serviceTimeFormatted} 
-                (${slot.remainingSeats} seat${slot.remainingSeats === 1 ? '' : 's'} left)`;
-            option.dataset.remainingSeats = slot.remainingSeats;
-            timeSelect.appendChild(option);
-        });
+                option.textContent = `${slot.serviceTimeFormatted} 
+                    (${slot.remainingSeats} seat${slot.remainingSeats === 1 ? '' : 's'} left)`;
+                    option.dataset.remainingSeats = slot.remainingSeats;
+                timeSelect.appendChild(option);
+            });
 
-
-        // restore time if still available
-        const stillAvailable = Array.from(timeSelect.options).some(o => o.value === previousTimeValue);
-        if (stillAvailable && previousTimeValue) {
-            timeSelect.value = previousTimeValue;
-            const restoredOption = timeSelect.options[timeSelect.selectedIndex];
-            const remaining = parseInt(restoredOption.dataset.remainingSeats);
-            if (!isNaN(remaining)) {
-                updatePartySizeOptions(remaining);
+            // restore time if still available
+            const stillAvailable = Array.from(timeSelect.options).some(o => o.value === previousTimeValue);
+            if (stillAvailable && previousTimeValue) {
+                timeSelect.value = previousTimeValue;
+                const restoredOption = timeSelect.options[timeSelect.selectedIndex];
+                const remaining = parseInt(restoredOption.dataset.remainingSeats);
+                if (!isNaN(remaining)) {
+                    updatePartySizeOptions(remaining);
+                }
+            } else {
+                restorePartySizeOptions();
             }
-        } else {
-            restorePartySizeOptions();
         }
+
 
     } catch (err) {
         console.error("Error loading times:", err);
@@ -137,7 +148,7 @@ dateSelect.addEventListener("change", (e) => {
     loadTimes(e.target.value);
 });
 
-// Time change -> filter party size dropdwon to remaining seats
+// Time change -> filter party size dropdown to remaining seats
 timeSelect.addEventListener("change", () => {
     const selected = timeSelect.options[timeSelect.selectedIndex];
     const remaining = selected ? parseInt(selected.dataset.remainingSeats) : null;

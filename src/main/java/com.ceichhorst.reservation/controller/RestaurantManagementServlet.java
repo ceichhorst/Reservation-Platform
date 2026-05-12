@@ -113,6 +113,7 @@ public class RestaurantManagementServlet extends HttpServlet {
 
                     restaurantDao.update(restaurant);
                     logger.info("Restaurant info successfully updated");
+                    request.getSession().setAttribute("successMessage", "Restaurant updated successfully!");
                     break;
                 }
 
@@ -130,7 +131,8 @@ public class RestaurantManagementServlet extends HttpServlet {
                     }
 
                     adminDao.addRestaurantAssociation(newAdmin.getId(), restaurantId);
-                    logger.info("Admin successully assigned to restaurant");
+                    logger.info("Admin successfully assigned to restaurant");
+                    request.getSession().setAttribute("successMessage", "Admin added successfully!");
                     break;
 
                 }
@@ -142,8 +144,21 @@ public class RestaurantManagementServlet extends HttpServlet {
 
                     Long removeAdminId = Long.parseLong(request.getParameter("adminId"));
 
+                    Administrator adminToRemove = adminDao.getById(removeAdminId);
+
+                    if (adminToRemove == null) {
+                        throw new RuntimeException("Admin not found with that email.");
+                    }
+
+                    // Check if admin role is 'SUPER_ADMIN'
+                    String requesterRole = (String) session.getAttribute("role");
+                    if ("SUPER_ADMIN".equals(requesterRole)) {
+                        throw new RuntimeException("SUPER_ADMIN accounts cannot be removed from restaurants.");
+                    }
+
                     adminDao.removeRestaurantAssociation(removeAdminId, restaurantId);
                     logger.info("Admin assignment successfully removed from restaurant");
+                    request.getSession().setAttribute("successMessage", "Admin removed successfully!");
                     break;
                 }
 

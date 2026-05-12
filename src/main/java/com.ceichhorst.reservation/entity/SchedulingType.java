@@ -12,7 +12,7 @@ package com.ceichhorst.reservation.entity;
  *     <li>{@link #DATE_TIME} - Reservations are made for a specific date and time, having times on a date set within a
  *     range by admins, broken into 15 minutes intervals.</li>
  *     <li>{@link #FIXED_TIME_SLOTS} - Reservations are limited to predefined time slots,
- *     configured in advance by admins.</li>
+ *     configured in advance by admins. More freedom on when times are compared to DATE_TIME</li>
  * </ul>
  *
  * <p>This value influences both user interface behavior and backend validation logic.</p>

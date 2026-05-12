@@ -17,6 +17,8 @@ import java.util.List;
 
 /**
  * Servlet responsible for managing restaurant data and administrator assignments.
+ *
+ * @author ceichhorst
  */
 @WebServlet("/admin/restaurants")
 public class RestaurantManagementServlet extends HttpServlet {
@@ -85,7 +87,6 @@ public class RestaurantManagementServlet extends HttpServlet {
         }
 
         Long adminId = (Long) session.getAttribute("adminId");
-        String role = (String) session.getAttribute("role");
 
         String action = request.getParameter("action");
         Long restaurantId = null;
@@ -137,7 +138,6 @@ public class RestaurantManagementServlet extends HttpServlet {
                 case "removeAdmin": {
                     restaurantId = Long.parseLong(request.getParameter("restaurantId"));
 
-                    // TODO Consider switching this method to an authorization service layer
                     serviceManager.authorizeAdminAccess(adminId, restaurantId);
 
                     Long removeAdminId = Long.parseLong(request.getParameter("adminId"));
@@ -147,32 +147,6 @@ public class RestaurantManagementServlet extends HttpServlet {
                     break;
                 }
 
-                // TODO should this be handled by the platform's company and not an admin? - not used
-                case "createRestaurant": {
-
-                    if (!"SUPER_ADMIN".equals(role)) {
-                        throw new RuntimeException("Unauthorized");
-                    }
-
-                    Restaurant restaurant = new Restaurant();
-                    restaurant.setName(request.getParameter("name"));
-                    restaurant.setCity(request.getParameter("city"));
-                    restaurant.setState(request.getParameter("state"));
-                    restaurant.setDescription(request.getParameter("description"));
-                    restaurant.setHowItWorks(request.getParameter("howItWorks"));
-
-                    boolean requireAllergenInfo =
-                            request.getParameter("requireAllergenInfo") != null;
-                    restaurant.setRequireAllergenInfo(requireAllergenInfo);
-
-                    // Assign creator as admin automatically
-                    Administrator creator = adminDao.getById(adminId);
-                    restaurant.getAdministrators().add(creator);
-                    creator.getRestaurants().add(restaurant);
-
-                    restaurantDao.save(restaurant);
-
-                }
             }
         } catch (RuntimeException e) {
             logger.error("Error while performing action", e);

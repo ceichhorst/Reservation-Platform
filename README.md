@@ -91,6 +91,7 @@ The value of this project lies in demonstrating how enterprise Java technologies
 * Security/Authentication
 
   * AWS Cognito
+      * Additional feature - Lambda 
 
 * Database
 
@@ -106,7 +107,8 @@ The value of this project lies in demonstrating how enterprise Java technologies
 
 * Web Services
 
-  * [Javamail/STMP](https://products.fileformat.com/email/java/javamail/) (proposed - implementation TBD)
+  * [Javamail/STMP](https://products.fileformat.com/email/java/javamail/) (implemented)
+  * Custom API - AvailabilityController
 
 * CSS
 
@@ -128,7 +130,7 @@ The value of this project lies in demonstrating how enterprise Java technologies
 
   * Concurrency & Scalability (Exploration focused)
     - Pessimistic and Optimistic Locking Strategies (PESSIMISTIC_WRITE currently implemented, @Version explored)
-    - Deadlock Detection and Retry Mechanisms
+    - Retry Mechanisms
     - Java Concurrency Utilities (ExecutorService, Locks)
 
 * Unit Testing

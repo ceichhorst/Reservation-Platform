@@ -20,11 +20,9 @@ public class ReservationServiceTest {
 
     private SessionFactory sessionFactory;
     private ReservationService reservationService;
-    private ReservationDao reservationDao;
 
     @BeforeAll
     void setup() {
-        reservationDao = new ReservationDao();
 
         EmailService mockEmailService = mock(EmailService.class);
 
@@ -84,6 +82,82 @@ public class ReservationServiceTest {
         assertEquals(2, created.getPartySize());
         assertEquals("CONFIRMED", created.getStatus().name());
 
+    }
+
+    @Test
+    void testCreateReservation_invalidServiceInstance_returnsFailure() {
+
+        ReservationResult result = reservationService.createReservation(
+                1L,
+                99999L,
+                2,
+                "John Doe",
+                "john@email.com",
+                "N/A",
+                "None"
+        );
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Invalid time selection", result.getMessage());
+    }
+
+    @Test
+    void testCreateReservation_invalidRestaurant_returnsFailure() {
+
+        ServiceInstance instance =
+                new ServiceInstanceDao()
+                        .getServicesByRestaurantOnDate(1L, LocalDate.now())
+                        .get(0);
+
+        ReservationResult result = reservationService.createReservation(
+                99999L,
+                instance.getId(),
+                2,
+                "John Doe",
+                "john@email.com",
+                "N/A",
+                "None"
+        );
+
+        assertNotNull(result);
+        assertFalse(result.isSuccess());
+        assertEquals("Invalid restaurant", result.getMessage());
+    }
+
+    @Test
+    void testCreateReservation_fullCapacity_returnsFailure() {
+
+        ServiceInstance instance =
+                new ServiceInstanceDao()
+                        .getServicesByRestaurantOnDate(1L, LocalDate.now())
+                        .get(0);
+
+        ReservationResult first = reservationService.createReservation(
+                1L,
+                instance.getId(),
+                8,
+                "First User",
+                "first@email.com",
+                "N/A",
+                "None"
+        );
+
+        assertTrue(first.isSuccess());
+
+        ReservationResult second = reservationService.createReservation(
+                1L,
+                instance.getId(),
+                3,
+                "Second User",
+                "second@email.com",
+                "N/A",
+                "None"
+        );
+
+        assertNotNull(second);
+        assertFalse(second.isSuccess());
+        assertEquals("That time slot is full.", second.getMessage());
     }
 
 }

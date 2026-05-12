@@ -213,7 +213,7 @@ public class Reservation {
 
     /**
      * Gets the customer's name.
-     * @return the email address.
+     * @return the customer name.
      */
     public String getCustomerName() {
         return customerName;
@@ -227,26 +227,50 @@ public class Reservation {
         this.customerName = customerName;
     }
 
+    /**
+     * Gets the current version of the reservation.
+     * @return the reservation's version.
+     */
     public int getVersion() {
         return version;
     }
 
+    /**
+     * Sets the version of the reservation to its most current instance.
+     * @param version the reservation's current associated version.
+     */
     public void setVersion(int version) {
         this.version = version;
     }
 
+    /**
+     * Gets the ID of the admin that last handled a reservation.
+     * @return the ID of the admin who last handled a reservation
+     */
     public Long getHandledByAdminId() {
         return handledByAdminId;
     }
 
+    /**
+     * Sets the ID of the admin that last handled a reservation.
+     * @param handledByAdminId the ID of the admin who last handled a reservation
+     */
     public void setHandledByAdminId(Long handledByAdminId) {
         this.handledByAdminId = handledByAdminId;
     }
 
+    /**
+     * Helper method: Gets the username of the admin that last handled a reservation.
+     * @return the username of the admin who last handled a reservation
+     */
     public String getHandledByAdminUsername() {
         return handledByAdminUsername;
     }
 
+    /**
+     * SHelper method: ets the username of the admin that last handled a reservation.
+     * @param username the username of the admin who last handled a reservation
+     */
     public void setHandledByAdminUsername(String username) {
         this.handledByAdminUsername = username;
     }

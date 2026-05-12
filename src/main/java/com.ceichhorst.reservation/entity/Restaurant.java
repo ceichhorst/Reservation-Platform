@@ -20,7 +20,7 @@ import java.util.Set;
  * and descriptive content used for display.</p>
  *
  * <p>The {@code id} is responsible for providing the correct restaurant being utilized within this
- * platform, as the application is individualized and set to only works with one restaurant in the application at a
+ * platform, as the application is individualized and set to only work with one restaurant in the application at a
  * time.</p>
  *
  * @author ceichhorst

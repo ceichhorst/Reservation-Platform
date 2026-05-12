@@ -201,7 +201,7 @@ public class ServiceInstance {
 
     /**
      * Sets a formatted representation of the service end time
-     * @param endTimeFormatted the formatted service end time to setg
+     * @param endTimeFormatted the formatted service end time to set
      */
     public void setEndTimeFormatted(String endTimeFormatted) {
         this.endTimeFormatted = endTimeFormatted;

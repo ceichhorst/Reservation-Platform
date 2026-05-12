@@ -126,6 +126,12 @@ public class ReservationDao extends GenericDao<Reservation> {
 
     /**
      * Finds reservations by a filtered parameter
+     * @param id the confirmation ID to filter by
+     * @param customerName the customer name to filter by
+     * @param email the email to filter by
+     * @param serviceDate the date of the reservation to filter by
+     * @param restaurantIds the restaurant ID of the associated reservation
+     * @return the filtered result(s)
      */
     public List<Reservation> findByFilter(Long id, String customerName, String email,
                                           LocalDate serviceDate, Set<Long> restaurantIds) {

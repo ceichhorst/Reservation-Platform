@@ -39,7 +39,6 @@ public class Administrator {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    // Is this actually needed?
     /**
      * Role assigned to the administrator.
      */
@@ -120,7 +119,6 @@ public class Administrator {
         this.email = email;
     }
 
-    // Is this actually needed?
     /**
      * Gets the role of the admin.
      * @return the role of the admin
@@ -129,7 +127,6 @@ public class Administrator {
         return role;
     }
 
-    // Is this actually needed?
     /**
      * Sets the role of the admin.
      * @param role the role of the admin

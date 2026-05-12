@@ -16,12 +16,17 @@ import org.hibernate.Session;
 public class RestaurantDao extends GenericDao<Restaurant> {
 
     /**
-     * Constructs a new ReservationDao
+     * Constructs a new RestaurantDao
      */
     public RestaurantDao() {
         super(Restaurant.class);
     }
 
+    /**
+     * Retrieves a selected restaurant alongside its associated admin(s)
+     * @param id the id of the restaurant
+     * @return the restaurant alongside its associated admin(s)
+     */
     public Restaurant getByIdWithAdmins(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Restaurant restaurant = session.get(Restaurant.class, id);

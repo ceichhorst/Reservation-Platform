@@ -1,8 +1,6 @@
 package com.ceichhorst.reservation.util;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.HibernateException;
 
 /**
  * Utility class for managing the Hibernate {@link SessionFactory}.

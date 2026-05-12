@@ -49,7 +49,6 @@ public class ReservationActionDao {
 
     }
 
-    // TODO do I need this method
     /**
      * Retrieves the full action history for a given reservation, ordered chronologically
      * @param reservationId

@@ -12,7 +12,7 @@ import java.util.Set;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 /**
- * Application config for ReservationController API
+ * Application config for API/Availlability Controller
  *
  * @author ceichhorst
  */

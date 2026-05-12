@@ -156,8 +156,8 @@ public class Auth extends HttpServlet implements PropertiesLoader {
         response = client.send(authRequest, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            System.out.println("STATUS: " + response.statusCode());
-            System.out.println("ERROR BODY: " + response.body());
+            logger.info("STATUS: " + response.statusCode());
+            logger.info("ERROR BODY: " + response.body());
 
             throw new IOException("Failed to get token from Cognito");
         }

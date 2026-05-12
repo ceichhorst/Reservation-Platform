@@ -2,6 +2,7 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/listener/ApplicationStartup.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/entity/Administrator.java
+/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/listener/AppShutdownListener.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/LogoutServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/LogoutSuccessServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/AdminDashboardServlet.java
@@ -13,7 +14,6 @@
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ConfirmationServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ReservationManagementServlet.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/auth/CognitoTokenHeader.java
-/home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/AppShutdownListener.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/GenericDao.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/dao/ReservationActionDao.java
 /home/student/Reservation-Platform/src/main/java/com.ceichhorst.reservation/controller/ApplicationConfig.java

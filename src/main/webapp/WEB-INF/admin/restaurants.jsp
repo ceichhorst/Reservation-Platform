@@ -75,13 +75,13 @@
                         </div>
                     </div>
 
-                    <label>Description</label>
+                    <label class="restaurant-form-label">Description</label>
                     <textarea name="description" rows="3">${selectedRestaurant.description}</textarea>
 
-                    <label>How It Works</label>
+                    <label class="restaurant-form-label">How It Works</label>
                     <textarea name="howItWorks" rows="3">${selectedRestaurant.howItWorks}</textarea>
 
-                    <label>
+                    <label class="restaurant-form-label">
                         <input type="checkbox" name="requireAllergenInfo"
                                <c:if test="${selectedRestaurant.requireAllergenInfo}">checked</c:if> />
                         Require Allergen Info

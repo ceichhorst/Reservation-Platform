@@ -79,7 +79,7 @@ public class ReservationServlet extends HttpServlet {
         if (restaurantIdStr == null || restaurantIdStr.isEmpty()
                 || serviceInstanceIdStr == null || serviceInstanceIdStr.isEmpty()
                 || partySizeStr == null || partySizeStr.isEmpty()) {
-            logger.error("Missing required fiels");
+            logger.error("Missing required fields");
             request.setAttribute("message", "Missing required fields");
             request.getRequestDispatcher("/WEB-INF/index.jsp")
                     .forward(request, response);

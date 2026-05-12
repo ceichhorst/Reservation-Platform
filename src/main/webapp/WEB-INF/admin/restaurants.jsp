@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,10 +46,11 @@
                     <input type="hidden" name="action" value="updateRestaurant">
                     <input type="hidden" name="restaurantId" value="${selectedRestaurant.id}">
 
-                    <label>Name</label>
-                    <input type="text" name="name" value="${selectedRestaurant.name}" required />
-
                     <div class="form-row">
+                        <div>
+                            <label>Name</label>
+                            <input type="text" name="name" value="${selectedRestaurant.name}" required />
+                        </div>
                         <div>
                             <label>City</label>
                             <input type="text" name="city" value="${selectedRestaurant.city}" required />
@@ -78,18 +80,19 @@
             <c:if test="${sessionScope.role == 'SUPER_ADMIN'}">
             <div class="card">
                 <h3>Manage Administrators</h3>
-                <p><strong>Current Admins</strong></p>
+                <p class="current-admins">Current Admins</p>
                 <ul>
                     <c:forEach var="admin" items="${selectedRestaurant.administrators}">
                         <li>Username: <strong>${admin.username}</strong> | Email: <span>${admin.email}</span></li>
                     </c:forEach>
                 </ul>
-
+                <br>
+                <hr>
                 <form method="post" action="${pageContext.request.contextPath}/admin/restaurants">
                     <input type="hidden" name="action" value="addAdmin">
                     <input type="hidden" name="restaurantId" value="${selectedRestaurant.id}">
 
-                    <label>Add Admin</label>
+                    <label class="add-admin">Add Admin</label>
                     <p class="form-hint">
                         Please provide an admin email to assign to
                         <strong>${selectedRestaurant.name}</strong>
@@ -98,12 +101,13 @@
 
                     <button type="submit">Add Admin</button>
                 </form>
-
+                <br>
+                <hr>
                 <form method="post" action="${pageContext.request.contextPath}/admin/restaurants">
                     <input type="hidden" name="action" value="removeAdmin"/>
                     <input type="hidden" name="restaurantId" value="${selectedRestaurant.id}"/>
 
-                    <label>Remove Admin</label>
+                    <label class="remove-admin">Remove Admin</label>
                     <select name="adminId">
                         <c:forEach var="admin" items="${selectedRestaurant.administrators}">
                             <option value="${admin.id}">${admin.username} | ${admin.email}</option>

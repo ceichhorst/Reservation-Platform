@@ -29,11 +29,11 @@ com/ceichhorst/reservation/entity/Administrator.class
 com/ceichhorst/reservation/service/ReservationResult.class
 com/ceichhorst/reservation/controller/HomeServlet.class
 com/ceichhorst/reservation/controller/ReservationController.class
+com/ceichhorst/reservation/entity/ServiceInstance.class
 com/ceichhorst/reservation/util/PropertiesLoader.class
 com/ceichhorst/reservation/service/CalendarTimeSlot.class
 com/ceichhorst/reservation/controller/RestaurantManagementServlet.class
 com/ceichhorst/reservation/filter/AuthFilter.class
-com/ceichhorst/reservation/service/ServiceInstance.class
 com/ceichhorst/reservation/controller/ReservationServlet.class
 com/ceichhorst/reservation/controller/ReservationManagementServlet.class
 com/ceichhorst/reservation/controller/LogoutServlet.class
@@ -42,7 +42,6 @@ com/ceichhorst/reservation/service/EmailService$1.class
 com/ceichhorst/reservation/entity/Restaurant.class
 com/ceichhorst/reservation/service/AvailabilityService.class
 com/ceichhorst/reservation/controller/AppShutdownListener.class
-com/ceichhorst/reservation/service/ServiceTemplate.class
 com/ceichhorst/reservation/controller/AvailabilityController.class
 com/ceichhorst/reservation/service/ServiceManager$1.class
 com/ceichhorst/reservation/dao/RestaurantDao.class

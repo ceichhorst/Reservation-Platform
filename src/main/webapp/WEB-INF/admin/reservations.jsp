@@ -116,7 +116,7 @@
                                 <td>${reservation.partySize}</td>
                                 <td>${not empty reservation.allergenInfo ? reservation.allergenInfo : '-'}</td>
                                 <td>${not empty reservation.additionalComments ? reservation.additionalComments : '-'}</td>
-                                <td>${not empty reservation.handledByAdminId ? reservation.handledByAdminId : '-'}</td>
+                                <td>${not empty reservation.handledByAdminUsername ? reservation.handledByAdminUsername : '-'}</td>
                                 <td>
                                     <span class="status ${reservation.status}">
                                         ${reservation.status}

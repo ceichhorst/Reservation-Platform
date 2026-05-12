@@ -3,7 +3,7 @@ package com.ceichhorst.reservation.controller;
 import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.dao.ReservationDao;
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.List;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 /**
  * Servlet responsible for rendering the administrative dashboard.

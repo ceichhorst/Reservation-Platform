@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<c:url value='/css/main.css' />">
     <link rel="stylesheet" href="<c:url value='/css/home.css' />">
+    <link rel="stylesheet" href="<c:url value='/css/admin.css' />">
     <link rel="icon" type="image/png" href="<c:url value='/images/favicon-32.png' />">
 </head>
 <body>
@@ -66,7 +68,6 @@
                 <p>No upcoming reservations found.</p>
             </c:when>
             <c:otherwise>
-                <%-- maybe place select restaurant feature here? --%>
                 <c:set var="hasTimeSlots" value="false" />
                 <c:forEach var="r" items="${restaurantList}">
                     <c:if test="${r.schedulingType == 'DATE_TIME' || r.schedulingType == 'FIXED_TIME_SLOTS'}">
@@ -95,7 +96,7 @@
                                     <button class="accordion-toggle"
                                             onclick="toggleSlots('slots-${loop.index}', this)"
                                             aria-expanded="false">
-                                        ▶
+                                        <span class="arrow-icon">▶</span>
                                     </button>
                                 </td>
                             </c:if>

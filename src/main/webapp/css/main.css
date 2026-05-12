@@ -61,7 +61,7 @@ header {
 .text_logo {
     height: 34px;
     width: auto;
-    margin-top: -4px;
+    margin-top: -1px;
 }
 
 .logo-link {
@@ -93,11 +93,6 @@ header {
 }
 
 /* ========== RESERVATION FORM ========== */
-/*.reservation-bar {
-    background: #AAD1DF;
-    padding: 20px 0;
-    border-bottom: 1px solid #E5E7EB;
-}*/
 
 .reservation-form {
     max-width: 900px;
@@ -275,21 +270,6 @@ footer {
     color: #6b7280;
 }
 
-/* ======== RESPONSIVE ========= */
-@media (max-width: 600px) {
-    body {
-        font-size: 17px;
-    }
-
-    .container {
-        padding: 20px;
-    }
-
-    nav {
-        flex-direction: column;
-        align-items: center;
-    }
-}
 
 /* ======== RESERVATION DETAILS PAGE ======== */
 .reservation-details, .confirmation-page {

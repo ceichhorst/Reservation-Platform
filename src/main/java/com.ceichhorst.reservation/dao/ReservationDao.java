@@ -3,7 +3,7 @@ package com.ceichhorst.reservation.dao;
 import com.ceichhorst.reservation.entity.Reservation;
 import com.ceichhorst.reservation.entity.ReservationStatus;
 import com.ceichhorst.reservation.entity.Restaurant;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.util.HibernateUtil;
 import com.ceichhorst.reservation.service.ServiceReservationStats;
 import com.ceichhorst.reservation.service.TimeSlotReservationStats;

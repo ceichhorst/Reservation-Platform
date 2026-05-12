@@ -69,7 +69,7 @@ public class Login extends HttpServlet implements PropertiesLoader {
 
             logger.error("Cognito properties not loaded properly. " +
                     "LOGIN_URL: " + LOGIN_URL +
-                    ", CLINET_ID: " + CLIENT_ID +
+                    ", CLIENT_ID: " + CLIENT_ID +
                     ", REDIRECT_URL: " + REDIRECT_URL);
 
             resp.sendRedirect(req.getContextPath() + "/error.jsp");

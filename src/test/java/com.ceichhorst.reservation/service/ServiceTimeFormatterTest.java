@@ -1,5 +1,6 @@
 package com.ceichhorst.reservation.service;
 
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

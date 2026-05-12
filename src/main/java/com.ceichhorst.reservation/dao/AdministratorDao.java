@@ -4,7 +4,6 @@ import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -71,25 +70,6 @@ public class AdministratorDao extends GenericDao<Administrator> {
                     .where(criteriaBuilder.equal(root.get("email"), email));
 
             return session.createQuery(criteriaQuery).uniqueResult();
-        }
-    }
-
-    // TODO do I need one still too? I have email which seems to be enough
-    /**
-     * Retrieves all administrators with a given role.
-     * @param role the role to filter by (e.g., "ADMIN", "MANAGER")
-     * @return a list of administrators with the specified role
-     */
-    public List<Administrator> getAdministratorByRole(String role) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Administrator> criteriaQuery = criteriaBuilder.createQuery(Administrator.class);
-            Root<Administrator> root = criteriaQuery.from(Administrator.class);
-            criteriaQuery.select(root)
-                    .where(criteriaBuilder.equal(root.get("role"), role));
-
-            Query<Administrator> query = session.createQuery(criteriaQuery);
-            return query.getResultList();
         }
     }
 

@@ -1,10 +1,7 @@
 package com.ceichhorst.reservation.entity;
 
 import jakarta.persistence.*;
-import com.ceichhorst.reservation.service.ServiceInstance;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import java.util.List;
 
 /**
  * Entity representing a reservation made by a customer for a specific {@link ServiceInstance}.
@@ -86,6 +83,9 @@ public class Reservation {
      */
     @Column(name = "handled_by_admin_id")
     private Long handledByAdminId;
+
+    @Transient
+    private String handledByAdminUsername;
 
     // getters & setters =========================================================
 
@@ -241,5 +241,13 @@ public class Reservation {
 
     public void setHandledByAdminId(Long handledByAdminId) {
         this.handledByAdminId = handledByAdminId;
+    }
+
+    public String getHandledByAdminUsername() {
+        return handledByAdminUsername;
+    }
+
+    public void setHandledByAdminUsername(String username) {
+        this.handledByAdminUsername = username;
     }
 }

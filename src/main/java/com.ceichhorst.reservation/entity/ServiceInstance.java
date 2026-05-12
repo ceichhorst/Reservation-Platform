@@ -1,12 +1,10 @@
-package com.ceichhorst.reservation.service;
+package com.ceichhorst.reservation.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.ceichhorst.reservation.entity.Reservation;
-import com.ceichhorst.reservation.entity.Restaurant;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

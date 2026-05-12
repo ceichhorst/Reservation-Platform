@@ -150,10 +150,10 @@ button.danger {
 /* ADMIN DASHBOARD TABLE OVERVIEW */
 
 .dashboard-welcome {
-    max-width: 900px;
-    width: 100%;
-    margin: 20px auto 0;
-    padding: 20px 20px 0;
+    max-width: 900px !important;
+    width: 100% !important;
+    margin: 20px auto 0 !important;
+    padding: 20px 20px 0 !important;
 }
 
 .dashboard-welcome h2 {
@@ -264,6 +264,15 @@ button.danger {
     background: #f9fafb;
 }
 
+.arrow-icon {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+button.open .arrow-icon {
+    transform: rotate(90deg);
+}
+
 /* SERVICES TABLE SCROLL BOX */
 .scroll-container {
     max-height: 400px;
@@ -347,6 +356,12 @@ button.danger {
     transform: translateY(-1px);
 }
 
+.current-admins, .add-admin, .remove-admin {
+    position: relative;
+    text-align: left !important;
+
+}
+
 /* Danger button (remove admin) */
 button.danger {
     background-color: #dc3545;
@@ -395,7 +410,9 @@ button.danger:hover {
 }
 
 .form-hint {
-    font-size: 14px !important;
+    font-size: 11px !important;
+    text-align: left !important;
+    font-style: italic;
 }
 
 select {

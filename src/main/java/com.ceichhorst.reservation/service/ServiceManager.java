@@ -5,6 +5,7 @@ import com.ceichhorst.reservation.dao.RestaurantDao;
 import com.ceichhorst.reservation.entity.Restaurant;
 import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.ceichhorst.reservation.entity.SchedulingType;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

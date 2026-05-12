@@ -3,9 +3,8 @@ package com.ceichhorst.reservation.controller;
 import com.ceichhorst.reservation.dao.ServiceInstanceDao;
 import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.ceichhorst.reservation.dao.RestaurantDao;
-import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.entity.Restaurant;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 import com.ceichhorst.reservation.service.ServiceManager;
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

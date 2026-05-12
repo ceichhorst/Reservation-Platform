@@ -4,7 +4,7 @@ import com.ceichhorst.reservation.dao.ReservationActionDao;
 import com.ceichhorst.reservation.dao.ReservationDao;
 import com.ceichhorst.reservation.dao.AdministratorDao;
 import com.ceichhorst.reservation.entity.*;
-import com.ceichhorst.reservation.service.ServiceInstance;
+import com.ceichhorst.reservation.entity.ServiceInstance;
 
 import com.ceichhorst.reservation.service.ServiceTimeFormatter;
 import jakarta.servlet.ServletException;
@@ -178,6 +178,16 @@ public class ReservationManagementServlet extends HttpServlet {
 
                 List<Reservation> reservations = reservationDao.findByFilter(
                         id, customerName, email, serviceDate, scopedIds);
+
+                // Get admin's username for 'handled by admin id'
+                for (Reservation r : reservations) {
+                    if (r.getHandledByAdminId() != null) {
+                        Administrator admin = adminDao.getById(r.getHandledByAdminId());
+                        if (admin != null) {
+                            r.setHandledByAdminUsername(admin.getUsername());
+                        }
+                    }
+                }
 
                 List<ServiceInstance> serviceInstances = reservations.stream()
                         .map(Reservation::getServiceInstance)

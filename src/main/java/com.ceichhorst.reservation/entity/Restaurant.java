@@ -1,7 +1,5 @@
 package com.ceichhorst.reservation.entity;
 
-import com.ceichhorst.reservation.service.ServiceTemplate;
-import com.ceichhorst.reservation.service.ServiceInstance;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -69,10 +67,6 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ServiceInstance> serviceInstances;
-
-    // Consider removing service templates
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<ServiceTemplate> serviceTemplates;
 
     /**
      * Set of administrators who handle this restaurant.
@@ -193,16 +187,6 @@ public class Restaurant {
      */
     public void setServiceInstances(List<ServiceInstance> serviceInstances) {
         this.serviceInstances = serviceInstances;
-    }
-
-    // Consider removing
-    public List<ServiceTemplate> getServiceTemplates() {
-        return serviceTemplates;
-    }
-
-    // Consider removing
-    public void setServiceTemplates(List<ServiceTemplate> serviceTemplates) {
-        this.serviceTemplates = serviceTemplates;
     }
 
     /**

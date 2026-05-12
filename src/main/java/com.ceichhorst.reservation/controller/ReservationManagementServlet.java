@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -55,12 +56,12 @@ public class ReservationManagementServlet extends HttpServlet {
     private ReservationDao reservationDao = new ReservationDao();
 
     /**
-     * Dao
+     * Dao for managing {@link ReservationAction} entities.
      */
     private ReservationActionDao actionDao = new ReservationActionDao();
 
     /**
-     * Dao
+     * Dao for managing {@link Administrator} entities.
      */
     private AdministratorDao adminDao = new AdministratorDao();
 
@@ -68,6 +69,16 @@ public class ReservationManagementServlet extends HttpServlet {
      * Formatting service time
      */
     private ServiceTimeFormatter formatter = new ServiceTimeFormatter();
+
+    /**
+     * Entity for reservation actions
+     */
+    private ReservationAction reservationAction;
+
+    /**
+     * Current date and time
+     */
+    private LocalDateTime currentDateTime;
 
     /**
      * Logger for logging error
@@ -98,7 +109,6 @@ public class ReservationManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // TODO Is it best to make the auth check a called method compared to duplicating code?
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("userEmail") == null) {
@@ -294,6 +304,9 @@ public class ReservationManagementServlet extends HttpServlet {
 
                     try {
                         actionDao.record(reservation, admin, ReservationActionType.UPDATED);
+                        reservationAction.setActionTime(currentDateTime);
+                        logger.info("Audit record made for reservation {}: {}", actionDao.getByReservationId(reservationId),
+                                reservationAction);
                     } catch (Exception auditEx) {
                         logger.warn("Audit record failed for reservation {}: {}", reservationId, auditEx.getMessage());
                     }

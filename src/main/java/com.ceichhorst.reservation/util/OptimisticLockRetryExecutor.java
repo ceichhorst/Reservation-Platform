@@ -2,7 +2,6 @@ package com.ceichhorst.reservation.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.annotations.OptimisticLock;
 import org.hibernate.StaleObjectStateException;
 
 import jakarta.persistence.OptimisticLockException;

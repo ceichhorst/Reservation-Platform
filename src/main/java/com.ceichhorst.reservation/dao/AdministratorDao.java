@@ -30,29 +30,10 @@ import java.util.HashSet;
 public class AdministratorDao extends GenericDao<Administrator> {
 
     /**
-     * Constructs a new AdminstratorDao
+     * Constructs a new AdministratorDao
      */
     public AdministratorDao() {
         super(Administrator.class);
-    }
-
-    // TODO do I really need this method anymore after using email now?
-    /**
-     * Retrieves an administrator by their username
-     * @param username the username to search for
-     * @return the matching administrator
-     */
-    public Administrator getAdministratorByUsername(String username) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<Administrator> criteriaQuery = criteriaBuilder.createQuery(Administrator.class);
-            Root<Administrator> root = criteriaQuery.from(Administrator.class);
-            criteriaQuery.select(root)
-                    .where(criteriaBuilder.equal(root.get("username"), username));
-
-            Query<Administrator> query = session.createQuery(criteriaQuery);
-            return query.uniqueResult();
-        }
     }
 
     /**
@@ -115,8 +96,8 @@ public class AdministratorDao extends GenericDao<Administrator> {
 
     /**
      * Adds a restaurant association to an administrator
-     * @param adminId
-     * @param restaurantId
+     * @param adminId the ID of the administrator
+     * @param restaurantId the ID of the associated restaurant
      */
     public void addRestaurantAssociation(Long adminId, Long restaurantId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -146,8 +127,8 @@ public class AdministratorDao extends GenericDao<Administrator> {
 
     /**
      * Removes a restaurant association from an administrator
-     * @param adminId
-     * @param restaurantId
+     * @param adminId the ID of the admin
+     * @param restaurantId the ID of the associated restaurant
      */
     public void removeRestaurantAssociation(Long adminId, Long restaurantId) {
         Session session = HibernateUtil.getSessionFactory().openSession();

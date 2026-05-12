@@ -144,6 +144,17 @@ public class RestaurantManagementServlet extends HttpServlet {
 
                     Long removeAdminId = Long.parseLong(request.getParameter("adminId"));
 
+                    Administrator adminToRemove = adminDao.getById(removeAdminId);
+
+                    if (adminToRemove == null) {
+                        throw new RuntimeException("Admin not found with that email.");
+                    }
+
+                    // Check if admin role is 'SUPER_ADMIN'
+                    if ("SUPER_ADMIN".equals(adminToRemove.getRole())) {
+                        throw new RuntimeException("SUPER_ADMIN accounts cannot be removed from restaurants.");
+                    }
+
                     adminDao.removeRestaurantAssociation(removeAdminId, restaurantId);
                     logger.info("Admin assignment successfully removed from restaurant");
                     request.getSession().setAttribute("successMessage", "Admin removed successfully!");

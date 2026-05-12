@@ -179,6 +179,16 @@ public class ReservationManagementServlet extends HttpServlet {
                 List<Reservation> reservations = reservationDao.findByFilter(
                         id, customerName, email, serviceDate, scopedIds);
 
+                // Get admin's username for 'handled by admin id'
+                for (Reservation r : reservations) {
+                    if (r.getHandledByAdminId() != null) {
+                        Administrator admin = adminDao.getById(r.getHandledByAdminId());
+                        if (admin != null) {
+                            r.setHandledByAdminUsername(admin.getUsername());
+                        }
+                    }
+                }
+
                 List<ServiceInstance> serviceInstances = reservations.stream()
                         .map(Reservation::getServiceInstance)
                         .collect(Collectors.toList());

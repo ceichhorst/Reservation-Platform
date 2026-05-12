@@ -4,6 +4,6 @@ toggleSlots = (id, btn) => {
 
     row.style.display = isOpen ? 'none' : 'table-row';
 
-    btn.textContent= isOpen ? '▶' : '▾';
+    btn.classList.toggle('open', !isOpen);
     btn.setAttribute('aria-expanded', String(!isOpen));
 }

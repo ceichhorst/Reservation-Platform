@@ -84,6 +84,9 @@ public class Reservation {
     @Column(name = "handled_by_admin_id")
     private Long handledByAdminId;
 
+    @Transient
+    private String handledByAdminUsername;
+
     // getters & setters =========================================================
 
     /**
@@ -238,5 +241,13 @@ public class Reservation {
 
     public void setHandledByAdminId(Long handledByAdminId) {
         this.handledByAdminId = handledByAdminId;
+    }
+
+    public String getHandledByAdminUsername() {
+        return handledByAdminUsername;
+    }
+
+    public void setHandledByAdminUsername(String username) {
+        this.handledByAdminUsername = username;
     }
 }

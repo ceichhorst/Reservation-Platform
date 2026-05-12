@@ -178,7 +178,7 @@ public class Auth extends HttpServlet implements PropertiesLoader {
      * Get values out of the header to verify the token is legit. If it is legit, get the claims from it, such
      * as username.
      * @param tokenResponse
-     * @return
+     * @return the resulting user once validated
      * @throws IOException
      */
     private Map<String, String> validate(TokenResponse tokenResponse) throws IOException, ServletException {

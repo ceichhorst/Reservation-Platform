@@ -151,7 +151,8 @@ public class RestaurantManagementServlet extends HttpServlet {
                     }
 
                     // Check if admin role is 'SUPER_ADMIN'
-                    if ("SUPER_ADMIN".equals(adminToRemove.getRole())) {
+                    String requesterRole = (String) session.getAttribute("role");
+                    if ("SUPER_ADMIN".equals(requesterRole)) {
                         throw new RuntimeException("SUPER_ADMIN accounts cannot be removed from restaurants.");
                     }
 

@@ -24,6 +24,7 @@
         <p class="welcome-sub">Logged in as ${userEmail}</p>
     </div>
     <div class="container">
+        <h2>Admin Dashboard</h2>
         <c:if test="${not empty message}">
             <c:choose>
                 <c:when test="${message == 'No restaurants assigned.'}">

@@ -1,20 +1,24 @@
 package com.ceichhorst.reservation.controller;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import com.ceichhorst.reservation.dao.RestaurantDao;
+import com.ceichhorst.reservation.dao.ServiceInstanceDao;
+import com.ceichhorst.reservation.entity.Restaurant;
+import com.ceichhorst.reservation.entity.ServiceInstance;
+import com.ceichhorst.reservation.service.AvailabilityService;
+import com.ceichhorst.reservation.service.DayAvailability;
+import com.ceichhorst.reservation.service.ServiceTimeFormatter;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import java.io.IOException;
-
-import com.ceichhorst.reservation.dao.*;
-import com.ceichhorst.reservation.service.*;
-import com.ceichhorst.reservation.entity.*;
-
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**

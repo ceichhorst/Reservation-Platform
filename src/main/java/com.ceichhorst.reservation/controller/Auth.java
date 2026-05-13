@@ -4,14 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ceichhorst.reservation.auth.CognitoJWTParser;
+import com.ceichhorst.reservation.auth.CognitoTokenHeader;
+import com.ceichhorst.reservation.auth.Keys;
+import com.ceichhorst.reservation.auth.KeysItem;
+import com.ceichhorst.reservation.auth.TokenResponse;
 import com.ceichhorst.reservation.dao.AdministratorDao;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ceichhorst.reservation.auth.*;
+import com.ceichhorst.reservation.entity.Administrator;
 import com.ceichhorst.reservation.util.PropertiesLoader;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.commons.io.*;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,7 +20,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
@@ -37,8 +41,6 @@ import java.security.spec.RSAPublicKeySpec;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.ceichhorst.reservation.entity.Administrator;
 
 
 @WebServlet(

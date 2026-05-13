@@ -83,48 +83,6 @@ public class ReservationDao extends GenericDao<Reservation> {
     }
 
     /**
-     * Finds reservations by an exact match on customer name.
-     * @param name the customer name to search for
-     * @return a list of matching reservations
-     */
-    public List<Reservation> findByCustomerName(String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
-        Root<Reservation> root = cq.from(Reservation.class);
-
-        cq.select(root)
-                .where(cb.equal(root.get("customerName"), name));
-
-        List<Reservation> results = session.createQuery(cq).getResultList();
-        session.close();
-
-        return results;
-    }
-
-    /**
-     * Finds reservations by an exact match on email address.
-     * @param email the email address to search for
-     * @return a list of matching reservations
-     */
-    public List<Reservation> findByEmail(String email) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
-        Root<Reservation> root = cq.from(Reservation.class);
-
-        cq.select(root)
-                .where(cb.equal(root.get("email"), email));
-
-        List<Reservation> results = session.createQuery(cq).getResultList();
-        session.close();
-
-        return results;
-    }
-
-    /**
      * Finds reservations by a filtered parameter
      * @param id the confirmation ID to filter by
      * @param customerName the customer name to filter by

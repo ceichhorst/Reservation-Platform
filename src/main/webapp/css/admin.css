@@ -5,6 +5,13 @@
     min-width: 1100px;
 }
 
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    min-width: 1200px;
+}
+
 .reservation-table-container {
     width: 100%;
     max-width: 1500px;
@@ -17,13 +24,16 @@
 }
 
 .reservation-table th,
-.reservation-table td {
+.service-table th,
+.reservation-table td,
+.service-table td{
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
 }
 
-.reservation-table th {
+.reservation-table th,
+.service-table th {
     background-color: #F7F9FC;
 }
 

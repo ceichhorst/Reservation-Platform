@@ -146,7 +146,7 @@
                 <c:otherwise>
                     <form method="post" action="${pageContext.request.contextPath}/admin/services">
                         <div class="scroll-container">
-                            <table class="reservation-table">
+                            <table class="service-table">
                                 <thead>
                                 <tr>
                                     <th>Date</th>

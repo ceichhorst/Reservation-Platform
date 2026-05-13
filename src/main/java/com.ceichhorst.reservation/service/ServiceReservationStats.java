@@ -50,7 +50,6 @@ public class ServiceReservationStats {
         this.totalSeatsBooked = totalSeatsBooked;
     }
 
-    // TODO not utilized yet
     /**
      * Gets the service date associated with these statistics.
      * @return the service date

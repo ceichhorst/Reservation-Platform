@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServiceInstanceDaoTest {
@@ -58,6 +59,55 @@ public class ServiceInstanceDaoTest {
         boolean result = serviceDao.hasReservations(1000L);
 
         assertTrue(result);
+    }
+
+    @Test
+    void testGetServicesByRestaurantOnDate_returnsOnlyMatchingDate() {
+
+        LocalDate date = LocalDate.now().plusDays(1);
+
+        List<ServiceInstance> result =
+                serviceDao.getServicesByRestaurantOnDate(1L, date);
+
+        assertNotNull(result);
+
+        assertTrue(
+                result.stream().allMatch(s ->
+                        s.getRestaurant().getId().equals(1L))
+        );
+
+        assertTrue(
+                result.stream().allMatch(s ->
+                        s.getServiceDate().equals(date))
+        );
+
+    }
+
+
+    @Test
+    void testGetServicesByRestaurants_returnsOnlyMatchingRestaurants() {
+
+        Set<Long> ids = Set.of(1L, 2L);
+
+        List<ServiceInstance> result =
+                serviceDao.getServicesByRestaurants(ids);
+
+        assertNotNull(result);
+
+        assertTrue(
+                result.stream().allMatch(s ->
+                        ids.contains(s.getRestaurant().getId())
+                )
+        );
+
+    }
+
+    @Test
+    void testHasReservations_returnsFalseWhenNoneExists() {
+
+        boolean result = serviceDao.hasReservations(99999L);
+
+        assertFalse(result);
     }
 
 }

@@ -19,6 +19,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * API to handle the initial availability information when first making a reservation on the home page.
+ *
+ * @ceichhorst
+ */
 @Path("/availability")
 @Produces(MediaType.APPLICATION_JSON)
 public class AvailabilityController {

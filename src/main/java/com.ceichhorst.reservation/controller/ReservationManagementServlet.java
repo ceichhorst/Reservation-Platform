@@ -276,6 +276,7 @@ public class ReservationManagementServlet extends HttpServlet {
 
                     try {
                         actionDao.record(reservation, admin, ReservationActionType.CONFIRMED);
+                        logger.info("Record successfully edited for reservation: {}", reservationId);
                     } catch (Exception auditEx) {
                         logger.warn("Confirmation failed for reservation {}: {}", reservationId, auditEx.getMessage());
                     }
@@ -288,6 +289,7 @@ public class ReservationManagementServlet extends HttpServlet {
 
                     try {
                         actionDao.record(reservation, admin, ReservationActionType.CANCELLED);
+                        logger.info("Record successfully cancelled for reservation: {}", reservationId);
                     } catch (Exception auditEx) {
                         logger.warn("Cancellation failed for reservation {}: {}", reservationId, auditEx.getMessage());
                     }
@@ -304,11 +306,9 @@ public class ReservationManagementServlet extends HttpServlet {
 
                     try {
                         actionDao.record(reservation, admin, ReservationActionType.UPDATED);
-                        reservationAction.setActionTime(currentDateTime);
-                        logger.info("Audit record made for reservation {}: {}", actionDao.getByReservationId(reservationId),
-                                reservationAction);
+                        logger.info("Record successfully edited for reservation: {}", reservationId);
                     } catch (Exception auditEx) {
-                        logger.warn("Audit record failed for reservation {}: {}", reservationId, auditEx.getMessage());
+                        logger.warn("Edit failed for reservation {}: {}", reservationId, auditEx.getMessage());
                     }
                     request.getSession().setAttribute("successMessage", "Reservation updated successfully!");
                     break;
@@ -320,7 +320,7 @@ public class ReservationManagementServlet extends HttpServlet {
         }
 
         String restaurantIdParam = request.getParameter("restaurantId");
-        String redirectUrl = request.getContextPath() + "/admin/reservation";
+        String redirectUrl = request.getContextPath() + "/admin/reservations";
         if (restaurantIdParam != null && !restaurantIdParam.isEmpty()) {
             redirectUrl += "?restaurantId=" + restaurantIdParam;
         }

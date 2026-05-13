@@ -150,10 +150,9 @@ public class RestaurantManagementServlet extends HttpServlet {
                         throw new RuntimeException("Admin not found with that email.");
                     }
 
-                    // Check if admin role is 'SUPER_ADMIN'
-                    String requesterRole = (String) session.getAttribute("role");
-                    if ("SUPER_ADMIN".equals(requesterRole)) {
-                        throw new RuntimeException("SUPER_ADMIN accounts cannot be removed from restaurants.");
+                    // Check to protect user from deleting themselves
+                    if (adminId.equals(removeAdminId)) {
+                        throw new RuntimeException("You cannot remove yourself from a restaurant.");
                     }
 
                     adminDao.removeRestaurantAssociation(removeAdminId, restaurantId);

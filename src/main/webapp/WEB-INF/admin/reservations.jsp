@@ -125,14 +125,14 @@
                                 </td>
                                 <td>
                                     <c:if test="${reservation.status != 'CONFIRMED'}">
-                                        <form method="post" style="display:inline;">
+                                        <form method="post" action="${pageContext.request.contextPath}/admin/reservations" style="display:inline;">
                                             <input type="hidden" name="id" value="${reservation.id}" />
                                             <input type="hidden" name="action" value="confirm" />
                                             <button type="submit">Confirm</button>
                                         </form>
                                     </c:if>
                                     <c:if test="${reservation.status != 'CANCELLED'}">
-                                        <form method="post" style="display:inline;">
+                                        <form method="post" action="${pageContext.request.contextPath}/admin/reservations" style="display:inline;">
                                             <input type="hidden" name="id" value="${reservation.id}" />
                                             <input type="hidden" name="action" value="cancel" />
                                             <button type="submit">Cancel</button>
@@ -149,9 +149,10 @@
                             <%-- Inline Edit Form --%>
                             <tr id="edit-row-${reservation.id}" class="edit-form-row" style="display:none;">
                                 <td colspan="11">
-                                    <form method="post" class="edit-form">
+                                    <form method="post" action="${pageContext.request.contextPath}/admin/reservations" class="edit-form">
                                         <input type="hidden" name="id" value="${reservation.id}" />
                                         <input type="hidden" name="action" value="edit" />
+                                        <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
                                         <div class="edit-form-grid">
                                             <label>Customer Name
                                                 <input type="text" name="customerName"

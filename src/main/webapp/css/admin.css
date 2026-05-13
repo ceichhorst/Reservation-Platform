@@ -14,13 +14,23 @@
 
 .reservation-table-container {
     width: 100%;
-    max-width: 1500px;
+    max-width: 1400px;
     margin: 40px auto;
     padding: 30px;
     background: #FFFFFF;
     border-radius: 10px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.06);
     overflow-x: auto;
+}
+
+.service-table-container{
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
 
 .reservation-table th,
@@ -294,6 +304,14 @@ button.open .arrow-icon {
     position: sticky;
     top: 0;
     background: white;
+}
+
+.service-edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 /* ================================

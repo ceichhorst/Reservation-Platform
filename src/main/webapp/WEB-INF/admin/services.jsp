@@ -19,7 +19,7 @@
         <a href="${pageContext.request.contextPath}/admin/restaurants">Manage Restaurants</a>
         <a href="${pageContext.request.contextPath}/admin/reservations">Manage Reservations</a>
     </nav>
-    <div class="container">
+    <div class="service-table-container">
         <h2>Manage Services</h2>
         <!-- Select Restaurant -->
         <div class="card">
@@ -57,7 +57,7 @@
         <%-- Service Config --%>
         <div class="card">
             <h3>Service Configuration</h3>
-            <p><strong>Schedule Type:</strong> ${scheduleType}</p>
+            <p class="restaurant-form-label"><strong>Schedule Type:</strong> ${scheduleType}</p>
             <form method="post" action="${pageContext.request.contextPath}/admin/services">
                 <input type="hidden" name="action" value="updateService"/>
                 <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
@@ -88,16 +88,16 @@
 
                 <c:choose>
                     <c:when test="${scheduleType == 'DATE_TIME'}">
-                        <label>Date:</label>
+                        <label class="restaurant-form-label">Date:</label>
                         <input type="date" name="date" required />
 
-                        <label>Start Time:</label>
+                        <label class="restaurant-form-label">Start Time:</label>
                         <input type="time" name="time" required />
 
-                        <label>End Time:</label>
+                        <label class="restaurant-form-label">End Time:</label>
                         <input type="time" name="endTime" required />
 
-                        <label>Capacity:</label>
+                        <label class="restaurant-form-label">Capacity:</label>
                         <input type="number" name="capacity" required />
 
                     </c:when>
@@ -128,7 +128,7 @@
             <div class="filter-bar">
                 <form method="get" action="${pageContext.request.contextPath}/admin/services">
                     <input type="hidden" name="restaurantId" value="${selectedRestaurantId}" />
-                    <label>Filter:</label>
+                    <label class="restaurant-form-label">Filter:</label>
                     <select name="filterType" onchange="toggleFilterInputs()">
                         <option value="">All Dates</option>
                         <option value="DATE" ${param.filterType == 'DATE'? 'selected' : ''}>Specific Date</option>
@@ -185,12 +185,14 @@
                             </table>
                         </div>
                     <input type="hidden" name="restaurantId" value="${selectedRestaurantId}"/>
-                    <button type="submit" name="action" value="bulkToggleVisibility">
-                        Toggle Visibility
-                    </button>
-                    <button type="submit" name="action" value="bulkDelete">
-                        Delete
-                    </button>
+                    <div class="service-edit-buttons">
+                        <button type="submit" name="action" value="bulkToggleVisibility">
+                            Toggle Visibility
+                        </button>
+                        <button type="submit" name="action" value="bulkDelete">
+                            Delete
+                        </button>
+                    </div>
                     </form>
                 </c:otherwise>
             </c:choose>

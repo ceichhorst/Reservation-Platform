@@ -68,8 +68,8 @@ Focus User Story: Administrative Reservation Oversight
 
 * \[X] Create DAO for Reservation entity will full CRUD
 * \[X] Add unit tests for Reservation DAO
-* \[ ] Implement administrator-facing reservation queries
-* \[ ] Log reservation attempts, successes, and failures [Not yet]
+* \[X] Implement administrator-facing reservation queries
+* \[X] Log reservation attempts, successes, and failures
 * \[X] Refactor code for clarity and maintainability
 * \[X] Weekly Reflection
 
@@ -169,9 +169,9 @@ Focus User Story: External Service Integration
 
 
 * \[X] Implement service layers/DTOs to centralize logic
-* \[ ] Incorporate peer and instructor feedback
+* \[X] Incorporate peer and instructor feedback
 * \[X] Continue research and developing plan for proper implementation of concurrency handling if needed
-* \[ ] Finalize non-MVP features if time allows
+* \[X] Finalize non-MVP features if time allows (work towards future enhancements for next version)
 * \[X] Weekly Reflection
 
 
@@ -180,11 +180,10 @@ Focus User Story: External Service Integration
 
 
 
-* \[ ] Prepare presentation outline and talking point
-* \[ ] Review application architecture and technical decisions
-* \[ ] Perform end-to-end testing
-* \[ ] Final UI polish
-* \[ ] Weekly Reflection
+* \[ ] Continue Working Up Core Admin Side/Functionalities
+* \[X] Review application architecture and technical decisions
+* \[X] Final UI polish
+* \[X] Weekly Reflection
 
 
 
@@ -192,13 +191,13 @@ Focus User Story: External Service Integration
 
 
 * \[X] Conduct peer design/code review
-* \[ ] Implement feedback from Week 14 review
-* \[ ] Finalize documentation (README, architecture explanation, etc)
-* \[ ] Record video demonstration
-* \[ ] Add video link to GitHub README
-* \[ ] Perform code quality and cleanup pass
-* \[ ] Finalize Unit Tests/Handling
-* \[ ] Weekly Reflection
+* \[X] Implement feedback from Peer review #2
+* \[X] Finalize documentation (README, architecture explanation, etc)
+* \[X] Ensure Concurrency topics are implemented
+* \[X] Finalize all primary functionality on user & admin sides
+* \[X] Perform code quality and cleanup pass
+* \[X] Finalize Unit Tests/Handling
+* \[X] Weekly Reflection
 
 
 
@@ -206,10 +205,13 @@ Focus User Story: External Service Integration
 
 
 
-* \[ ] Final verification against rubric
-* \[ ] Final touches and bug fixes
-* \[ ] Ensure documentation is complete and accurate
-* \[ ] Final Reflection
+* \[X] Final verification against rubric
+* \[X] Final touches and bug fixes
+* \[X] Double check documentation is complete and accurate
+* \[X] Export JavaDoc HTML
+* \[X] Record video demonstration
+* \[X] Add video link to GitHub README
+* \[X] Final Reflection
 
 
 

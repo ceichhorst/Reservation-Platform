@@ -174,14 +174,52 @@ Est. Time - 10 hours
 
 ### Week 14
 
+5/3/26 - 
 
+One challenge I faced was realizing a certain component I had wasn't working out the way I had hoped - logging out of the system. With needing to route back to the dedicated restaurant being worked withlogging out of the system. there wasn't a way to just send the admin back to the corresponding restaurant's home page with a static result. A component I implemented to handle this was a logout-success page so that there was a dedicated page admins land on, where it can then redirect them back accordingly.
+
+One major feature added was the Services Manager page, specifically the ServiceManager service layer and its servlet. This included the ability to add service instances based on scheduling type, toggle visibility of individual service dates, delete services, and update the scheduling type of a restaurant. I was worried this would cause some issues that would be impossible to resolve - swithcing from a DATE_TIME scheduling type to DATE_ONLY particularly came to mind. Thankfully it wasn't too much trouble during development.
+
+The countReservationsByService method was also a crucial component designed during this period. This was a prominent use of the JPA Criteria API for an aggregate query using cb.count(), and getting the join chain from Reservation through ServiceInstance to Restaurant right required careful thought about the entity relationships and how Hibernate resolves them.
+
+With how much more I feel I have been lately to this platform lately makes me feel like I will dive into a lot more than I may be thinking right now even though there is only a bout less than 2 weeks left to work on this application.
+
+
+Est. Time - 15 hours
 
 
 ### Week 15
 
+5/11/26 - This is the final stretch and it's oh so mind-boggling, but quite a journey to see where one start's with a program they are wanting to develop to nearing finalization and a deadline to provide a well-developed result as a solution to a proposed problem (not to mention the amount of hours put into this has really gone up).
 
+During last stretches, I have come to learn how much I get into a "But what else can I do?!?" mentality when creating/building/developing anything. This was a period where I considered additional components and custom elements.This was a period where I considered additional components and custom elements, and honestly had to exercise some discipline in deciding what was worth adding versus what would be scope creep.
 
+One major portion added was the Restaurant Management page dedicated to editing restaurant information and assigning admins to restaurants. This feature turned out to be more involved than expected — diagnosing which side of the @ManyToMany relationship between Administrator and Restaurant owned the join table took considerable debugging time. The root cause was a mismatch between which entity Hibernate expected to drive persistence of the admin_restaurant join table, and it required understanding how Hibernate tracks ownership of bidirectional relationships to resolve correctly.
+
+A feature I added during this period was the ability to filter out previous dates that have passed in the system through usage of .filter() from the Stream API. A greaterThanOrEqualTo predicate on serviceDate was added to the ServiceInstanceDao.getByRestaurantId() query and similar DAO methods so that past dates are excluded at the database level rather than filtered in memory. This also improved the dashboard's Upcoming Overview to reflect only active, future reservations.
+
+Another aspect this week was truly implementing the JavaMail Open Source API. I really wasn't sure if it seemed practical at first, but after assessing it further, especially from reviewing the user stories, it felt to be a worthy addition in the end. It was primarily interesting to see how Standard Mail Transfer Protocol (SMTP) can work for handling email sendouts. Moving the credentials and SMTP configuration out of the source code and into an email.properties file was also an important security consideration I addressed during this period.
+
+I also created custom error pages to improve the user and admin experience — a 404 for missing pages, a 500 for unexpected server errors, and a dedicated 403 Unauthorized page for access control violations. These are mapped in web.xml since error page configuration cannot be done through annotations in the Servlet spec. Along with this, the AuthFilter was updated to properly allow both 'ADMIN' and 'SUPER_ADMIN' roles through to protected routes, correcting a bug where 'SUPER_ADMINs' were being blocked by a role check that only permitted the 'ADMIN' string. I was hoping I could find a way to check the 'SUPER_ADMIN' user group of other admins when logged in as one, but it seems this is not an easy route and will have to be looked into for future development after the current version of this application.
+
+Can't believe it's nearing the finish line of this project - I feel much better about the project overall yet a bit uncertain. Maybe because it's my first true app from the ground up, but nonetheless it's almost there - I'm sure of it.
+
+Est. Time - 20+ hours
 
 ### Week 16
 
+5/13/26 - It's amazing how much you think you got things working, or had checked them, that you end up being surprised and encounter some hiccups that come back to you.
 
+There were some last-minute bugs and errors that came up and disrupted the finalization of the project. One was a missing Cognito user group check - the Auth servlet was only checking for the ADMIN group when extracting the role from the JWT token, which meant those in 'SUPER_ADMIN' were not being recognized as such on login and were losing their elevated privileges in the session. Updating the group check to evaluate 'SUPER_ADMIN' first before falling back to ADMIN resolved this.
+
+Another issue was a missing restaurantId hidden input on a POST form in the reservation management page, which meant the redirect after confirming, cancelling, or editing a reservation lost the restaurant context and sent the admin back to an unscoped page. Small things like this are a good reminder of how interconnected the pieces of a full-stack application are - one missing field in a JSP form can break a flow that appeared to work in earlier testing.
+
+This final week was also spent on double-checking everything was all good for unit test coverage, code review, and documentation cleanup. Writing the tests pushed me to find a few more subtle issues. The unit test suite ended up covering over 70 test cases across 13 test classes, including the OptimisticLockRetryExecutor concurrency utility, all three DAO layers, the availability and reservation service logic, and the email service.
+
+And now as I am finishing writing up the last thoughts on this... the project as a whole, the most valuable thing I took from it was learning how to think about concurrency not as a single technique but as a set of decisions — choosing pessimistic locking for the high-stakes reservation creation path where overbooking is a hard constraint, and optimistic locking with retry for lower-conflict admin workflows, each for deliberate and defensible reasons. That kind of architectural thinking is something I'll carry forward well beyond this project!
+
+P.S. - So eager to start on a version 2 already!
+
+For the
+
+Est. Time - 20+ hours
